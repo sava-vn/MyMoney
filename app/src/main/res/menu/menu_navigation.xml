@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_sono"
+            android:icon="@drawable/ic_sono"
+            android:title="So no"></item>
+        <item
+            android:id="@+id/nav_caidat"
+            android:icon="@drawable/ic_caidat"
+            android:title="Cai dat"></item>
+        <item
+            android:id="@+id/nav_gioithieu"
+            android:icon="@drawable/ic_gioithieu"
+            android:title="Gioi thieu"></item>
+    </group>
+    <item android:title="My money">
+        <menu>
+            <item
+                android:id="@+id/nav_taikhoan"
+                android:icon="@drawable/ic_taikhoan"
+                android:title="Tài khoản"></item>
+            <item
+                android:id="@+id/nav_dangxuat"
+                android:icon="@drawable/ic_dangxuat"
+                android:title="Đăng xuất"></item>
+        </menu>
+    </item>
+</menu>

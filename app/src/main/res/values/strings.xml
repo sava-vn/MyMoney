@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyMoney</string>
+    <string name="navigation_open">Open Navigation</string>
+    <string name="navigation_close">Close Navigation</string>
+</resources>
