@@ -4,12 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:padding="16dp"
-    tools:context=".fragment_day.DayUpFragment">
+    android:padding="16dp">
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/piechar_income"
         android:layout_width="350dp"
         android:layout_height="match_parent"></com.github.mikephil.charting.charts.PieChart>
-
 </LinearLayout>

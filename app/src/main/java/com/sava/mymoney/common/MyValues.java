@@ -16,7 +16,7 @@ public class MyValues {
     public static final int SHOW_DAYPAY = 1;
     public static final int SHOW_MONTHPAY = 2;
     public static final int SHOW_YEARPAY = 3;
-
+    public static final String TYPE_SHOW = "TYPE_SHOW";
     public static int HEADER = 0;
     public static int ITEM =1;
 

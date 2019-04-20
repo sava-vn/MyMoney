@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".DayPayActivity">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_above="@id/bottom_nav_dayPayment">
+        android:layout_above="@id/navi_detail">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -18,7 +17,7 @@
             android:fitsSystemWindows="true"
             app:elevation="0dp">
             <android.support.v7.widget.Toolbar
-                android:id="@+id/tb_dayPay"
+                android:id="@+id/tb_detail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/c_tb_main"
@@ -30,13 +29,13 @@
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
         <FrameLayout
-            android:id="@+id/framLayout_dayPament"
+            android:id="@+id/framLayout_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></FrameLayout>
     </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_nav_dayPayment"
+        android:id="@+id/navi_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/c_tb_main"

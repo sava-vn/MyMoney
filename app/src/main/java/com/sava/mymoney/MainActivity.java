@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rcv_day);
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        mToolbar = findViewById(R.id.tb_day);
+        mToolbar = findViewById(R.id.tb_main);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(tvToolbar);
@@ -75,22 +75,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 TimePayment timePayment = mListTimePayment.get(position);
-                Intent intent = new Intent();
-                switch (TYPE_SHOW) {
-                    case MyValues.SHOW_DAYPAY:
-                        intent = new Intent(MainActivity.this, DayPayActivity.class);
-                        break;
-                    case MyValues.SHOW_MONTHPAY:
-                        intent = new Intent(MainActivity.this, MonthPayActivity.class);
-                        break;
-                    case MyValues.SHOW_YEARPAY:
-                        intent = new Intent(MainActivity.this, YearPayActivity.class);
-                        break;
-                }
+                Intent intent = new Intent(MainActivity.this,DayPayActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt(MyValues.DAY, timePayment.getmTime().getmDay());
                 bundle.putInt(MyValues.MONTH, timePayment.getmTime().getmMonth());
                 bundle.putInt(MyValues.YEAR, timePayment.getmTime().getmYear());
+                bundle.putInt(MyValues.TYPE_SHOW,TYPE_SHOW);
                 intent.putExtra(MyValues.BUNDLEDAY, bundle);
                 startActivity(intent);
             }
@@ -166,15 +156,15 @@ public class MainActivity extends AppCompatActivity {
         mWallet.addPayment(payment);
         payment = new Payment(new Time(9, 4, 2019), 1500000, 0, "Rút từ ngân hàng");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(9, 4, 2019), -6200000, 36, "Trả học bổng Thoa");
+        payment = new Payment(new Time(9, 4, 2019), -6200000, 38, "Trả học bổng Thoa");
         mWallet.addPayment(payment);
         payment = new Payment(new Time(10, 4, 2019), 22700000, 7, "Lấy nợ của Dì");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(11, 4, 2019), -300000, 21, "Đi khám zona");
+        payment = new Payment(new Time(11, 4, 2019), -300000, 22, "Đi khám zona");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(11, 4, 2019), -180000, 8, "Về quê");
+        payment = new Payment(new Time(11, 4, 2019), -180000, 9, "Về quê");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(12, 4, 2019), -180000, 8, "Về quê");
+        payment = new Payment(new Time(12, 4, 2019), -180000, 9, "Về quê");
         mWallet.addPayment(payment);
         payment = new Payment(new Time(12, 4, 2019), 180000, 0, "Thay đổi số dư");
         mWallet.addPayment(payment);

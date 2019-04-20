@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment_day.DayHomeFragment"
     android:background="@color/white">
 
     <LinearLayout
@@ -16,7 +15,7 @@
         android:layout_marginBottom="20dp">
 
         <TextView
-            android:id="@+id/tv_Vi_fragDayHome"
+            android:id="@+id/tvVi_fragHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_agency"
@@ -26,7 +25,7 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/img_fragDayHome"
+            android:id="@+id/img_fragHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -34,7 +33,7 @@
             android:src="@drawable/ic_char" />
 
         <TextView
-            android:id="@+id/tv_money_fragDayHome"
+            android:id="@+id/tv_money_fragHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_agency"
@@ -44,7 +43,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcv_daypayment"
+        android:id="@+id/rcv_itempayment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 

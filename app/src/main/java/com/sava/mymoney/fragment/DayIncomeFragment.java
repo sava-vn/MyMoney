@@ -1,4 +1,4 @@
-package com.sava.mymoney.fragment_day;
+package com.sava.mymoney.fragment;
 
 
 import android.graphics.Color;
@@ -22,24 +22,27 @@ import com.sava.mymoney.R;
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
 import com.sava.mymoney.model.DayPayment;
+import com.sava.mymoney.model.MonthPayment;
 import com.sava.mymoney.model.Payment;
 
 import java.util.ArrayList;
 
 
-public class DayUpFragment extends Fragment {
+public class DayIncomeFragment extends Fragment {
     private PieChart pieChart_income;
     private ArrayList<PieEntry> listValue;
     private Bundle bundle;
+    private int ngay;
+    private int thang;
+    private int nam;
+    private int money;
+    public DayIncomeFragment() {
 
-    public DayUpFragment() {
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_day_up, container, false);
+        View view = inflater.inflate(R.layout.fragment_income, container, false);
         initView(view);
         initData();
         return view;
@@ -57,21 +60,16 @@ public class DayUpFragment extends Fragment {
     }
 
     public void initData() {
-        int money = 0;
         listValue = new ArrayList<>();
         bundle = getArguments();
-        int ngay = bundle.getInt(MyValues.DAY);
-        int thang = bundle.getInt(MyValues.MONTH);
-        int nam = bundle.getInt(MyValues.YEAR) - 2015;
-        DayPayment dayPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay];
-        ArrayList<Payment> listPayment = dayPayment.getmListPayment();
-        for (Payment payment : listPayment) {
-            if (payment.getmMoney() > 0) {
-                PieEntry pieEntry = new PieEntry(payment.getmMoney(), MainActivity.TYPE_INCOMES[payment.getmType()]);
-                listValue.add(pieEntry);
-                money += payment.getmMoney();
-            }
-        }
+        ngay = bundle.getInt(MyValues.DAY);
+        thang = bundle.getInt(MyValues.MONTH);
+        nam = bundle.getInt(MyValues.YEAR) - 2015;
+        money =0;
+        if(bundle.getInt(MyValues.TYPE_SHOW)==MyValues.SHOW_DAYPAY)
+            initValue1();
+        if(bundle.getInt(MyValues.TYPE_SHOW)==MyValues.SHOW_MONTHPAY)
+            initValue2();
         PieDataSet dataSet = new PieDataSet(listValue, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
@@ -101,5 +99,36 @@ public class DayUpFragment extends Fragment {
         pieChart_income.setData(data);
         pieChart_income.setDescription(description);
     }
-
+    public void initValue1(){
+        DayPayment dayPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay];
+        ArrayList<Payment> listPayment = dayPayment.getmListPayment();
+        for (Payment payment : listPayment) {
+            if (payment.getmMoney() > 0) {
+                PieEntry pieEntry = new PieEntry(payment.getmMoney(), MainActivity.TYPE_INCOMES[payment.getmType()]);
+                listValue.add(pieEntry);
+                money += payment.getmMoney();
+            }
+        }
+    }
+    public void initValue2(){
+        int[] Money = new int[20];
+        MonthPayment monthPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang];
+        for(int i =31;i>0;i--){
+            DayPayment dayPayment = monthPayment.getmArrDayPayment()[i];
+            if(dayPayment!=null){
+                for (Payment payment : dayPayment.getmListPayment()) {
+                    if (payment.getmMoney() > 0) {
+                        int type = payment.getmType();
+                        Money[type]+=payment.getmMoney();
+                    }
+                }
+            }
+        }
+        for(int i =0;i<20;i++){
+            if(Money[i]>0){
+                listValue.add(new PieEntry(Money[i],MainActivity.TYPE_INCOMES[i]));
+                money+=Money[i];
+            }
+        }
+    }
 }

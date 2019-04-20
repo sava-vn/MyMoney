@@ -15,17 +15,17 @@ import android.widget.TextView;
 
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
-import com.sava.mymoney.fragment_day.DayDownFragment;
-import com.sava.mymoney.fragment_day.DayHomeFragment;
-import com.sava.mymoney.fragment_day.DayUpFragment;
+import com.sava.mymoney.fragment.DayExpenditureFragment;
+import com.sava.mymoney.fragment.DayHomeFragment;
+import com.sava.mymoney.fragment.DayIncomeFragment;
 
 public class DayPayActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigation;
 
     private DayHomeFragment homeFragment;
-    private DayUpFragment upFragment;
-    private DayDownFragment downFragment;
+    private DayIncomeFragment upFragment;
+    private DayExpenditureFragment downFragment;
 
     private Bundle bundle;
     private TextView tvToolbar;
@@ -33,7 +33,7 @@ public class DayPayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_day_pay);
+        setContentView(R.layout.activity_detail_pay);
         Intent intent = getIntent();
         bundle = intent.getBundleExtra(MyValues.BUNDLEDAY);
         initView();
@@ -43,23 +43,29 @@ public class DayPayActivity extends AppCompatActivity {
         tvToolbar = new TextView(getApplicationContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
         tvToolbar.setLayoutParams(lp);
-        tvToolbar.setText(bundle.getInt(MyValues.DAY)+ " tháng "+ bundle.getInt(MyValues.MONTH)+ " năm "+ bundle.getInt(MyValues.YEAR));
+        String toolbarTitle;
+        if(bundle.getInt(MyValues.TYPE_SHOW)==MyValues.SHOW_DAYPAY)
+            toolbarTitle = bundle.getInt(MyValues.DAY)+ " tháng "+ bundle.getInt(MyValues.MONTH)+ " năm "+ bundle.getInt(MyValues.YEAR);
+        else if (bundle.getInt(MyValues.TYPE_SHOW)==MyValues.SHOW_MONTHPAY)
+            toolbarTitle = bundle.getInt(MyValues.MONTH)+ " năm "+ bundle.getInt(MyValues.YEAR);
+        else
+            toolbarTitle = bundle.getInt(MyValues.YEAR) + "";
+        tvToolbar.setText(toolbarTitle);
         tvToolbar.setTextSize(20);
         tvToolbar.setTextColor(getColor(R.color.white));
         MySupport.setFontBold(this, tvToolbar, MyValues.FONT_AGENCY);
 
-
         homeFragment = new DayHomeFragment();
-        upFragment = new DayUpFragment();
-        downFragment = new DayDownFragment();
+        upFragment = new DayIncomeFragment();
+        downFragment = new DayExpenditureFragment();
         initFragment(homeFragment,MyValues.HOME);
 
-        mToolbar = findViewById(R.id.tb_dayPay);
+        mToolbar = findViewById(R.id.tb_detail);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME);
         getSupportActionBar().setCustomView(tvToolbar);
 
-        mBottomNavigation = findViewById(R.id.bottom_nav_dayPayment);
+        mBottomNavigation = findViewById(R.id.navi_detail);
         mBottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -83,8 +89,18 @@ public class DayPayActivity extends AppCompatActivity {
         if (frag == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragment.setArguments(bundle);
-            fragmentTransaction.replace(R.id.framLayout_dayPament, fragment,tag);
+            fragmentTransaction.replace(R.id.framLayout_detail, fragment,tag);
             fragmentTransaction.commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return  true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
