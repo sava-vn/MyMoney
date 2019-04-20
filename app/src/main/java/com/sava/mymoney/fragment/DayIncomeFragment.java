@@ -100,13 +100,19 @@ public class DayIncomeFragment extends Fragment {
         pieChart_income.setDescription(description);
     }
     public void initValue1(){
+        int[] Money = new int[20];
         DayPayment dayPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay];
         ArrayList<Payment> listPayment = dayPayment.getmListPayment();
         for (Payment payment : listPayment) {
             if (payment.getmMoney() > 0) {
-                PieEntry pieEntry = new PieEntry(payment.getmMoney(), MainActivity.TYPE_INCOMES[payment.getmType()]);
-                listValue.add(pieEntry);
-                money += payment.getmMoney();
+                int type = payment.getmType();
+                Money[type]+=payment.getmMoney();
+            }
+        }
+        for(int i =0;i<20;i++){
+            if(Money[i]>0){
+                listValue.add(new PieEntry(Money[i],MainActivity.TYPE_INCOMES[i]));
+                money+=Money[i];
             }
         }
     }

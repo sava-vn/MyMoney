@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     public static String[] TYPE_INCOMES;
     public static String[] ICON_EXPENDITURES;
     public static String[] ICON_INCOMES;
+    public static String[] TYPE_PARENT_STRING;
+    public static int[] TYPE_PARENT_INT;
     public static Wallet mWallet;
     private RecyclerView mRecyclerView;
     private TimePaymentAdpter mAdpter;
@@ -74,15 +76,17 @@ public class MainActivity extends AppCompatActivity {
         mAdpter = new TimePaymentAdpter(this, mListTimePayment, new ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                TimePayment timePayment = mListTimePayment.get(position);
-                Intent intent = new Intent(MainActivity.this,DayPayActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt(MyValues.DAY, timePayment.getmTime().getmDay());
-                bundle.putInt(MyValues.MONTH, timePayment.getmTime().getmMonth());
-                bundle.putInt(MyValues.YEAR, timePayment.getmTime().getmYear());
-                bundle.putInt(MyValues.TYPE_SHOW,TYPE_SHOW);
-                intent.putExtra(MyValues.BUNDLEDAY, bundle);
-                startActivity(intent);
+                if (TYPE_SHOW != MyValues.SHOW_YEARPAY) {
+                    TimePayment timePayment = mListTimePayment.get(position);
+                    Intent intent = new Intent(MainActivity.this, DayPayActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(MyValues.DAY, timePayment.getmTime().getmDay());
+                    bundle.putInt(MyValues.MONTH, timePayment.getmTime().getmMonth());
+                    bundle.putInt(MyValues.YEAR, timePayment.getmTime().getmYear());
+                    bundle.putInt(MyValues.TYPE_SHOW, TYPE_SHOW);
+                    intent.putExtra(MyValues.BUNDLEDAY, bundle);
+                    startActivity(intent);
+                }
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdpter);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -143,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         TYPE_INCOMES = getResources().getStringArray(R.array.type_income);
         ICON_EXPENDITURES = getResources().getStringArray(R.array.icon_expenditure);
         ICON_INCOMES = getResources().getStringArray(R.array.icon_income);
+        TYPE_PARENT_STRING = getResources().getStringArray(R.array.TYPE_PARENT_STRING);
+        TYPE_PARENT_INT = getResources().getIntArray(R.array.TYPE_PARENT_INT);
         TYPE_SHOW = MyValues.SHOW_DAYPAY;
         Payment payment = new Payment(new Time(8, 4, 2019), 3000000, 0, "Tiền còn lại");
         mWallet.addPayment(payment);

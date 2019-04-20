@@ -75,7 +75,7 @@ public class DayExpenditureFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(listValue, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         Description description = new Description();
         Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MyValues.FONT_AGENCY);
@@ -101,15 +101,22 @@ public class DayExpenditureFragment extends Fragment {
         pieChart_expenditure.setDescription(description);
     }
     public void initValue1(){
+        int[] Money = new int[60];
         DayPayment dayPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay];
         ArrayList<Payment> listPayment = dayPayment.getmListPayment();
         for (Payment payment : listPayment) {
             if (payment.getmMoney() < 0) {
-                PieEntry pieEntry = new PieEntry(-payment.getmMoney(), MainActivity.TYPE_EXPENDITURES[payment.getmType()]);
-                listValue.add(pieEntry);
-                money -= payment.getmMoney();
+                int type = payment.getmType();
+                Money[type]-=payment.getmMoney();
             }
         }
+        for(int i =0;i<60;i++){
+            if(Money[i]>0){
+                listValue.add(new PieEntry(Money[i],MainActivity.TYPE_EXPENDITURES[i]));
+                money+=Money[i];
+            }
+        }
+
     }
     public void initValue2(){
         int[] Money = new int[60];
@@ -120,14 +127,15 @@ public class DayExpenditureFragment extends Fragment {
                 for (Payment payment : dayPayment.getmListPayment()) {
                     if (payment.getmMoney() < 0) {
                         int type = payment.getmType();
-                        Money[type]-=payment.getmMoney();
+                        int typeParent= MainActivity.TYPE_PARENT_INT[type];
+                        Money[typeParent]-=payment.getmMoney();
                     }
                 }
             }
         }
         for(int i =0;i<60;i++){
             if(Money[i]>0){
-                listValue.add(new PieEntry(Money[i],MainActivity.TYPE_EXPENDITURES[i]));
+                listValue.add(new PieEntry(Money[i],MainActivity.TYPE_PARENT_STRING[i]));
                 money+=Money[i];
             }
         }
