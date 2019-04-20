@@ -58,7 +58,7 @@
         <item>Thu nợ</item>
         <item>Khoản thu khác</item>
     </string-array>
-    <string-array  name="icon_expenditure">
+    <string-array name="icon_expenditure">
         <item>img_thaydoisodu</item>
         <item>img_anuong</item>
         <item>img_dienthoai</item>

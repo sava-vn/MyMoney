@@ -1,4 +1,4 @@
-package com.sava.mymoney.fragment;
+package com.sava.mymoney.fragment_day;
 
 
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.sava.mymoney.MainActivity;
 import com.sava.mymoney.R;

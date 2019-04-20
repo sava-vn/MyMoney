@@ -1,4 +1,5 @@
 package com.sava.mymoney;
+
 import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,8 +30,8 @@ import com.sava.mymoney.model.Wallet;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public static  String[] TYPE_EXPENDITURES;
-    public static  String[] TYPE_INCOMES;
+    public static String[] TYPE_EXPENDITURES;
+    public static String[] TYPE_INCOMES;
     public static String[] ICON_EXPENDITURES;
     public static String[] ICON_INCOMES;
     public static Wallet mWallet;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<TimePayment> mListTimePayment;
     private TextView tvToolbar;
     private DrawerLayout drawerLayout;
+    private int TYPE_SHOW;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,20 +74,25 @@ public class MainActivity extends AppCompatActivity {
         mAdpter = new TimePaymentAdpter(this, mListTimePayment, new ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                try {
-                    String show = " ";
-                    DayPayment dayPayment = (DayPayment) mListTimePayment.get(position);
-                    Intent intent = new Intent(MainActivity.this,DayPayActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(MyValues.DAY,dayPayment.getmTime().getmDay());
-                    bundle.putInt(MyValues.MONTH,dayPayment.getmTime().getmMonth());
-                    bundle.putInt(MyValues.YEAR,dayPayment.getmTime().getmYear());
-                    intent.putExtra(MyValues.BUNDLEDAY,bundle);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "abc", Toast.LENGTH_SHORT).show();
+                TimePayment timePayment = mListTimePayment.get(position);
+                Intent intent = new Intent();
+                switch (TYPE_SHOW) {
+                    case MyValues.SHOW_DAYPAY:
+                        intent = new Intent(MainActivity.this, DayPayActivity.class);
+                        break;
+                    case MyValues.SHOW_MONTHPAY:
+                        intent = new Intent(MainActivity.this, MonthPayActivity.class);
+                        break;
+                    case MyValues.SHOW_YEARPAY:
+                        intent = new Intent(MainActivity.this, YearPayActivity.class);
+                        break;
                 }
-
+                Bundle bundle = new Bundle();
+                bundle.putInt(MyValues.DAY, timePayment.getmTime().getmDay());
+                bundle.putInt(MyValues.MONTH, timePayment.getmTime().getmMonth());
+                bundle.putInt(MyValues.YEAR, timePayment.getmTime().getmYear());
+                intent.putExtra(MyValues.BUNDLEDAY, bundle);
+                startActivity(intent);
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -92,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdpter);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -103,19 +110,28 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_ngay:
-                mListTimePayment.clear();
-                mListTimePayment.addAll(0, mWallet.getAllNgay());
-                this.tvToolbar.setText("Tất cả các ngày");
+                if (TYPE_SHOW != MyValues.SHOW_DAYPAY) {
+                    mListTimePayment.clear();
+                    mListTimePayment.addAll(0, mWallet.getAllNgay());
+                    this.tvToolbar.setText("Tất cả các ngày");
+                    TYPE_SHOW = MyValues.SHOW_DAYPAY;
+                }
                 break;
             case R.id.action_thang:
-                mListTimePayment.clear();
-                mListTimePayment.addAll(0, mWallet.getAllThang());
-                this.tvToolbar.setText("Tất cả các tháng");
+                if (TYPE_SHOW != MyValues.SHOW_MONTHPAY) {
+                    mListTimePayment.clear();
+                    mListTimePayment.addAll(0, mWallet.getAllThang());
+                    this.tvToolbar.setText("Tất cả các tháng");
+                    TYPE_SHOW = MyValues.SHOW_MONTHPAY;
+                }
                 break;
             case R.id.action_nam:
-                mListTimePayment.clear();
-                mListTimePayment.addAll(0, mWallet.getAllNam());
-                this.tvToolbar.setText("Tất cả các năm");
+                if (TYPE_SHOW != MyValues.SHOW_YEARPAY) {
+                    mListTimePayment.clear();
+                    mListTimePayment.addAll(0, mWallet.getAllNam());
+                    this.tvToolbar.setText("Tất cả các năm");
+                    TYPE_SHOW = MyValues.SHOW_YEARPAY;
+                }
                 break;
         }
         this.mAdpter.notifyDataSetChanged();
@@ -137,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         TYPE_INCOMES = getResources().getStringArray(R.array.type_income);
         ICON_EXPENDITURES = getResources().getStringArray(R.array.icon_expenditure);
         ICON_INCOMES = getResources().getStringArray(R.array.icon_income);
+        TYPE_SHOW = MyValues.SHOW_DAYPAY;
         Payment payment = new Payment(new Time(8, 4, 2019), 3000000, 0, "Tiền còn lại");
         mWallet.addPayment(payment);
         payment = new Payment(new Time(8, 4, 2019), -102000, 24, "Kem đánh răng ,bàn chải");
@@ -151,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         mWallet.addPayment(payment);
         payment = new Payment(new Time(9, 4, 2019), -6200000, 36, "Trả học bổng Thoa");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(10, 4, 2019), 22700000, 8, "Lấy nợ của Dì");
+        payment = new Payment(new Time(10, 4, 2019), 22700000, 7, "Lấy nợ của Dì");
         mWallet.addPayment(payment);
         payment = new Payment(new Time(11, 4, 2019), -300000, 21, "Đi khám zona");
         mWallet.addPayment(payment);

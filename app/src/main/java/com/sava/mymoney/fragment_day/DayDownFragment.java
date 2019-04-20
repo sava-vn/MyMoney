@@ -1,4 +1,4 @@
-package com.sava.mymoney.fragment;
+package com.sava.mymoney.fragment_day;
 
 
 import android.graphics.Color;
@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -28,33 +27,33 @@ import com.sava.mymoney.model.Payment;
 import java.util.ArrayList;
 
 
-public class DayUpFragment extends Fragment {
-    private PieChart pieChart_income;
+public class DayDownFragment extends Fragment {
+    private PieChart pieChart_expenditure;
     private ArrayList<PieEntry> listValue;
     private Bundle bundle;
 
-    public DayUpFragment() {
+    public DayDownFragment() {
+
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_day_up, container, false);
+        View view = inflater.inflate(R.layout.fragment_day_down, container, false);
         initView(view);
         initData();
         return view;
     }
-
     public void initView(View view) {
-        pieChart_income = view.findViewById(R.id.piechar_income);
-        pieChart_income.setUsePercentValues(true);
-        pieChart_income.setExtraOffsets(5, 10, 5, 5);
-        pieChart_income.setDragDecelerationFrictionCoef(0.95f);
-        pieChart_income.setDrawHoleEnabled(true);
-        pieChart_income.setHoleColor(Color.WHITE);
-        pieChart_income.setTransparentCircleRadius(30);
-        pieChart_income.animateY(500, Easing.EaseInCubic);
+        pieChart_expenditure = view.findViewById(R.id.piechar_expenditure);
+        pieChart_expenditure.setUsePercentValues(true);
+        pieChart_expenditure.setExtraOffsets(5, 10, 5, 5);
+        pieChart_expenditure.setDragDecelerationFrictionCoef(0.95f);
+        pieChart_expenditure.setDrawHoleEnabled(true);
+        pieChart_expenditure.setHoleColor(Color.WHITE);
+        pieChart_expenditure.setTransparentCircleRadius(30);
+        pieChart_expenditure.animateY(500, Easing.EaseInCubic);
     }
 
     public void initData() {
@@ -67,8 +66,8 @@ public class DayUpFragment extends Fragment {
         DayPayment dayPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay];
         ArrayList<Payment> listPayment = dayPayment.getmListPayment();
         for (Payment payment : listPayment) {
-            if (payment.getmMoney() > 0) {
-                PieEntry pieEntry = new PieEntry(payment.getmMoney(), MainActivity.TYPE_INCOMES[payment.getmType()]);
+            if (payment.getmMoney() < 0) {
+                PieEntry pieEntry = new PieEntry(-payment.getmMoney(), MainActivity.TYPE_EXPENDITURES[payment.getmType()]);
                 listValue.add(pieEntry);
                 money += payment.getmMoney();
             }
@@ -76,7 +75,7 @@ public class DayUpFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(listValue, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
         Description description = new Description();
         Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MyValues.FONT_AGENCY);
@@ -84,23 +83,24 @@ public class DayUpFragment extends Fragment {
         description.setTypeface(typeface);
 
         if (listValue.size() > 0) {
-            pieChart_income.setCenterText(MySupport.converToMoney(money));
-            description.setText("Thống kê thu nhập");
+            pieChart_expenditure.setCenterText(MySupport.converToMoney(-money));
+            description.setText("Thống kê chi tiêu");
         }
         else{
             description.setText("");
-            pieChart_income.setCenterText("Không có khoản thu nào");
+            pieChart_expenditure.setCenterText("Không có khoản chi nào");
         }
-        pieChart_income.setCenterTextTypeface(typeface);
-        pieChart_income.setCenterTextSize(18);
+        pieChart_expenditure.setCenterTextTypeface(typeface);
+        pieChart_expenditure.setCenterTextSize(18);
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(13);
         data.setValueTextColor(Color.BLACK);
 
-        pieChart_income.setData(data);
-        pieChart_income.setDescription(description);
+        pieChart_expenditure.setData(data);
+        pieChart_expenditure.setDescription(description);
     }
+
 
 }

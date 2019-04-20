@@ -10,8 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".DayPayActivity"
+            android:name=".YearPayActivity"
             android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".MonthPayActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".DayPayActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -11,8 +11,11 @@ public class MyValues {
     public static final String FONT_HAPNA_SLABSERIF = "fonts/HapnaSlabSerif-Light.ttf";
     public static final String FONT_AGENCY = "fonts/SVN-AGENCY.ttf";
     public static final String HOME = "HOME";
-    public static final String UP = "UP";
-    public static final String DOWN ="DOWN";
+    public static final String INCOMES = "UP";
+    public static final String EXPENDITURE ="DOWN";
+    public static final int SHOW_DAYPAY = 1;
+    public static final int SHOW_MONTHPAY = 2;
+    public static final int SHOW_YEARPAY = 3;
 
     public static int HEADER = 0;
     public static int ITEM =1;
