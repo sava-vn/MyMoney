@@ -41,13 +41,12 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         holder.tvMoneyPayment.setText(MySupport.converToMoney(payment.getmMoney()));
         if (payment.getmMoney() < 0) {
             holder.tvTypePayment.setText(MainActivity.TYPE_EXPENDITURES[type]);
-            holder.imgTypePayment.setImageResource(MainActivity.ICON_EXPENDITURES[type]);
+            holder.imgTypePayment.setImageResource(mContext.getResources().getIdentifier(MainActivity.ICON_EXPENDITURES[type],"drawable", mContext.getPackageName()));
         } else {
-            holder.imgTypePayment.setImageResource(MainActivity.ICON_INCOMES[type]);
+            holder.imgTypePayment.setImageResource(mContext.getResources().getIdentifier(MainActivity.ICON_INCOMES[type],"drawable", mContext.getPackageName()));
             holder.tvTypePayment.setText(MainActivity.TYPE_INCOMES[type]);
         }
     }
-
     @Override
     public int getItemCount() {
         return mListPayment.size();

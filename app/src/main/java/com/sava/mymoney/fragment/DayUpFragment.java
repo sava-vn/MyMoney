@@ -76,7 +76,7 @@ public class DayUpFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(listValue, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
         Description description = new Description();
         Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MyValues.FONT_AGENCY);
