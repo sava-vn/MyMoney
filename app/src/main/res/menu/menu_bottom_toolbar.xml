@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_home"
+        android:icon="@drawable/ic_home"
+        android:title="TỔNG QUAN"></item>
+    <item
+        android:id="@+id/action_up"
+        android:icon="@drawable/ic_up"
+        android:title="THU NHẬP"></item>
+    <item
+        android:id="@+id/action_down"
+        android:icon="@drawable/ic_down"
+        android:title="CHI TIÊU"></item>
+</menu>

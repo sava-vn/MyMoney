@@ -1,5 +1,5 @@
 package com.sava.mymoney;
-
+import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -29,6 +29,10 @@ import com.sava.mymoney.model.Wallet;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public static  String[] TYPE_EXPENDITURES;
+    public static  String[] TYPE_INCOMES;
+    public static int[] ICON_EXPENDITURES;
+    public static int[] ICON_INCOMES;
     public static Wallet mWallet;
     private RecyclerView mRecyclerView;
     private TimePaymentAdpter mAdpter;
@@ -36,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<TimePayment> mListTimePayment;
     private TextView tvToolbar;
     private DrawerLayout drawerLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +74,13 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String show = " ";
                     DayPayment dayPayment = (DayPayment) mListTimePayment.get(position);
-                    for (Payment payment : dayPayment.getmListPayment()) {
-                        show += MyValues.typesPayment[payment.getmType()] + " : " + payment.getmMoney() + "\n";
-                    }
-                    Toast.makeText(MainActivity.this, dayPayment.toString() + "\n" + show, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this,DayPayActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(MyValues.DAY,dayPayment.getmTime().getmDay());
+                    bundle.putInt(MyValues.MONTH,dayPayment.getmTime().getmMonth());
+                    bundle.putInt(MyValues.YEAR,dayPayment.getmTime().getmYear());
+                    intent.putExtra(MyValues.BUNDLEDAY,bundle);
+                    startActivity(intent);
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "abc", Toast.LENGTH_SHORT).show();
                 }
@@ -127,33 +133,37 @@ public class MainActivity extends AppCompatActivity {
 
     public void initData() {
         mWallet = new Wallet();
-        Payment payment = new Payment(new Time(8, 4, 2019), 3000000, 1, "Tiền còn lại");
+        TYPE_EXPENDITURES = getResources().getStringArray(R.array.type_exspenditure);
+        TYPE_INCOMES = getResources().getStringArray(R.array.type_income);
+        ICON_EXPENDITURES = getResources().getIntArray(R.array.icon_expenditure);
+        ICON_INCOMES = getResources().getIntArray(R.array.icon_income);
+        Payment payment = new Payment(new Time(8, 4, 2019), 3000000, 0, "Tiền còn lại");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(8, 4, 2019), 3000000, 2, "Hẹn trả trong tuần");
+        payment = new Payment(new Time(8, 4, 2019), 3000000, 6, "Hẹn trả trong tuần");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(9, 4, 2019), 1500000, 3, "Rút từ ngân hàng");
+        payment = new Payment(new Time(9, 4, 2019), 1500000, 0, "Rút từ ngân hàng");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(9, 4, 2019), -6200000, 4, "Trả học bổng Thoa");
+        payment = new Payment(new Time(9, 4, 2019), -6200000, 36, "Trả học bổng Thoa");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(10, 4, 2019), 22700000, 5, "Lấy nợ của Dì");
+        payment = new Payment(new Time(10, 4, 2019), 22700000, 8, "Lấy nợ của Dì");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(11, 4, 2019), -300000, 6, "Đi khám zona");
+        payment = new Payment(new Time(11, 4, 2019), -300000, 21, "Đi khám zona");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(11, 4, 2019), -180000, 7, "Về quê");
+        payment = new Payment(new Time(11, 4, 2019), -180000, 8, "Về quê");
         mWallet.addPayment(payment);
         payment = new Payment(new Time(12, 4, 2019), -180000, 8, "Về quê");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(12, 4, 2019), 180000, 9, "Về quê");
+        payment = new Payment(new Time(12, 4, 2019), 180000, 0, "Thay đổi số dư");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(5, 4, 2019), 1000000, 10, "Về quê");
+        payment = new Payment(new Time(5, 4, 2019), 1000000, 0, "Thay đổi số dư");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(5, 3, 2019), 1000000, 11, "Về quê");
+        payment = new Payment(new Time(5, 3, 2019), 1000000, 0, "Thay đổi số dư");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(4, 3, 2019), 1000000, 12, "Về quê");
+        payment = new Payment(new Time(4, 3, 2019), 1000000, 0, "Thay đổi số dư");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(5, 4, 2018), 1000000, 13, "Về quê");
+        payment = new Payment(new Time(5, 4, 2018), 1000000, 0, "Thay đổi số dư");
         mWallet.addPayment(payment);
-        payment = new Payment(new Time(5, 4, 2018), 1000000, 14, "Về quê");
+        payment = new Payment(new Time(5, 4, 2018), 1000000, 0, "Thay đổi số dư");
         mWallet.addPayment(payment);
         mListTimePayment = mWallet.getAllNgay();
     }

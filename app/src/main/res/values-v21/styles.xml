@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="ToolbarTheme" parent="AppTheme">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+    <style name="font_agency" parent="AppTheme">
+        <item name="android:fontFamily">@font/font_agency_bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="pieChar" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/yellow</item>
+        <item name="android:textColorSecondary">@color/yellow</item>
+    </style>
+</resources>

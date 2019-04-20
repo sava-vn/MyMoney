@@ -6,15 +6,15 @@
         <item
             android:id="@+id/nav_sono"
             android:icon="@drawable/ic_sono"
-            android:title="So no"></item>
+            android:title="Sổ nợ"></item>
         <item
             android:id="@+id/nav_caidat"
             android:icon="@drawable/ic_caidat"
-            android:title="Cai dat"></item>
+            android:title="Cài đặt"></item>
         <item
             android:id="@+id/nav_gioithieu"
             android:icon="@drawable/ic_gioithieu"
-            android:title="Gioi thieu"></item>
+            android:title="Giới thiệu"></item>
     </group>
     <item android:title="My money">
         <menu>

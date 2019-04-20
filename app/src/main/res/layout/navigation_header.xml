@@ -2,24 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="@color/nau"
+    android:background="@color/red"
     android:orientation="vertical"
     android:gravity="bottom"
     android:padding="16dp">
     <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/ic_cuoihoi"/>
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/img_anuong"/>
     <TextView
         android:text="Mr. Sava"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_agency"/>
     <TextView
         android:text="levansang.gthn@gmail.com"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="18sp"/>
 </LinearLayout>

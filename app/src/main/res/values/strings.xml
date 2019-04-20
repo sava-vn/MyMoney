@@ -2,4 +2,114 @@
     <string name="app_name">MyMoney</string>
     <string name="navigation_open">Open Navigation</string>
     <string name="navigation_close">Close Navigation</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="type_exspenditure">
+        <item>Thay đổi sổ dư</item>
+        <item>Ăn uống</item>
+        <item>Điện Thoại</item>
+        <item>Nước</item>
+        <item>Điện</item>
+        <item>Gas</item>
+        <item>Internet</item>
+        <item>Truyền hình</item>
+        <item>Thuê nhà</item>
+        <item>Vận chuyển</item>
+        <item>Gửi xe</item>
+        <item>Bảo dưỡng</item>
+        <item>Xăng dầu</item>
+        <item>Quần áo</item>
+        <item>Giày dép</item>
+        <item>Phụ kiện</item>
+        <item>Thiết bị điện tử</item>
+        <item>Thết bị khác</item>
+        <item>Nhạc-phim</item>
+        <item>Trò chơi</item>
+        <item>Du lịch</item>
+        <item>Thể thao</item>
+        <item>Khám chữa bệnh</item>
+        <item>Thuốc</item>
+        <item>Chăm sóc cá nhân</item>
+        <item>Qùa tặng</item>
+        <item>Cưới hỏi</item>
+        <item>Đình đám</item>
+        <item>Từ thiện</item>
+        <item>Con cái</item>
+        <item>Sửa nhà</item>
+        <item>Dịch vụ gia đình</item>
+        <item>Vật nuôi</item>
+        <item>Sách</item>
+        <item>Đồ dùng học tập</item>
+        <item>Học phí</item>
+        <item>Đầu tư</item>
+        <item>Phí</item>
+        <item>Trả nợ</item>
+        <item>Đi vay</item>
+        <item>Khoản thu khác</item>
+    </string-array>
+    <string-array name="type_income">
+        <item>Thay đổi số dư</item>
+        <item>Thưởng</item>
+        <item>Tiền lãi</item>
+        <item>Lương</item>
+        <item>Được tặng</item>
+        <item>Bán đồ</item>
+        <item>Đi vay</item>
+        <item>Thu nợ</item>
+        <item>Khoản thu khác</item>
+    </string-array>
+    <integer-array name="icon_expenditure">
+        <item>@drawable/img_thaydoisodu</item>
+        <item>@drawable/img_anuong</item>
+        <item>@drawable/img_dienthoai</item>
+        <item>@drawable/img_nuoc</item>
+        <item>@drawable/img_dien</item>
+        <item>@drawable/img_gas</item>
+        <item>@drawable/img_internet</item>
+        <item>@drawable/img_truyenhinh</item>
+        <item>@drawable/img_thuenha</item>
+        <item>@drawable/img_vanchuyen</item>
+        <item>@drawable/img_doxe</item>
+        <item>@drawable/img_baoduong</item>
+        <item>@drawable/img_xangdau</item>
+        <item>@drawable/img_quanao</item>
+        <item>@drawable/img_giaydep</item>
+        <item>@drawable/img_phukien</item>
+        <item>@drawable/img_thietbidientu</item>
+        <item>@drawable/img_thietbikhac</item>
+        <item>@drawable/img_phimanh</item>
+        <item>@drawable/img_trochoi</item>
+        <item>@drawable/img_dulich</item>
+        <item>@drawable/img_thethao</item>
+        <item>@drawable/img_khambenh</item>
+        <item>@drawable/img_thuoc</item>
+        <item>@drawable/img_chamsoccanhan</item>
+        <item>@drawable/img_quatang</item>
+        <item>@drawable/img_cuoihoi</item>
+        <item>@drawable/img_dinhdam</item>
+        <item>@drawable/img_tuthien</item>
+        <item>@drawable/img_concai</item>
+        <item>@drawable/img_suanha</item>
+        <item>@drawable/img_dichvugiadinh</item>
+        <item>@drawable/img_vatnuoi</item>
+        <item>@drawable/img_sach</item>
+        <item>@drawable/img_dodunghoctap</item>
+        <item>@drawable/img_hocphi</item>
+        <item>@drawable/img_dautu</item>
+        <item>@drawable/img_phi</item>
+        <item>@drawable/img_trano</item>
+        <item>@drawable/img_chovay</item>
+        <item>@drawable/img_khoanchikhac</item>
+    </integer-array>
+    <integer-array name="icon_income">
+        <item>@drawable/img_thaydoisodu</item>
+        <item>@drawable/img_thuong</item>
+        <item>@drawable/img_tienlai</item>
+        <item>@drawable/img_luong</item>
+        <item>@drawable/img_duoctang</item>
+        <item>@drawable/img_bando</item>
+        <item>@drawable/img_divay</item>
+        <item>@drawable/img_thuno</item>
+        <item>@drawable/img_khoanthukhac</item>
+    </integer-array>
 </resources>
