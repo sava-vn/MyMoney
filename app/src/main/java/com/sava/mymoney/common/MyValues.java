@@ -1,7 +1,5 @@
 package com.sava.mymoney.common;
 
-import com.sava.mymoney.R;
-
 public class MyValues {
     public static final String DAY ="DAY";
     public static final String MONTH ="MONTH";
