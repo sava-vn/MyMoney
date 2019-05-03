@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "967460958377",
+    "firebase_url": "https://mymoney-sava.firebaseio.com",
+    "project_id": "mymoney-sava",
+    "storage_bucket": "mymoney-sava.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967460958377:android:632746cb814f0c2c",
+        "android_client_info": {
+          "package_name": "com.sava.mymoney"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967460958377-t7cu8eb9tp75dkto3a6nc381d9p26ake.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs9B9TLYiiFTPJ4YLSmNPwbwiz19iN-08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967460958377-t7cu8eb9tp75dkto3a6nc381d9p26ake.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
