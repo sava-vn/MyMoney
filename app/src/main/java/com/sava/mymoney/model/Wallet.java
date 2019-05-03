@@ -5,6 +5,7 @@ import com.sava.mymoney.common.MyValues;
 import java.util.ArrayList;
 
 public class Wallet {
+    private int mCountPay;
     private int mMoney;
     private YearPayment[] mArrYearPayment;
 
@@ -48,9 +49,13 @@ public class Wallet {
             }
         }
         this.mMoney +=money;
+        this.mCountPay++;
         mArrYearPayment[nam].setmMoney(money);
+        mArrYearPayment[nam].setmCountPay(1);
         mArrYearPayment[nam].getmArrMonthPayment()[thang].setmMoney(money);
+        mArrYearPayment[nam].getmArrMonthPayment()[thang].setmCountPay(1);
         mArrYearPayment[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay].setmMoney(money);
+        mArrYearPayment[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay].setmCountPay(1);
         mArrYearPayment[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay].getmListPayment().add(payment);
     }
     public ArrayList<TimePayment> getAllNgay(){
@@ -58,16 +63,16 @@ public class Wallet {
         int MN = getmMoney();
         for(int i = 30;i>0;i--){
             YearPayment yearPayment = mArrYearPayment[i];
-            if(yearPayment !=null){
+            if(yearPayment !=null && yearPayment.getmCountPay()>0){
                 for(int ii =12;ii>0;ii--){
                     MonthPayment monthPayment = yearPayment.getmArrMonthPayment()[ii];
-                    if(monthPayment != null){
+                    if(monthPayment != null && monthPayment.getmCountPay()>0){
                         DayPayment ngayx = new DayPayment(null);
                         ngayx.setmNote("Tháng "+ monthPayment.getmTime().getmMonth() + " năm "+ monthPayment.getmTime().getmYear());
                         listNgay.add(ngayx);
                         for(int iii=31;iii>0;iii--){
                             DayPayment dayPayment = monthPayment.getmArrDayPayment()[iii];
-                            if(dayPayment !=null){
+                            if(dayPayment !=null && dayPayment.getmCountPay()>0){
                                 dayPayment.setmViewType(MyValues.ITEM);
                                 dayPayment.setmVi(MN);
                                 MN -= dayPayment.getmMoney();
@@ -115,5 +120,25 @@ public class Wallet {
             }
         }
         return listNam;
+    }
+    public DayPayment removePayment(Payment payment){
+        int ngay = payment.getmTime().getmDay();
+        int thang = payment.getmTime().getmMonth();
+        int nam = payment.getmTime().getmYear()-2015;
+        YearPayment yearPayment = getmArrYearPayment()[nam];
+        MonthPayment monthPayment = yearPayment.getmArrMonthPayment()[thang];
+        DayPayment dayPayment = monthPayment.getmArrDayPayment()[ngay];
+        this.mMoney -=payment.getmMoney();
+        yearPayment.setmMoney(-payment.getmMoney());
+        yearPayment.setmCountPay(-1);
+        monthPayment.setmMoney(-payment.getmMoney());
+        monthPayment.setmCountPay(-1);
+        dayPayment.setmMoney(-payment.getmMoney());
+        dayPayment.setmCountPay(-1);
+        dayPayment.setmVi(dayPayment.getmVi() - payment.getmMoney());
+        yearPayment.setmVi(yearPayment.getmVi() - payment.getmMoney());
+        monthPayment.setmVi(monthPayment.getmVi() - payment.getmMoney());
+        dayPayment.getmListPayment().remove(payment);
+        return dayPayment;
     }
 }

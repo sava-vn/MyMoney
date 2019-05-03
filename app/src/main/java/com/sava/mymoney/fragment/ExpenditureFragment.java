@@ -28,7 +28,7 @@ import com.sava.mymoney.model.Payment;
 import java.util.ArrayList;
 
 
-public class DayExpenditureFragment extends Fragment {
+public class ExpenditureFragment extends Fragment {
     private PieChart pieChart_expenditure;
     private ArrayList<PieEntry> listValue;
     private Bundle bundle;
@@ -36,7 +36,7 @@ public class DayExpenditureFragment extends Fragment {
     private int thang;
     private int nam;
     private int money;
-    public DayExpenditureFragment() {
+    public ExpenditureFragment() {
 
     }
 
@@ -75,12 +75,12 @@ public class DayExpenditureFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(listValue, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         Description description = new Description();
-        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MyValues.FONT_AGENCY);
+        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(),MyValues.FONT_V);
         description.setTextSize(18);
         description.setTypeface(typeface);
+        description.setTextColor(Color.WHITE);
         if (listValue.size() > 0) {
             pieChart_expenditure.setCenterText(MySupport.converToMoney(money));
             description.setText("Thống kê chi tiêu");
@@ -91,6 +91,7 @@ public class DayExpenditureFragment extends Fragment {
         }
         pieChart_expenditure.setCenterTextTypeface(typeface);
         pieChart_expenditure.setCenterTextSize(18);
+        pieChart_expenditure.getLegend().setTextColor(Color.WHITE);
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());

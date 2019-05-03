@@ -4,47 +4,112 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
-
+    android:background="@color/sava1">
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/c_tb_main"
+            android:backgroundTint="#F99123"
+            android:layout_margin="12dp"
+            android:elevation="4dp"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginRight="12dp">
+                <ImageView
+                    android:src="@drawable/ic_sodu1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:minWidth="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_marginLeft="4dp"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Số dư"
+                    android:fontFamily="@font/font_agency"
+                    android:textSize="20sp"
+                    android:paddingLeft="0dp"/>
+                <TextView
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:id="@+id/tvSodu_fragHome"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3,500,000"
+                    android:fontFamily="@font/font_agency"
+                    android:textSize="24sp"
+                    android:paddingLeft="0dp"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvVi_fragHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/font_agency"
-            android:text="3,500,000"
-            android:textColor="@color/red"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/img_fragHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="6dp"
-            android:src="@drawable/ic_char" />
-
-        <TextView
-            android:id="@+id/tv_money_fragHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/font_agency"
-            android:text="+500,000"
-            android:textColor="@color/red"
-            android:textSize="20sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/c_tb_main"
+            android:backgroundTint="@color/yellow"
+            android:layout_margin="12dp"
+            android:elevation="4dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginRight="12dp">
+                <ImageView
+                    android:src="@drawable/ic_thuchi1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:minWidth="60dp"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+                <TextView
+                    android:text="Thu chi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/font_agency"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="4dp"/>
+                <TextView
+                    android:gravity="center_vertical"
+                    android:id="@+id/tv_thuChi_fragHome"
+                    android:fontFamily="@font/font_agency"
+                    android:textSize="24sp"
+                    android:text="9,999,999,999"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcv_itempayment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
 </LinearLayout>

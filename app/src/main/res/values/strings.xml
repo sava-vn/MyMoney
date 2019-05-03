@@ -4,6 +4,8 @@
     <string name="navigation_close">Close Navigation</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ABC">ABC</string>
+    <string name="savale">abc</string>
     <string-array name="type_exspenditure">
         <item>Thay đổi sổ dư</item>
         <item>Ăn uống</item>
@@ -44,7 +46,7 @@
         <item>Đầu tư</item>
         <item>Phí</item>
         <item>Trả nợ</item>
-        <item>Đi vay</item>
+        <item>Cho vay</item>
         <item>Khoản thu khác</item>
     </string-array>
     <string-array name="type_income">

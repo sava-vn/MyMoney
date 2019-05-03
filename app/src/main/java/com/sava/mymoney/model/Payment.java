@@ -5,8 +5,9 @@ public class Payment {
     private int mMoney;
     private int mType;
     private String mNote;
-
+    private Time mTime2;
     public Payment() {
+        mTime2 = new Time(0,0,0);
     }
 
     public Payment(Time mTime, int mMoney, int mType, String mNote) {
@@ -14,6 +15,15 @@ public class Payment {
         this.mMoney = mMoney;
         this.mType = mType;
         this.mNote = mNote;
+        this.mTime2 = new Time(0,0,0);
+    }
+
+    public Time getmTime2() {
+        return mTime2;
+    }
+
+    public void setmTime2(Time mTime2) {
+        this.mTime2 = mTime2;
     }
 
     public Time getmTime() {

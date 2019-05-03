@@ -4,9 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
+        android:fontFamily="@font/varela"
         android:background="@drawable/c_tv_1"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="12dp"
         android:id="@+id/tv_header"
         android:text="Tháng 11 - năm 2109"
         android:textStyle="bold"

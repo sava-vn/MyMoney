@@ -37,7 +37,7 @@ public class TimePaymentAdpter extends RecyclerView.Adapter<RecyclerView.ViewHol
             HeadeViewHolder headeViewHolder = new HeadeViewHolder(group);
             return headeViewHolder;
         }
-        ViewGroup group = (ViewGroup) inflater.inflate(R.layout.item_rcv_day, parent, false);
+        ViewGroup group = (ViewGroup) inflater.inflate(R.layout.item_detail, parent, false);
         ThoiGianViewHolder thoiGianViewHolder = new ThoiGianViewHolder(group);
         return thoiGianViewHolder;
     }

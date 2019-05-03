@@ -6,21 +6,18 @@ public class TimePayment {
     protected Time mTime;
     protected int mViewType;
     protected String mNote;
+    protected int mCountPay;
+
+    public int getmCountPay() {
+        return mCountPay;
+    }
+
+    public void setmCountPay(int mCountPay) {
+        this.mCountPay += mCountPay;
+    }
 
     public TimePayment() {
 
-    }
-
-    public TimePayment(int mMoney, int mVi, Time mTime, int mViewType, String mNote) {
-        this.mMoney = mMoney;
-        this.mVi = mVi;
-        this.mTime = mTime;
-        this.mViewType = mViewType;
-        this.mNote = mNote;
-    }
-
-    public TimePayment(Time mTime) {
-        this.mTime = mTime;
     }
 
     public int getmMoney() {

@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.DayIncomeFragment"
+    tools:context=".fragment.IncomeFragment"
     android:gravity="center_horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/sava1">
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/piechar_expenditure"
         android:layout_width="350dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/white">
     </com.github.mikephil.charting.charts.PieChart>
 
 </LinearLayout>

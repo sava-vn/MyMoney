@@ -12,11 +12,16 @@
         <item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
     <style name="font_agency" parent="AppTheme">
-        <item name="android:fontFamily">@font/font_agency_bold</item>
+        <item name="android:fontFamily">@font/varela</item>
         <item name="android:textSize">22sp</item>
     </style>
     <style name="pieChar" parent="AppTheme">
         <item name="android:textColorPrimary">@color/yellow</item>
         <item name="android:textColorSecondary">@color/yellow</item>
+    </style>
+    <style name="Appthem2" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/gray</item>
+        <item name="colorPrimaryDark">@color/sava1</item>
+        <item name="colorAccent">@color/gray</item>
     </style>
 </resources>

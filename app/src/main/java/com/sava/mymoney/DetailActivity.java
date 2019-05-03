@@ -15,17 +15,17 @@ import android.widget.TextView;
 
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
-import com.sava.mymoney.fragment.DayExpenditureFragment;
-import com.sava.mymoney.fragment.DayHomeFragment;
-import com.sava.mymoney.fragment.DayIncomeFragment;
+import com.sava.mymoney.fragment.ExpenditureFragment;
+import com.sava.mymoney.fragment.HomeFragment;
+import com.sava.mymoney.fragment.IncomeFragment;
 
-public class DayPayActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private BottomNavigationView mBottomNavigation;
 
-    private DayHomeFragment homeFragment;
-    private DayIncomeFragment upFragment;
-    private DayExpenditureFragment downFragment;
+    private HomeFragment homeFragment;
+    private IncomeFragment upFragment;
+    private ExpenditureFragment downFragment;
 
     private Bundle bundle;
     private TextView tvToolbar;
@@ -33,7 +33,7 @@ public class DayPayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_pay);
+        setContentView(R.layout.activity_detail);
         Intent intent = getIntent();
         bundle = intent.getBundleExtra(MyValues.BUNDLEDAY);
         initView();
@@ -53,11 +53,11 @@ public class DayPayActivity extends AppCompatActivity {
         tvToolbar.setText(toolbarTitle);
         tvToolbar.setTextSize(20);
         tvToolbar.setTextColor(getColor(R.color.white));
-        MySupport.setFontBold(this, tvToolbar, MyValues.FONT_AGENCY);
+        MySupport.setFontBold(this, tvToolbar, MyValues.FONT_V);
 
-        homeFragment = new DayHomeFragment();
-        upFragment = new DayIncomeFragment();
-        downFragment = new DayExpenditureFragment();
+        homeFragment = new HomeFragment();
+        upFragment = new IncomeFragment();
+        downFragment = new ExpenditureFragment();
         initFragment(homeFragment,MyValues.HOME);
 
         mToolbar = findViewById(R.id.tb_detail);

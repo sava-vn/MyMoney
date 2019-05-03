@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/sava1">
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/piechar_income"

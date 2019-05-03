@@ -43,4 +43,9 @@ public class Time {
     public String toString() {
         return  mDay + " - " + mMonth +" - " + mYear;
     }
+    public int comperTiem(Time time2){
+        int t1 = getmYear()*500 + getmMonth()*35 + getmDay();
+        int t2 = time2.getmYear()*500 + time2.getmMonth()*35 + time2.getmDay();
+        return  t1-t2;
+    }
 }

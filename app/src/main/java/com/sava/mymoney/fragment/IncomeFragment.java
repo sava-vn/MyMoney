@@ -28,7 +28,7 @@ import com.sava.mymoney.model.Payment;
 import java.util.ArrayList;
 
 
-public class DayIncomeFragment extends Fragment {
+public class IncomeFragment extends Fragment {
     private PieChart pieChart_income;
     private ArrayList<PieEntry> listValue;
     private Bundle bundle;
@@ -36,7 +36,7 @@ public class DayIncomeFragment extends Fragment {
     private int thang;
     private int nam;
     private int money;
-    public DayIncomeFragment() {
+    public IncomeFragment() {
 
     }
     @Override
@@ -76,10 +76,10 @@ public class DayIncomeFragment extends Fragment {
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
         Description description = new Description();
-        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MyValues.FONT_AGENCY);
+        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MyValues.FONT_V);
         description.setTextSize(18);
         description.setTypeface(typeface);
-
+        description.setTextColor(Color.WHITE);
         if (listValue.size() > 0) {
             pieChart_income.setCenterText(MySupport.converToMoney(money));
             description.setText("Thống kê thu nhập");
@@ -90,7 +90,7 @@ public class DayIncomeFragment extends Fragment {
         }
         pieChart_income.setCenterTextTypeface(typeface);
         pieChart_income.setCenterTextSize(18);
-
+        pieChart_income.getLegend().setTextColor(Color.WHITE);
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(13);

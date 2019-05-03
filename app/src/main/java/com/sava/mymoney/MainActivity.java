@@ -1,5 +1,4 @@
 package com.sava.mymoney;
-
 import android.content.Intent;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,14 +14,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.sava.mymoney.ITF.ItemClickListener;
 import com.sava.mymoney.adapter.TimePaymentAdpter;
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
 import com.sava.mymoney.model.Time;
-import com.sava.mymoney.model.DayPayment;
 import com.sava.mymoney.model.Payment;
 import com.sava.mymoney.model.TimePayment;
 import com.sava.mymoney.model.Wallet;
@@ -44,16 +45,67 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvToolbar;
     private DrawerLayout drawerLayout;
     private int TYPE_SHOW;
+    private FloatingActionMenu fMenu;
+    private FloatingActionButton fIncome;
+    private FloatingActionButton fExpenditure;
+    private FloatingActionButton fDiVay;
+    private FloatingActionButton fChoVay;
+    private FloatingActionButton fSodu;
+    private MenuItem item1;
+    private MenuItem item2;
+    private MenuItem item3;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
         initData();
         initView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        if(firebaseUser==null){
+            Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(loginIntent);
+            finish();
+        }
+    }
+
     public void initView() {
+        fMenu = findViewById(R.id.fab_main);
+        fIncome = findViewById(R.id.fab1);
+        fExpenditure = findViewById(R.id.fab2);
+        fDiVay = findViewById(R.id.fab3);
+        fChoVay = findViewById(R.id.fab4);
+        fSodu = findViewById(R.id.fab5);
+        fIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,AddActivity.class);
+                intent.putExtra(MyValues.WHATNEW,MyValues.KHOANTHU);
+                fMenu.close(true);
+                startActivity(intent);
+            }
+        });
+        fExpenditure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,AddActivity.class);
+                intent.putExtra(MyValues.WHATNEW,MyValues.KHOANCHI);
+                fMenu.close(true);
+                startActivity(intent);
+            }
+        });
+        fSodu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
         tvToolbar = new TextView(getApplicationContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
         tvToolbar.setLayoutParams(lp);
@@ -76,9 +128,10 @@ public class MainActivity extends AppCompatActivity {
         mAdpter = new TimePaymentAdpter(this, mListTimePayment, new ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                fMenu.close(true);
                 if (TYPE_SHOW != MyValues.SHOW_YEARPAY) {
                     TimePayment timePayment = mListTimePayment.get(position);
-                    Intent intent = new Intent(MainActivity.this, DayPayActivity.class);
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt(MyValues.DAY, timePayment.getmTime().getmDay());
                     bundle.putInt(MyValues.MONTH, timePayment.getmTime().getmMonth());
@@ -87,6 +140,24 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(MyValues.BUNDLEDAY, bundle);
                     startActivity(intent);
                 }
+            }
+        });
+        fDiVay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,BorrowActivity.class);
+                intent.putExtra(MyValues.WHATNEW,1);
+                startActivity(intent);
+                fMenu.close(true);
+            }
+        });
+        fChoVay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,BorrowActivity.class);
+                intent.putExtra(MyValues.WHATNEW,-1);
+                startActivity(intent);
+                fMenu.close(true);
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -98,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        item1 = menu.getItem(0);
+        item2 = menu.getItem(1);
+        item3 = menu.getItem(2);
+        item1.setIcon(R.drawable.ic_1);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -110,6 +185,9 @@ public class MainActivity extends AppCompatActivity {
                     mListTimePayment.addAll(0, mWallet.getAllNgay());
                     this.tvToolbar.setText("Tất cả các ngày");
                     TYPE_SHOW = MyValues.SHOW_DAYPAY;
+                    item1.setIcon(R.drawable.ic_1);
+                    item2.setIcon(R.drawable.alpha_m_box);
+                    item3.setIcon(R.drawable.alpha_y_box);
                 }
                 break;
             case R.id.action_thang:
@@ -118,6 +196,10 @@ public class MainActivity extends AppCompatActivity {
                     mListTimePayment.addAll(0, mWallet.getAllThang());
                     this.tvToolbar.setText("Tất cả các tháng");
                     TYPE_SHOW = MyValues.SHOW_MONTHPAY;
+                    item1.setIcon(R.drawable.alpha_d_box);
+                    item2.setIcon(R.drawable.ic_2);
+                    item3.setIcon(R.drawable.alpha_y_box);
+
                 }
                 break;
             case R.id.action_nam:
@@ -126,6 +208,10 @@ public class MainActivity extends AppCompatActivity {
                     mListTimePayment.addAll(0, mWallet.getAllNam());
                     this.tvToolbar.setText("Tất cả các năm");
                     TYPE_SHOW = MyValues.SHOW_YEARPAY;
+                    item1.setIcon(R.drawable.alpha_d_box);
+                    item2.setIcon(R.drawable.alpha_m_box);
+                    item3.setIcon(R.drawable.ic_3);
+
                 }
                 break;
         }
@@ -186,5 +272,26 @@ public class MainActivity extends AppCompatActivity {
         payment = new Payment(new Time(5, 4, 2018), 1000000, 0, "Thay đổi số dư");
         mWallet.addPayment(payment);
         mListTimePayment = mWallet.getAllNgay();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (TYPE_SHOW == MyValues.SHOW_DAYPAY) {
+            mListTimePayment.clear();
+            mListTimePayment.addAll(0, mWallet.getAllNgay());
+            this.tvToolbar.setText("Tất cả các ngày");
+        }
+        if (TYPE_SHOW == MyValues.SHOW_MONTHPAY) {
+            mListTimePayment.clear();
+            mListTimePayment.addAll(0, mWallet.getAllThang());
+            this.tvToolbar.setText("Tất cả các tháng");
+        }
+        if (TYPE_SHOW == MyValues.SHOW_YEARPAY) {
+            mListTimePayment.clear();
+            mListTimePayment.addAll(0, mWallet.getAllNam());
+            this.tvToolbar.setText("Tất cả các năm");
+        }
+        mAdpter.notifyDataSetChanged();
     }
 }

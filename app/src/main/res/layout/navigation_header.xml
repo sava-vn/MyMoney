@@ -17,11 +17,12 @@
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_agency"/>
+        android:fontFamily="@font/varela"/>
     <TextView
         android:text="levansang.gthn@gmail.com"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        android:fontFamily="@font/varela"/>
 </LinearLayout>

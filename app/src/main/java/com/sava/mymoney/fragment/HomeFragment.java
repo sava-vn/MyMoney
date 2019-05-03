@@ -1,18 +1,19 @@
 package com.sava.mymoney.fragment;
 
-
+import com.daimajia.swipe.util.Attributes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sava.mymoney.DayPayActivity;
+import com.sava.mymoney.DetailActivity;
 import com.sava.mymoney.ITF.ItemClickListener;
 import com.sava.mymoney.MainActivity;
 import com.sava.mymoney.R;
@@ -23,13 +24,13 @@ import com.sava.mymoney.common.MyValues;
 import com.sava.mymoney.model.DayPayment;
 import com.sava.mymoney.model.MonthPayment;
 import com.sava.mymoney.model.Payment;
-import com.sava.mymoney.model.Time;
 import com.sava.mymoney.model.TimePayment;
+import com.sava.mymoney.swipe.RecyclerItemTouchHelper;
 
 import java.util.ArrayList;
 
 
-public class DayHomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     private TextView tvVi;
     private TextView tvMoney;
     private RecyclerView mRecyclerView;
@@ -41,8 +42,7 @@ public class DayHomeFragment extends Fragment {
     private ArrayList<TimePayment> mListDayPayments;
     private TimePaymentAdpter mTimePaymentAdpter;
     private Bundle bundle;
-
-    public DayHomeFragment() {
+    public HomeFragment() {
     }
 
 
@@ -60,8 +60,8 @@ public class DayHomeFragment extends Fragment {
     }
 
     public void initView(View view) {
-        tvVi = view.findViewById(R.id.tvVi_fragHome);
-        tvMoney = view.findViewById(R.id.tv_money_fragHome);
+        tvVi = view.findViewById(R.id.tvSodu_fragHome);
+        tvMoney = view.findViewById(R.id.tv_thuChi_fragHome);
         mRecyclerView = view.findViewById(R.id.rcv_itempayment);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setHasFixedSize(true);
@@ -73,6 +73,8 @@ public class DayHomeFragment extends Fragment {
         ngay = bundle.getInt(MyValues.DAY);
         thang = bundle.getInt(MyValues.MONTH);
         nam = bundle.getInt(MyValues.YEAR) - 2015;
+        mListDayPayments = null;
+        mListPayments =null;
     }
 
     public void initData1() {
@@ -80,8 +82,10 @@ public class DayHomeFragment extends Fragment {
         mListPayments = dayPayment.getmListPayment();
         tvVi.setText(MySupport.converToMoney(dayPayment.getmVi()));
         tvMoney.setText(MySupport.converToMoney(dayPayment.getmMoney()));
-        mPaymentAdapter = new PaymentAdapter(getContext(), mListPayments);
+        mPaymentAdapter = new PaymentAdapter(getContext(),mListPayments);
         mRecyclerView.setAdapter(mPaymentAdapter);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     }
 
     public void initData2() {
@@ -97,7 +101,7 @@ public class DayHomeFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 TimePayment timePayment = mListDayPayments.get(position);
-                Intent intent = new Intent(getActivity(), DayPayActivity.class);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt(MyValues.DAY, timePayment.getmTime().getmDay());
                 bundle.putInt(MyValues.MONTH, timePayment.getmTime().getmMonth());
@@ -108,6 +112,32 @@ public class DayHomeFragment extends Fragment {
             }
         });
         mRecyclerView.setAdapter(mTimePaymentAdpter);
+
+    }
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if(direction==8){
+            Payment payment = mListPayments.get(position);
+            DayPayment dayPayment = MainActivity.mWallet.removePayment(payment);
+            tvMoney.setText(MySupport.converToMoney(dayPayment.getmMoney()));
+            tvVi.setText(MySupport.converToMoney(dayPayment.getmVi()));
+            mPaymentAdapter.notifyDataSetChanged();
+        }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (bundle.getInt(MyValues.TYPE_SHOW) == MyValues.SHOW_MONTHPAY && mListDayPayments !=null) {
+            MonthPayment monthPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang];
+            mListDayPayments.clear();
+            for (int i = 31; i > 0; i--) {
+                if (monthPayment.getmArrDayPayment()[i] != null)
+                    mListDayPayments.add(monthPayment.getmArrDayPayment()[i]);
+            }
+            tvVi.setText(MySupport.converToMoney(monthPayment.getmVi()));
+            tvMoney.setText(MySupport.converToMoney(monthPayment.getmMoney()));
+            mTimePaymentAdpter.notifyDataSetChanged();
+        }
+    }
 }
