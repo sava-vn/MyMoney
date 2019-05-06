@@ -66,7 +66,6 @@
                 android:backgroundTint="@color/yellow"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginLeft="8dp"
                 android:maxLength="1"
                 android:imeOptions="actionNext"/>
             <EditText
@@ -126,6 +125,7 @@
                 android:layout_marginLeft="8dp"/>
         </LinearLayout>
         <Button
+            android:id="@+id/btn_verifi"
             android:fontFamily="@font/varela"
             android:backgroundTint="@color/red"
             android:background="@drawable/c_tb_main"
@@ -153,6 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
+            android:id="@+id/btn_reverifi"
             android:backgroundTint="@color/yellow"
             android:background="@drawable/c_tb_main"
             android:text="Lấy lại mã xác nhận"

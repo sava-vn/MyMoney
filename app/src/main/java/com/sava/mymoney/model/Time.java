@@ -5,6 +5,9 @@ public class Time {
     private int mMonth;
     private int mYear;
 
+    public Time() {
+    }
+
     public Time(int mDay, int mMonth, int mYear) {
         this.mDay = mDay;
         this.mMonth = mMonth;
@@ -41,11 +44,13 @@ public class Time {
 
     @Override
     public String toString() {
-        return  mDay + " - " + mMonth +" - " + mYear;
+        String day = (mDay < 10) ? ("0" + mDay + " - ") : (mDay + " - ");
+        String month = (mMonth < 10) ? ("0" + mMonth + " - ") : (mMonth + " - ");
+        return day + month + mYear;
     }
-    public int comperTiem(Time time2){
-        int t1 = getmYear()*500 + getmMonth()*35 + getmDay();
-        int t2 = time2.getmYear()*500 + time2.getmMonth()*35 + time2.getmDay();
-        return  t1-t2;
+    public int comperTiem(Time time2) {
+        int t1 = getmYear() * 500 + getmMonth() * 35 + getmDay();
+        int t2 = time2.getmYear() * 500 + time2.getmMonth() * 35 + time2.getmDay();
+        return t1 - t2;
     }
 }

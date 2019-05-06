@@ -41,6 +41,7 @@
         android:orientation="vertical"
         android:gravity="center">
         <EditText
+            android:id="@+id/edt_lg"
             android:drawablePadding="16dp"
             android:drawableLeft="@drawable/ic_phone_classic"
             android:inputType="number"

@@ -1,15 +1,24 @@
 package com.sava.mymoney.model;
 
 public class Payment {
+    private String mIdPayment;
     private Time mTime;
     private int mMoney;
     private int mType;
     private String mNote;
     private Time mTime2;
-    public Payment() {
-        mTime2 = new Time(0,0,0);
+
+    public String getmIdPayment() {
+        return mIdPayment;
     }
 
+    public void setmIdPayment(String mIdPayment) {
+        this.mIdPayment = mIdPayment;
+    }
+
+    public Payment() {
+        this.mTime2 = new Time(0,0,0);
+    }
     public Payment(Time mTime, int mMoney, int mType, String mNote) {
         this.mTime = mTime;
         this.mMoney = mMoney;

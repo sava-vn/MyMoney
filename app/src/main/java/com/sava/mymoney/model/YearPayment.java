@@ -3,19 +3,14 @@ package com.sava.mymoney.model;
 public class YearPayment extends TimePayment {
     private MonthPayment[] mArrMonthPayment;
 
-    public YearPayment(Time time) {
+    public YearPayment() {
         this.mArrMonthPayment = new MonthPayment[13];
         for (int i = 1; i <= 12; i++)
-            this.mArrMonthPayment[i] = null;
-        this.mTime = time;
+            this.mArrMonthPayment[i] = new MonthPayment();
     }
 
     public MonthPayment[] getmArrMonthPayment() {
         return mArrMonthPayment;
-    }
-
-    public void setmArrMonthPayment(MonthPayment[] mArrMonthPayment) {
-        this.mArrMonthPayment = mArrMonthPayment;
     }
 
     @Override

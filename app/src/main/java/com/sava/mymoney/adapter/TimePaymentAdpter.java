@@ -50,7 +50,7 @@ public class TimePaymentAdpter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             ThoiGianViewHolder thoiGianViewHolder = (ThoiGianViewHolder) holder;
             thoiGianViewHolder.tvDay.setText(mList.get(position).toString());
-            thoiGianViewHolder.tvMoney1.setText(MySupport.converToMoney(mList.get(position).getmVi()));
+            thoiGianViewHolder.tvMoney1.setText(MySupport.converToMoney(mList.get(position).getmBalance()));
             thoiGianViewHolder.tvMoney2.setText(MySupport.converToMoney(mList.get(position).getmMoney()));
         }
     }

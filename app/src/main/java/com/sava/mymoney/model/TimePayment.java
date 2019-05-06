@@ -1,11 +1,22 @@
 package com.sava.mymoney.model;
 
 public class TimePayment {
+    //Tiền vào ra trong ngày
     protected int mMoney;
-    protected int mVi;
+
+    //Số dư trong ngày
+    protected int mBalance;
+
+    //Ngày
     protected Time mTime;
+
+    //Kiểu hiển thị
     protected int mViewType;
+
+    //Ghi chú
     protected String mNote;
+
+    //Đếm số lượng thanh toán trong ngày
     protected int mCountPay;
 
     public int getmCountPay() {
@@ -28,12 +39,12 @@ public class TimePayment {
         this.mMoney += mMoney;
     }
 
-    public int getmVi() {
-        return mVi;
+    public int getmBalance() {
+        return mBalance;
     }
 
-    public void setmVi(int mVi) {
-        this.mVi = mVi;
+    public void setmBalance(int mBalance) {
+        this.mBalance = mBalance;
     }
 
     public Time getmTime() {
@@ -41,7 +52,7 @@ public class TimePayment {
     }
 
     public void setmTime(Time mTime) {
-        this.mTime = mTime;
+        this.mTime = new Time(mTime.getmDay(),mTime.getmMonth(),mTime.getmYear());
     }
 
     public int getmViewType() {

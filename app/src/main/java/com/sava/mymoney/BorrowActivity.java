@@ -14,6 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sava.mymoney.common.MyValues;
 import com.sava.mymoney.model.Payment;
 import com.sava.mymoney.model.Time;
@@ -95,6 +99,15 @@ public class BorrowActivity extends AppCompatActivity {
                         else
                             payment.setmType(39);
                         MainActivity.mWallet.addPayment(payment);
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
+
+                        String idPayment = data.push().getKey();
+                        payment.setmIdPayment(idPayment);
+
+                        data.child(idPayment).setValue(payment);
+
                         finish();
                     }catch (Exception e){
                         Toast.makeText(BorrowActivity.this, "Kiểm tra lại số tiền !", Toast.LENGTH_SHORT).show();

@@ -1,5 +1,9 @@
 package com.sava.mymoney;
+
+import android.app.Dialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -9,16 +13,29 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.aldoapps.autoformatedittext.AutoFormatEditText;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sava.mymoney.ITF.ItemClickListener;
 import com.sava.mymoney.adapter.TimePaymentAdpter;
 import com.sava.mymoney.common.MySupport;
@@ -29,6 +46,7 @@ import com.sava.mymoney.model.TimePayment;
 import com.sava.mymoney.model.Wallet;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     public static String[] TYPE_EXPENDITURES;
@@ -37,75 +55,69 @@ public class MainActivity extends AppCompatActivity {
     public static String[] ICON_INCOMES;
     public static String[] TYPE_PARENT_STRING;
     public static int[] TYPE_PARENT_INT;
+
     public static Wallet mWallet;
+
     private RecyclerView mRecyclerView;
     private TimePaymentAdpter mAdpter;
-    private Toolbar mToolbar;
     private ArrayList<TimePayment> mListTimePayment;
+
+    private Toolbar mToolbar;
     private TextView tvToolbar;
     private DrawerLayout drawerLayout;
+    private NavigationView mNavigationView;
+    private EditText edtSodu;
+
+    private ProgressBar prMain;
+
     private int TYPE_SHOW;
+    private int oldMoney;
+    private String current;
+    private int dodai;
+
     private FloatingActionMenu fMenu;
     private FloatingActionButton fIncome;
     private FloatingActionButton fExpenditure;
     private FloatingActionButton fDiVay;
     private FloatingActionButton fChoVay;
     private FloatingActionButton fSodu;
+
     private MenuItem item1;
     private MenuItem item2;
     private MenuItem item3;
+
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private DatabaseReference mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-        initData();
-        initView();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if(firebaseUser==null){
-            Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
-            startActivity(loginIntent);
+        mUser = mAuth.getCurrentUser();
+        if (mUser == null) {
+            Intent loginInten = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginInten);
             finish();
+        } else {
+            mData = FirebaseDatabase.getInstance().getReference().child(mUser.getPhoneNumber());
+            initData();
+            initView();
+            initAction();
         }
     }
 
     public void initView() {
+        prMain = findViewById(R.id.pr_main);
+
         fMenu = findViewById(R.id.fab_main);
         fIncome = findViewById(R.id.fab1);
         fExpenditure = findViewById(R.id.fab2);
         fDiVay = findViewById(R.id.fab3);
         fChoVay = findViewById(R.id.fab4);
         fSodu = findViewById(R.id.fab5);
-        fIncome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,AddActivity.class);
-                intent.putExtra(MyValues.WHATNEW,MyValues.KHOANTHU);
-                fMenu.close(true);
-                startActivity(intent);
-            }
-        });
-        fExpenditure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,AddActivity.class);
-                intent.putExtra(MyValues.WHATNEW,MyValues.KHOANCHI);
-                fMenu.close(true);
-                startActivity(intent);
-            }
-        });
-        fSodu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
         tvToolbar = new TextView(getApplicationContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
         tvToolbar.setLayoutParams(lp);
@@ -116,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.rcv_day);
         drawerLayout = findViewById(R.id.drawer_layout);
+        mNavigationView = findViewById(R.id.nav_view);
 
         mToolbar = findViewById(R.id.tb_main);
         setSupportActionBar(mToolbar);
@@ -125,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.navigation_open, R.string.navigation_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        mToolbar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
         mAdpter = new TimePaymentAdpter(this, mListTimePayment, new ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -142,11 +158,137 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdpter);
+    }
+
+    public void initData() {
+        TYPE_EXPENDITURES = getResources().getStringArray(R.array.type_exspenditure);
+        TYPE_INCOMES = getResources().getStringArray(R.array.type_income);
+        ICON_EXPENDITURES = getResources().getStringArray(R.array.icon_expenditure);
+        ICON_INCOMES = getResources().getStringArray(R.array.icon_income);
+        TYPE_PARENT_STRING = getResources().getStringArray(R.array.TYPE_PARENT_STRING);
+        TYPE_PARENT_INT = getResources().getIntArray(R.array.TYPE_PARENT_INT);
+        TYPE_SHOW = MyValues.SHOW_DAYPAY;
+        mWallet = new Wallet();
+        mListTimePayment = new ArrayList<>();
+    }
+
+    public void initAction() {
+        fSodu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar today = Calendar.getInstance();
+                int ngay = today.get(Calendar.DAY_OF_MONTH);
+                int thang = today.get(Calendar.MONTH);
+                int nam = today.get(Calendar.YEAR);
+                final Time toDay = new Time(ngay, thang + 1, nam);
+
+                final Dialog dialog = new Dialog(MainActivity.this);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setContentView(R.layout.dialog_sodu);
+
+                fMenu.close(true);
+                ImageView imgClose = dialog.findViewById(R.id.img_d_close);
+                final TextView tvSodu = dialog.findViewById(R.id.tv_d_sodu);
+                edtSodu = dialog.findViewById(R.id.edt_d_sodu);
+                edtSodu.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (edtSodu.length() > dodai) {
+                            edtSodu.removeTextChangedListener(this);
+                            if (edtSodu.length() == 4 || edtSodu.length() == 8 || edtSodu.length() == 12) {
+                                current = edtSodu.getText().toString();
+                                String curr = "";
+                                for (int i = 0; i < edtSodu.length(); i++) {
+                                    curr += current.charAt(i);
+                                    if (i == (edtSodu.length() - 2))
+                                        curr += ",";
+                                }
+                                edtSodu.setText(curr);
+                            }
+                            edtSodu.addTextChangedListener(this);
+                        }
+                        dodai = edtSodu.length();
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        edtSodu.setSelection(edtSodu.length());
+                    }
+                });
+                Button btnAdd = dialog.findViewById(R.id.btn_d_add);
+                for (TimePayment item : mListTimePayment) {
+                    if (item.getmTime() != null && item.getmTime().comperTiem(toDay) <= 0) {
+                        oldMoney = item.getmBalance();
+                        break;
+                    }
+                }
+                tvSodu.setText("Số dư hiện tại của bạn là " + MySupport.converToMoney(oldMoney));
+
+                dialog.show();
+
+                imgClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            int newMoney = MySupport.StringToMoney(edtSodu.getText().toString());
+                            Payment payment = new Payment();
+                            String idPayment = mData.push().getKey();
+
+                            payment.setmIdPayment(idPayment);
+                            payment.setmNote("Thay Đổi số dư");
+                            payment.setmType(0);
+                            payment.setmTime(toDay);
+                            payment.setmMoney(newMoney - oldMoney);
+                            mData.child(idPayment).setValue(payment);
+                            mWallet.addPayment(payment);
+                            dialog.dismiss();
+                            show();
+                        } catch (Exception e) {
+                            Toast.makeText(MainActivity.this, "Xem laị số tiền", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+        fIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                intent.putExtra(MyValues.WHATNEW, MyValues.KHOANTHU);
+                fMenu.close(true);
+                startActivity(intent);
+            }
+        });
+        fExpenditure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                intent.putExtra(MyValues.WHATNEW, MyValues.KHOANCHI);
+                fMenu.close(true);
+                startActivity(intent);
+            }
+        });
         fDiVay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,BorrowActivity.class);
-                intent.putExtra(MyValues.WHATNEW,1);
+                Intent intent = new Intent(MainActivity.this, BorrowActivity.class);
+                intent.putExtra(MyValues.WHATNEW, 1);
                 startActivity(intent);
                 fMenu.close(true);
             }
@@ -154,16 +296,79 @@ public class MainActivity extends AppCompatActivity {
         fChoVay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,BorrowActivity.class);
-                intent.putExtra(MyValues.WHATNEW,-1);
+                Intent intent = new Intent(MainActivity.this, BorrowActivity.class);
+                intent.putExtra(MyValues.WHATNEW, -1);
                 startActivity(intent);
                 fMenu.close(true);
             }
         });
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdpter);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_dangxuat:
+                        mAuth.signOut();
+                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(loginIntent);
+                        finish();
+                }
+                return true;
+            }
+        });
+        mData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot data) {
+                for (DataSnapshot dataSnapshot : data.getChildren()) {
+                    Payment payment = dataSnapshot.getValue(Payment.class);
+                    mWallet.addPayment(payment);
+                }
+                mListTimePayment.clear();
+                mListTimePayment.addAll(mWallet.getAllNgay());
+                mAdpter.notifyDataSetChanged();
+                prMain.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mToolbar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        show();
+    }
+
+    private void show() {
+        if (TYPE_SHOW == MyValues.SHOW_DAYPAY) {
+            mListTimePayment.clear();
+            mListTimePayment.addAll(0, mWallet.getAllNgay());
+            this.tvToolbar.setText("Tất cả các ngày");
+        }
+        if (TYPE_SHOW == MyValues.SHOW_MONTHPAY) {
+            mListTimePayment.clear();
+            mListTimePayment.addAll(0, mWallet.getAllThang());
+            this.tvToolbar.setText("Tất cả các tháng");
+        }
+        if (TYPE_SHOW == MyValues.SHOW_YEARPAY) {
+            mListTimePayment.clear();
+            mListTimePayment.addAll(0, mWallet.getAllNam());
+            this.tvToolbar.setText("Tất cả các năm");
+        }
+        mAdpter.notifyDataSetChanged();
     }
 
     @Override
@@ -217,81 +422,5 @@ public class MainActivity extends AppCompatActivity {
         }
         this.mAdpter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    public void initData() {
-        mWallet = new Wallet();
-        TYPE_EXPENDITURES = getResources().getStringArray(R.array.type_exspenditure);
-        TYPE_INCOMES = getResources().getStringArray(R.array.type_income);
-        ICON_EXPENDITURES = getResources().getStringArray(R.array.icon_expenditure);
-        ICON_INCOMES = getResources().getStringArray(R.array.icon_income);
-        TYPE_PARENT_STRING = getResources().getStringArray(R.array.TYPE_PARENT_STRING);
-        TYPE_PARENT_INT = getResources().getIntArray(R.array.TYPE_PARENT_INT);
-        TYPE_SHOW = MyValues.SHOW_DAYPAY;
-        Payment payment = new Payment(new Time(8, 4, 2019), 3000000, 0, "Tiền còn lại");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(8, 4, 2019), -102000, 24, "Kem đánh răng ,bàn chải");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(8, 4, 2019), -72000, 23, "Mua thuốc");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(8, 4, 2019), 3000000, 6, "Hẹn trả trong tuần");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(8, 4, 2019), -70000, 12, "Hẹn trả trong tuần");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(9, 4, 2019), 1500000, 0, "Rút từ ngân hàng");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(9, 4, 2019), -6200000, 38, "Trả học bổng Thoa");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(10, 4, 2019), 22700000, 7, "Lấy nợ của Dì");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(11, 4, 2019), -300000, 22, "Đi khám zona");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(11, 4, 2019), -180000, 9, "Về quê");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(12, 4, 2019), -180000, 9, "Về quê");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(12, 4, 2019), 180000, 0, "Thay đổi số dư");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(5, 4, 2019), 1000000, 0, "Thay đổi số dư");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(5, 3, 2019), 1000000, 0, "Thay đổi số dư");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(4, 3, 2019), 1000000, 0, "Thay đổi số dư");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(5, 4, 2018), 1000000, 0, "Thay đổi số dư");
-        mWallet.addPayment(payment);
-        payment = new Payment(new Time(5, 4, 2018), 1000000, 0, "Thay đổi số dư");
-        mWallet.addPayment(payment);
-        mListTimePayment = mWallet.getAllNgay();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (TYPE_SHOW == MyValues.SHOW_DAYPAY) {
-            mListTimePayment.clear();
-            mListTimePayment.addAll(0, mWallet.getAllNgay());
-            this.tvToolbar.setText("Tất cả các ngày");
-        }
-        if (TYPE_SHOW == MyValues.SHOW_MONTHPAY) {
-            mListTimePayment.clear();
-            mListTimePayment.addAll(0, mWallet.getAllThang());
-            this.tvToolbar.setText("Tất cả các tháng");
-        }
-        if (TYPE_SHOW == MyValues.SHOW_YEARPAY) {
-            mListTimePayment.clear();
-            mListTimePayment.addAll(0, mWallet.getAllNam());
-            this.tvToolbar.setText("Tất cả các năm");
-        }
-        mAdpter.notifyDataSetChanged();
     }
 }

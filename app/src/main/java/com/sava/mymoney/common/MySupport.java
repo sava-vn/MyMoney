@@ -24,4 +24,13 @@ public class MySupport {
         }
         return money;
     }
+    public static int StringToMoney(String sMoney){
+        int money =0;
+        String newMoney ="";
+        for(int i =0;i<sMoney.length();i++)
+            if(sMoney.charAt(i)!=',')
+                newMoney+=sMoney.charAt(i);
+        money = Integer.parseInt(newMoney);
+        return money;
+    }
 }

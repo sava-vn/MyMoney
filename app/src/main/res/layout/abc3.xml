@@ -17,7 +17,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/yellow">
+        android:background="@color/yellow"
+        android:gravity="right">
         <LinearLayout
             android:orientation="vertical"
             android:layout_weight="1"
@@ -30,31 +31,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:textStyle="bold"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/black"
                 android:text="DELETE"
-                android:fontFamily="@font/varela"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"></LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center">
-            <ImageView
-                android:src="@drawable/ic_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textStyle="bold"
-                android:text="EDIT"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/varela"

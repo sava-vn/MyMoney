@@ -1,6 +1,5 @@
 package com.sava.mymoney.fragment;
 
-import com.daimajia.swipe.util.Attributes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sava.mymoney.DetailActivity;
 import com.sava.mymoney.ITF.ItemClickListener;
 import com.sava.mymoney.MainActivity;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 
 
 public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
-    private TextView tvVi;
+    private TextView tvBalance;
     private TextView tvMoney;
     private RecyclerView mRecyclerView;
     private int ngay;
@@ -45,7 +47,9 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     public HomeFragment() {
     }
 
-
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private DatabaseReference mData;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,7 +64,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     }
 
     public void initView(View view) {
-        tvVi = view.findViewById(R.id.tvSodu_fragHome);
+        tvBalance = view.findViewById(R.id.tvSodu_fragHome);
         tvMoney = view.findViewById(R.id.tv_thuChi_fragHome);
         mRecyclerView = view.findViewById(R.id.rcv_itempayment);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -75,16 +79,19 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         nam = bundle.getInt(MyValues.YEAR) - 2015;
         mListDayPayments = null;
         mListPayments =null;
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        mData= FirebaseDatabase.getInstance().getReference().child(mUser.getPhoneNumber());
     }
 
     public void initData1() {
         DayPayment dayPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay];
         mListPayments = dayPayment.getmListPayment();
-        tvVi.setText(MySupport.converToMoney(dayPayment.getmVi()));
+        tvBalance.setText(MySupport.converToMoney(dayPayment.getmBalance()));
         tvMoney.setText(MySupport.converToMoney(dayPayment.getmMoney()));
         mPaymentAdapter = new PaymentAdapter(getContext(),mListPayments);
         mRecyclerView.setAdapter(mPaymentAdapter);
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT, this);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     }
 
@@ -95,7 +102,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             if(monthPayment.getmArrDayPayment()[i]!=null)
                 mListDayPayments.add(monthPayment.getmArrDayPayment()[i]);
         }
-        tvVi.setText(MySupport.converToMoney(monthPayment.getmVi()));
+        tvBalance.setText(MySupport.converToMoney(monthPayment.getmBalance()));
         tvMoney.setText(MySupport.converToMoney(monthPayment.getmMoney()));
         mTimePaymentAdpter = new TimePaymentAdpter(getContext(), mListDayPayments, new ItemClickListener() {
             @Override
@@ -116,13 +123,12 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     }
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if(direction==8){
             Payment payment = mListPayments.get(position);
             DayPayment dayPayment = MainActivity.mWallet.removePayment(payment);
             tvMoney.setText(MySupport.converToMoney(dayPayment.getmMoney()));
-            tvVi.setText(MySupport.converToMoney(dayPayment.getmVi()));
+            tvBalance.setText(MySupport.converToMoney(dayPayment.getmBalance()));
             mPaymentAdapter.notifyDataSetChanged();
-        }
+            mData.child(payment.getmIdPayment()).removeValue();
     }
 
     @Override
@@ -135,7 +141,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
                 if (monthPayment.getmArrDayPayment()[i] != null)
                     mListDayPayments.add(monthPayment.getmArrDayPayment()[i]);
             }
-            tvVi.setText(MySupport.converToMoney(monthPayment.getmVi()));
+            tvBalance.setText(MySupport.converToMoney(monthPayment.getmBalance()));
             tvMoney.setText(MySupport.converToMoney(monthPayment.getmMoney()));
             mTimePaymentAdpter.notifyDataSetChanged();
         }

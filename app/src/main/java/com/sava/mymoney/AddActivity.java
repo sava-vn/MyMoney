@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,6 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
 import com.sava.mymoney.model.Payment;
 import com.sava.mymoney.model.Time;
@@ -34,15 +41,16 @@ public class AddActivity extends AppCompatActivity {
     private EditText edtAddNote;
     private ImageButton btnClose;
     private TextView tvWhatNew;
-    private LinearLayout layoutAdd;
     private Button btnAdd;
     private int mDay;
     private int mMonth;
     private int mYear;
-    private int type;
+    private int mTypePayment;
     private int mWhatnew;
-    private Payment mPayment;
     private int mMoney;
+    private int dodai;
+    private String current;
+    private Payment mPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +61,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     public void initView() {
-        layoutAdd = findViewById(R.id.layout_add);
+        // Ánh xạ
         edtAddMoney = findViewById(R.id.edt_add_money);
         layoutAddType = findViewById(R.id.layout_add_type);
         imgAddType = findViewById(R.id.img_add_type);
@@ -64,9 +72,11 @@ public class AddActivity extends AppCompatActivity {
         btnClose = findViewById(R.id.bt_close);
         btnAdd = findViewById(R.id.btn_add);
         tvWhatNew = findViewById(R.id.tv_what_new);
+
+        // mWhatnew =1 nghĩa là thêm mới khoản thu , còn không là thêm mới khoản chi
         if (mWhatnew == 1)
             tvWhatNew.setText("Thêm mới khoản thu");
-        else{
+        else {
             tvWhatNew.setText("Thêm mới khoản chi");
         }
         initAction();
@@ -97,30 +107,76 @@ public class AddActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(type==-1)
+                if (mTypePayment == -1)
                     Toast.makeText(AddActivity.this, "Xin hãy chọn loại chi tiêu !", Toast.LENGTH_SHORT).show();
-                else{
-                    try{
-                       mMoney = Integer.parseInt(edtAddMoney.getText().toString());
-                       mPayment = new Payment(new Time(mDay,mMonth+1,mYear),mMoney*mWhatnew,type,edtAddNote.getText().toString());
-                       MainActivity.mWallet.addPayment(mPayment);
-                       onBackPressed();
-                       finish();
-                    }catch (Exception e){
+                else {
+                    try {
+                        mMoney = MySupport.StringToMoney(edtAddMoney.getText().toString());
+                        mPayment = new Payment(new Time(mDay, mMonth + 1, mYear), mMoney * mWhatnew, mTypePayment, edtAddNote.getText().toString());
+
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
+
+                        String idPayment = data.push().getKey();
+                        mPayment.setmIdPayment(idPayment);
+
+                        data.child(idPayment).setValue(mPayment);
+                        MainActivity.mWallet.addPayment(mPayment);
+                        onBackPressed();
+                        finish();
+                    } catch (Exception e) {
                         Toast.makeText(AddActivity.this, "Xin kiểm tra lại số tiền !", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
+        edtAddMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (edtAddMoney.length() > dodai) {
+                    dodai = edtAddMoney.length();
+                    edtAddMoney.removeTextChangedListener(this);
+                    if ((dodai % 4) == 0 && dodai > 0) {
+                        current = edtAddMoney.getText().toString();
+                        String curr = "";
+                        for (int i = 0; i < dodai; i++) {
+                            curr += current.charAt(i);
+                            if (i == (dodai - 2))
+                                curr += ",";
+                        }
+                        edtAddMoney.setText(curr);
+                    }
+                    edtAddMoney.addTextChangedListener(this);
+                }
+                dodai = edtAddMoney.length();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edtAddMoney.setSelection(dodai);
+            }
+        });
     }
 
     public void initData() {
+        //Lấy ngày, tháng, năm hiện tại
         Calendar today = Calendar.getInstance();
         mDay = today.get(Calendar.DAY_OF_MONTH);
         mMonth = today.get(Calendar.MONTH);
         mYear = today.get(Calendar.YEAR);
-        type = -1;
+
+        // Khởi tạo cho kiểu chi tiêu là  -1
+        mTypePayment = -1;
+
+        // Kiểu thêm mới là thu hay chi, giá trị này lấy từ mainActivity
         mWhatnew = getIntent().getIntExtra(MyValues.WHATNEW, 0);
+
+        // Khởi tạo datepicker
         dp = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -141,14 +197,14 @@ public class AddActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MyValues.ADD_TO_TYPE && resultCode == MyValues.TYPE_RETURN_ADD) {
-            type = data.getIntExtra(MyValues.TYPE, 0);
+            mTypePayment = data.getIntExtra(MyValues.TYPE, 0);
             if (mWhatnew != MyValues.KHOANTHU) {
-                tvAddType.setText(MainActivity.TYPE_EXPENDITURES[type]);
-                int rID = getResources().getIdentifier(MainActivity.ICON_EXPENDITURES[type], "drawable", getPackageName());
+                tvAddType.setText(MainActivity.TYPE_EXPENDITURES[mTypePayment]);
+                int rID = getResources().getIdentifier(MainActivity.ICON_EXPENDITURES[mTypePayment], "drawable", getPackageName());
                 Glide.with(this).load(rID).into(imgAddType);
             } else {
-                tvAddType.setText(MainActivity.TYPE_INCOMES[type]);
-                int rID = getResources().getIdentifier(MainActivity.ICON_INCOMES[type], "drawable", getPackageName());
+                tvAddType.setText(MainActivity.TYPE_INCOMES[mTypePayment]);
+                int rID = getResources().getIdentifier(MainActivity.ICON_INCOMES[mTypePayment], "drawable", getPackageName());
                 Glide.with(this).load(rID).into(imgAddType);
             }
             tvAddType.setTextColor(Color.BLACK);
