@@ -94,9 +94,9 @@ public class Wallet {
                 for(int ii =12;ii>0;ii--){
                     MonthPayment monthPayment = yearPayment.getmArrMonthPayment()[ii];
                     if(monthPayment.getmCountPay()>0){
-                        DayPayment ngayx = new DayPayment();
-                        ngayx.setmNote("Tháng "+ monthPayment.getmTime().getmMonth() + " năm "+ monthPayment.getmTime().getmYear());
-                        listNgay.add(ngayx);
+//                        DayPayment ngayx = new DayPayment();
+//                        ngayx.setmNote("Tháng "+ monthPayment.getmTime().getmMonth() + " năm "+ monthPayment.getmTime().getmYear());
+//                        listNgay.add(ngayx);
                         for(int iii=31;iii>0;iii--){
                             DayPayment dayPayment = monthPayment.getmArrDayPayment()[iii];
                             if(dayPayment.getmCountPay()>0){
