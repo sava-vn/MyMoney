@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,6 @@ import java.security.AuthProvider;
 import java.util.concurrent.TimeUnit;
 
 public class VerifiActivity extends AppCompatActivity {
-    private int flag = 0;
     private EditText edtv1;
     private EditText edtv2;
     private EditText edtv3;
@@ -37,6 +37,8 @@ public class VerifiActivity extends AppCompatActivity {
     private String phoneNumber;
     private Button btnVerifi;
     private Button btnReverifi;
+    private ImageButton btnBack;
+    private TextView tvVphone;
 
     private FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -59,7 +61,16 @@ public class VerifiActivity extends AppCompatActivity {
         tvTime60 = findViewById(R.id.tv_time60);
         btnVerifi = findViewById(R.id.btn_verifi);
         btnReverifi = findViewById(R.id.btn_reverifi);
-
+        tvVphone = findViewById(R.id.tv_v_phone);
+        btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VerifiActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         edtv1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -143,7 +154,7 @@ public class VerifiActivity extends AppCompatActivity {
         if(phoneNumber.charAt(0)=='0')
             phoneNumber = phoneNumber.substring(1);
         phoneNumber = "+84"+ phoneNumber;
-
+        tvVphone.setText("Một mã xác nhận đã được gửi tới "+ phoneNumber + " . Xin vui lòng kiểm tra và nhập mã xác nhận");
         mAuth = FirebaseAuth.getInstance();
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override

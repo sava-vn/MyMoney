@@ -2,9 +2,9 @@
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimaryDark">@color/yellowDark</item>
+        <item name="colorAccent">@color/sava1</item>
     </style>
     <style name="ToolbarTheme" parent="AppTheme">
         <item name="colorControlNormal">@color/white</item>
@@ -20,8 +20,8 @@
         <item name="android:textColorSecondary">@color/yellow</item>
     </style>
     <style name="Appthem2" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/gray</item>
+        <item name="colorPrimary">@color/yellowDark</item>
         <item name="colorPrimaryDark">@color/sava1</item>
-        <item name="colorAccent">@color/gray</item>
+        <item name="colorAccent">@color/yellowDark</item>
     </style>
 </resources>

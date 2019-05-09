@@ -5,17 +5,17 @@
     android:orientation="vertical"
     android:weightSum="10"
     android:id="@+id/layout_add"
-    android:background="@color/sava1">
+    android:background="@color/sava1"
+    android:gravity="center">
     <LinearLayout
         android:background="@drawable/layout_background"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:paddingLeft="16dp"
         android:layout_marginBottom="10dp"
         android:orientation="vertical"
         android:weightSum="10"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="600dp">
         <LinearLayout
             android:layout_weight="8"
             android:layout_width="match_parent"
@@ -37,9 +37,9 @@
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center">
+                        android:gravity="center|right">
                         <ImageView
-                            android:src="@drawable/ic_dola"
+                            android:src="@drawable/square_inc_cash"
                             android:layout_width="32dp"
                             android:layout_height="32dp" />
                     </LinearLayout>
@@ -49,6 +49,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center">
                         <EditText
+                            android:gravity="center"
+                            android:textColorHint="@color/sivel2"
                             android:fontFamily="@font/varela"
                             android:id="@+id/edt_add_money"
                             android:textSize="20sp"
@@ -71,12 +73,13 @@
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center">
+                        android:gravity="center|right">
+
                         <ImageView
                             android:id="@+id/img_add_type"
-                            android:src="@drawable/ic_group"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_addgroup" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_weight="4"
@@ -84,6 +87,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center">
                         <TextView
+                            android:gravity="center"
                             android:fontFamily="@font/varela"
                             android:id="@+id/tv_add_type"
                             android:textSize="20sp"
@@ -106,11 +110,12 @@
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center">
+                        android:gravity="center|right">
+
                         <ImageView
-                            android:src="@drawable/ic_alam"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_addtime" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_weight="4"
@@ -118,6 +123,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center">
                         <TextView
+                            android:gravity="center"
                             android:fontFamily="@font/varela"
                             android:textSize="20sp"
                             android:id="@+id/tv_add_time"
@@ -139,11 +145,11 @@
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center">
+                        android:gravity="center|right">
                         <ImageView
-                            android:src="@drawable/ic_note"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
+                            android:src="@drawable/ic_addtext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_weight="4"
@@ -151,6 +157,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center">
                         <EditText
+                            android:gravity="center"
+                            android:textColorHint="@color/sivel2"
                             android:fontFamily="@font/varela"
                             android:id="@+id/edt_add_note"
                             android:paddingLeft="16dp"
@@ -185,7 +193,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center|top">
             <TextView
                 android:fontFamily="@font/varela"
                 android:id="@+id/tv_what_new"
@@ -200,7 +208,7 @@
                 android:fontFamily="@font/varela"
                 android:id="@+id/btn_add"
                 android:background="@drawable/button_background"
-                android:layout_width="300dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:text="+ Thêm mới"
                 android:textColor="@color/white"
@@ -209,6 +217,5 @@
                 />
         </LinearLayout>
     </LinearLayout>
-
 
 </LinearLayout>

@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aldoapps.autoformatedittext.AutoFormatEditText;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,9 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int TYPE_SHOW;
     private int oldMoney;
-    private String current;
     private int dodai;
-
     private FloatingActionMenu fMenu;
     private FloatingActionButton fIncome;
     private FloatingActionButton fExpenditure;
@@ -89,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private DatabaseReference mData;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +97,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(loginInten);
             finish();
         } else {
+            try {
+                FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            } catch (Exception e) {
+
+            }
             mData = FirebaseDatabase.getInstance().getReference().child(mUser.getPhoneNumber());
+            mData.keepSynced(true);
             initData();
             initView();
             initAction();
@@ -122,14 +124,13 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
         tvToolbar.setLayoutParams(lp);
         tvToolbar.setText("Tất cả các ngày");
-        tvToolbar.setTextSize(22);
+        tvToolbar.setTextSize(20);
         tvToolbar.setTextColor(getColor(R.color.white));
-        MySupport.setFontBold(this, tvToolbar, MyValues.FONT_AGENCY);
-
+        tvToolbar.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+        MySupport.setFontRegular(this,tvToolbar,MyValues.FONT_V);
         mRecyclerView = findViewById(R.id.rcv_day);
         drawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
-
         mToolbar = findViewById(R.id.tb_main);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -204,16 +205,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (edtSodu.length() > dodai) {
+                            dodai = edtSodu.length();
                             edtSodu.removeTextChangedListener(this);
-                            if (edtSodu.length() == 4 || edtSodu.length() == 8 || edtSodu.length() == 12) {
-                                current = edtSodu.getText().toString();
-                                String curr = "";
-                                for (int i = 0; i < edtSodu.length(); i++) {
-                                    curr += current.charAt(i);
-                                    if (i == (edtSodu.length() - 2))
-                                        curr += ",";
-                                }
-                                edtSodu.setText(curr);
+                            if (dodai > 3) {
+                                int iM = MySupport.StringToMoney(edtSodu.getText().toString());
+                                edtSodu.setText(MySupport.converToMoney(iM));
                             }
                             edtSodu.addTextChangedListener(this);
                         }
@@ -311,6 +307,13 @@ public class MainActivity extends AppCompatActivity {
                         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
                         finish();
+                        break;
+                    case R.id.nav_sono:
+                        Intent sonoIntent = new Intent(MainActivity.this, SonoActivity.class);
+                        startActivity(sonoIntent);
+                        drawerLayout.closeDrawer(GravityCompat.START);
+
+                        break;
                 }
                 return true;
             }
@@ -350,6 +353,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void show() {

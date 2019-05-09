@@ -50,7 +50,7 @@
                 android:id="@+id/rcv_day"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/colorPrimaryDark"></android.support.v7.widget.RecyclerView>
+                android:backgroundTint="@color/sava1"></android.support.v7.widget.RecyclerView>
         </LinearLayout>
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/fab_main"

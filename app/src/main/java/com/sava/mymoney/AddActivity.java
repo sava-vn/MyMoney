@@ -141,15 +141,9 @@ public class AddActivity extends AppCompatActivity {
                 if (edtAddMoney.length() > dodai) {
                     dodai = edtAddMoney.length();
                     edtAddMoney.removeTextChangedListener(this);
-                    if ((dodai % 4) == 0 && dodai > 0) {
-                        current = edtAddMoney.getText().toString();
-                        String curr = "";
-                        for (int i = 0; i < dodai; i++) {
-                            curr += current.charAt(i);
-                            if (i == (dodai - 2))
-                                curr += ",";
-                        }
-                        edtAddMoney.setText(curr);
+                    if (dodai>3) {
+                        int iM = MySupport.StringToMoney(edtAddMoney.getText().toString());
+                        edtAddMoney.setText(MySupport.converToMoney(iM));
                     }
                     edtAddMoney.addTextChangedListener(this);
                 }

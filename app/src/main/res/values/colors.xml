@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorAccent">#ED4649</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#F000</color>
-    <color name="gray">#374046</color>
     <color name="yellow">#FED849</color>
     <color name="yellowDark">#F99123</color>
     <color name="sivel">#ECEFF5</color>
     <color name="red">#BC303B</color>
-    <color name="red2">#F85E6C</color>
     <color name="sivel2">#979595</color>
-    <color name="sava1">#4F053B</color>
-    <color name="sava2">#4F053B</color>
-    <color name="sava3">#4F053B</color>
+    <color name="sava1">#4E0D3A</color>
     <color name="fb">#4267B2</color>
 </resources>

@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         MonthPayment monthPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang];
         mListDayPayments = new ArrayList<>();
         for (int i = 31; i >0 ; i--) {
-            if(monthPayment.getmArrDayPayment()[i]!=null)
+            if(monthPayment.getmArrDayPayment()[i].getmCountPay()>0)
                 mListDayPayments.add(monthPayment.getmArrDayPayment()[i]);
         }
         tvBalance.setText(MySupport.converToMoney(monthPayment.getmBalance()));
@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             MonthPayment monthPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang];
             mListDayPayments.clear();
             for (int i = 31; i > 0; i--) {
-                if (monthPayment.getmArrDayPayment()[i] != null)
+                if (monthPayment.getmArrDayPayment()[i].getmCountPay()>0)
                     mListDayPayments.add(monthPayment.getmArrDayPayment()[i]);
             }
             tvBalance.setText(MySupport.converToMoney(monthPayment.getmBalance()));

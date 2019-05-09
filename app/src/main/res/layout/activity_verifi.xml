@@ -9,14 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="top">
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_marginLeft="16dp"
+            android:background="@color/sava1"
+            android:src="@drawable/ic_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
             android:fontFamily="@font/varela"
-            android:paddingLeft="30dp"
-            android:textStyle="bold|italic"
-            android:text="MYMONEY"
+            android:paddingLeft="8dp"
+            android:text="Quay lại"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:textSize="22sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -38,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
+            android:id="@+id/tv_v_phone"
             android:textSize="18sp"
             android:fontFamily="@font/varela"
             android:layout_marginLeft="30dp"
@@ -133,8 +141,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:textSize="20sp"
             android:textColor="@color/white"/>
     </LinearLayout>
@@ -145,10 +153,9 @@
         android:orientation="vertical"
         android:gravity="center">
         <TextView
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:id="@+id/tv_time60"
             android:fontFamily="@font/varela"
-            android:text="Mã xác thực bị hủy trong 0:38"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -160,11 +167,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="30dp"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textColor="@color/black"
             android:fontFamily="@font/varela"
             android:drawableLeft="@drawable/ic_phone_classic" />
