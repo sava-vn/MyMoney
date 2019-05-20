@@ -1,5 +1,6 @@
 package com.sava.mymoney;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sava.mymoney.ITF.ItemClickListener;
+import com.sava.mymoney.adapter.BorrowAdapter;
 import com.sava.mymoney.adapter.TimePaymentAdpter;
 import com.sava.mymoney.model.TimePayment;
 
@@ -25,7 +27,7 @@ public class SonoActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ArrayList<TimePayment> mList;
 
-    private TimePaymentAdpter mAdpter;
+    private BorrowAdapter mAdpter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,10 @@ public class SonoActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
+        btnDiVay.setBackground(getDrawable(R.drawable.c_tv_2));
+        btnChoVay.setBackgroundColor(Color.TRANSPARENT);
+        btnDiVay.setTextColor(Color.BLACK);
+        btnChoVay.setTextColor(Color.WHITE);
     }
 
     private  void initAction(){
@@ -53,15 +59,28 @@ public class SonoActivity extends AppCompatActivity {
                 finish();
             }
         });
+        btnDiVay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnDiVay.setBackground(getDrawable(R.drawable.c_tv_2));
+                btnChoVay.setBackgroundColor(Color.TRANSPARENT);
+                btnDiVay.setTextColor(Color.BLACK);
+                btnChoVay.setTextColor(Color.WHITE);
+            }
+        });
+        btnChoVay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnChoVay.setBackground(getDrawable(R.drawable.c_tv_2));
+                btnDiVay.setBackgroundColor(Color.TRANSPARENT);
+                btnChoVay.setTextColor(Color.BLACK);
+                btnDiVay.setTextColor(Color.WHITE);
+            }
+        });
     }
     private void initData(){
         mList = MainActivity.mWallet.getAllNgay();
-        mAdpter = new TimePaymentAdpter(this, mList, new ItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(SonoActivity.this, "abc" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+        mAdpter = new BorrowAdapter(this, MainActivity.mWallet.getmList1());
         mRecyclerView.setAdapter(mAdpter);
     }
 

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    app:cardCornerRadius="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gra_1"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:src="@drawable/ic_taikhoan"
+                android:layout_width="28dp"
+                android:layout_height="28dp"/>
+            <TextView
+                android:layout_marginLeft="34dp"
+                android:textSize="18sp"
+                android:id="@+id/tb_br_title"
+                android:background="@drawable/c_tv_1"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:fontFamily="@font/varela"
+                android:gravity="center"
+                android:text="Vay mua điện thoại"
+                android:textColor="@color/black" />
+            <TextView
+                android:textSize="18sp"
+                android:id="@+id/btn_br"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:background="@drawable/c_tv_3"
+                android:fontFamily="@font/varela"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="TRẢ NỢ"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/img_time_1"
+                    android:src="@drawable/ic_monday"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+                <TextView
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp"
+                    android:id="@+id/tv_br_ngayvay"
+                    android:fontFamily="@font/unicaoneregular"
+                    android:textColor="@color/black"
+                    android:text="25/01/2019"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:src="@drawable/square_inc_cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_br_money"
+                    android:textSize="24sp"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/agency"
+                    android:textColor="@color/black"
+                    android:text="22,700,000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:src="@drawable/alpha_y_box"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+                <TextView
+                    android:layout_marginTop="4dp"
+                    android:textSize="18sp"
+                    android:id="@+id/tv_br_ngaytra"
+                    android:fontFamily="@font/unicaoneregular"
+                    android:textColor="@color/black"
+                    android:text="18/02/2019"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

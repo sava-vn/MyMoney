@@ -20,6 +20,6 @@ public class MonthPayment extends TimePayment {
 
     @Override
     public String toString() {
-        return this.mTime.getmMonth() + " - " + this.mTime.getmYear();
+        return this.mTime.showMonth();
     }
 }

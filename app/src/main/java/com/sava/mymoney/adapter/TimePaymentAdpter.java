@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,14 +15,19 @@ import com.sava.mymoney.ITF.ItemClickListener;
 import com.sava.mymoney.R;
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
+import com.sava.mymoney.model.DayPayment;
+import com.sava.mymoney.model.Time;
 import com.sava.mymoney.model.TimePayment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TimePaymentAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<TimePayment> mList;
     private ItemClickListener mItemClickListener;
+    private Calendar calendar;
+    private int[] dayOfweek ={R.drawable.ic_sun,R.drawable.ic_mon,R.drawable.ic_tue,R.drawable.ic_wed,R.drawable.ic_thur,R.drawable.ic_fri,R.drawable.ic_sat};
 
     public TimePaymentAdpter(Context mContext, ArrayList<TimePayment> mList, ItemClickListener mItemClickListener) {
         this.mContext = mContext;
@@ -48,10 +55,23 @@ public class TimePaymentAdpter extends RecyclerView.Adapter<RecyclerView.ViewHol
             HeadeViewHolder headeViewHolder = (HeadeViewHolder) holder;
             headeViewHolder.tvHeader.setText(mList.get(position).getmNote());
         } else {
-            ThoiGianViewHolder thoiGianViewHolder = (ThoiGianViewHolder) holder;
-            thoiGianViewHolder.tvDay.setText(mList.get(position).toString());
-            thoiGianViewHolder.tvMoney1.setText(MySupport.converToMoney(mList.get(position).getmBalance()));
-            thoiGianViewHolder.tvMoney2.setText(MySupport.converToMoney(mList.get(position).getmMoney()));
+            TimePayment timePayment = mList.get(position);
+            ThoiGianViewHolder itemV = (ThoiGianViewHolder) holder;
+            Time time = timePayment.getmTime();
+            calendar = Calendar.getInstance();
+            calendar.set(time.getmYear(),time.getmMonth()-1,time.getmDay());
+            int day = calendar.get(Calendar.DAY_OF_WEEK)-1;
+            if(timePayment instanceof DayPayment)
+                itemV.imgDate.setImageResource(dayOfweek[day]);
+            else
+                itemV.imgDate.setImageResource(R.drawable.ics_time);
+            itemV.imgDate.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.fade_transition));
+            itemV.tvDate.setText(timePayment.toString());
+            itemV.tvDate.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.fade_transition));
+            itemV.tvCoutPay.setText(timePayment.getmCountPay()+"");
+            itemV.tvMoneyIn.setText(MySupport.converToMoney(timePayment.getmMoneyIn()));
+            itemV.tvMoneyOut.setText(MySupport.converToMoney(timePayment.getmMoneyIn()-timePayment.getmMoney()));
+            itemV.tvBlance.setText(MySupport.converToMoney(timePayment.getmBalance()));
         }
     }
 
@@ -71,26 +91,24 @@ public class TimePaymentAdpter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public HeadeViewHolder(View itemView) {
             super(itemView);
             tvHeader = itemView.findViewById(R.id.tv_header);
-            MySupport.setFontBold(mContext,tvHeader, MyValues.FONT_AGENCY);
         }
     }
 
     public class ThoiGianViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView tvDay;
-        private TextView tvMoney1;
-        private TextView tvMoney2;
+        private ImageView imgDate;
+        private TextView tvCoutPay, tvMoneyIn, tvBlance, tvMoneyOut,tvDate;
         private LinearLayout clickLayout;
 
         public ThoiGianViewHolder(View itemView) {
             super(itemView);
-            tvDay = itemView.findViewById(R.id.tv_day);
-            tvMoney1 = itemView.findViewById(R.id.tv_money1);
-            tvMoney2 = itemView.findViewById(R.id.tv_money2);
             clickLayout = itemView.findViewById(R.id.click_layout);
-            MySupport.setFontBold(mContext,tvMoney1,MyValues.FONT_AGENCY);
-            MySupport.setFontRegular(mContext,tvMoney2,MyValues.FONT_AGENCY);
-            MySupport.setFontRegular(mContext,tvDay,MyValues.FONT_AGENCY);
             clickLayout.setOnClickListener(this);
+            imgDate = itemView.findViewById(R.id.item_time_img_date);
+            tvDate = itemView.findViewById(R.id.item_time_tv_date);
+            tvCoutPay = itemView.findViewById(R.id.item_time_tv_countPay);
+            tvMoneyIn = itemView.findViewById(R.id.item_time_tv_moneyIn);
+            tvMoneyOut = itemView.findViewById(R.id.item_time_tv_moneyOut);
+            tvBlance = itemView.findViewById(R.id.item_time_tv_blance);
         }
 
         @Override

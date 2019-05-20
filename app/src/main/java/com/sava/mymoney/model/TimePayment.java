@@ -19,6 +19,9 @@ public class TimePayment {
     //Đếm số lượng thanh toán trong ngày
     protected int mCountPay;
 
+
+    protected int mMoneyIn;
+
     public int getmCountPay() {
         return mCountPay;
     }
@@ -69,5 +72,13 @@ public class TimePayment {
 
     public void setmNote(String mNote) {
         this.mNote = mNote;
+    }
+
+    public int getmMoneyIn() {
+        return mMoneyIn;
+    }
+
+    public void setmMoneyIn(int mMoneyIn) {
+        this.mMoneyIn += mMoneyIn;
     }
 }

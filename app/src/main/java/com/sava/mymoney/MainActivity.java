@@ -2,6 +2,7 @@ package com.sava.mymoney;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -123,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
         tvToolbar = new TextView(getApplicationContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
         tvToolbar.setLayoutParams(lp);
-        tvToolbar.setText("Tất cả các ngày");
+        tvToolbar.setText("All Day");
         tvToolbar.setTextSize(20);
         tvToolbar.setTextColor(getColor(R.color.white));
         tvToolbar.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-        MySupport.setFontRegular(this,tvToolbar,MyValues.FONT_V);
+        tvToolbar.setTypeface(Typeface.DEFAULT_BOLD);
         mRecyclerView = findViewById(R.id.rcv_day);
         drawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
@@ -204,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if (edtSodu.length() > dodai) {
                             dodai = edtSodu.length();
                             edtSodu.removeTextChangedListener(this);
                             if (dodai > 3) {
@@ -212,8 +212,6 @@ public class MainActivity extends AppCompatActivity {
                                 edtSodu.setText(MySupport.converToMoney(iM));
                             }
                             edtSodu.addTextChangedListener(this);
-                        }
-                        dodai = edtSodu.length();
                     }
 
                     @Override
@@ -348,48 +346,27 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         show();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
     private void show() {
         if (TYPE_SHOW == MyValues.SHOW_DAYPAY) {
             mListTimePayment.clear();
             mListTimePayment.addAll(0, mWallet.getAllNgay());
-            this.tvToolbar.setText("Tất cả các ngày");
+            this.tvToolbar.setText("All day");
         }
         if (TYPE_SHOW == MyValues.SHOW_MONTHPAY) {
             mListTimePayment.clear();
             mListTimePayment.addAll(0, mWallet.getAllThang());
-            this.tvToolbar.setText("Tất cả các tháng");
+            this.tvToolbar.setText("All month");
         }
         if (TYPE_SHOW == MyValues.SHOW_YEARPAY) {
             mListTimePayment.clear();
             mListTimePayment.addAll(0, mWallet.getAllNam());
-            this.tvToolbar.setText("Tất cả các năm");
+            this.tvToolbar.setText("All year");
         }
         mAdpter.notifyDataSetChanged();
     }
@@ -411,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TYPE_SHOW != MyValues.SHOW_DAYPAY) {
                     mListTimePayment.clear();
                     mListTimePayment.addAll(0, mWallet.getAllNgay());
-                    this.tvToolbar.setText("Tất cả các ngày");
+                    this.tvToolbar.setText("All day");
                     TYPE_SHOW = MyValues.SHOW_DAYPAY;
                     item1.setIcon(R.drawable.ic_1);
                     item2.setIcon(R.drawable.alpha_m_box);
@@ -422,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TYPE_SHOW != MyValues.SHOW_MONTHPAY) {
                     mListTimePayment.clear();
                     mListTimePayment.addAll(0, mWallet.getAllThang());
-                    this.tvToolbar.setText("Tất cả các tháng");
+                    this.tvToolbar.setText("All month");
                     TYPE_SHOW = MyValues.SHOW_MONTHPAY;
                     item1.setIcon(R.drawable.alpha_d_box);
                     item2.setIcon(R.drawable.ic_2);
@@ -434,7 +411,7 @@ public class MainActivity extends AppCompatActivity {
                 if (TYPE_SHOW != MyValues.SHOW_YEARPAY) {
                     mListTimePayment.clear();
                     mListTimePayment.addAll(0, mWallet.getAllNam());
-                    this.tvToolbar.setText("Tất cả các năm");
+                    this.tvToolbar.setText("All year");
                     TYPE_SHOW = MyValues.SHOW_YEARPAY;
                     item1.setIcon(R.drawable.alpha_d_box);
                     item2.setIcon(R.drawable.alpha_m_box);

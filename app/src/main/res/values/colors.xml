@@ -3,10 +3,10 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#F000</color>
     <color name="yellow">#FED849</color>
-    <color name="yellowDark">#F99123</color>
+    <color name="yellowDark">#FA9123</color>
     <color name="sivel">#ECEFF5</color>
     <color name="red">#BC303B</color>
     <color name="sivel2">#979595</color>
-    <color name="sava1">#4E0D3A</color>
+    <color name="sava1">#4E0E3A</color>
     <color name="fb">#4267B2</color>
 </resources>

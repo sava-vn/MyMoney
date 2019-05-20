@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
 import com.sava.mymoney.model.Payment;
 import com.sava.mymoney.model.Time;
@@ -43,6 +46,7 @@ public class BorrowActivity extends AppCompatActivity {
     private Payment payment;
     private boolean day1;
     private boolean day2;
+    private int dodai;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +95,7 @@ public class BorrowActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(day1 && day2 && (payment.getmTime().comperTiem(payment.getmTime2())<=0)){
                     try{
-                        int money = Integer.parseInt(edtBrMoney.getText().toString());
+                        int money = MySupport.StringToMoney(edtBrMoney.getText().toString());
                         payment.setmMoney(money*type);
                         payment.setmNote(edtBrNote.getText().toString());
                         if(type==1)
@@ -115,6 +119,27 @@ public class BorrowActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(BorrowActivity.this, "Kiểm tra lại ngày", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        edtBrMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dodai = edtBrMoney.length();
+                edtBrMoney.removeTextChangedListener(this);
+                if (dodai > 3) {
+                    int iM = MySupport.StringToMoney(edtBrMoney.getText().toString());
+                    edtBrMoney.setText(MySupport.converToMoney(iM));
+                }
+                edtBrMoney.addTextChangedListener(this);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                edtBrMoney.setSelection(edtBrMoney.length());
             }
         });
     }

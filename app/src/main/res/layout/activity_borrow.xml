@@ -58,7 +58,7 @@
                             android:layout_marginRight="32dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/c_tv_3"
+                            android:background="@drawable/c_tv_1"
                             android:hint="Nhập vào số tiền"
                             android:inputType="numberDecimal|textAutoComplete"/>
                     </LinearLayout>
@@ -94,7 +94,7 @@
                             android:layout_marginRight="32dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/c_tv_3"
+                            android:background="@drawable/c_tv_1"
                             android:text="Ngày vay"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -127,7 +127,7 @@
                             android:layout_marginRight="32dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/c_tv_3"
+                            android:background="@drawable/c_tv_1"
                             android:paddingLeft="16dp"
                             android:textColor="@color/sivel2"
                             android:text="Ngày trả"/>
@@ -162,7 +162,7 @@
                             android:layout_marginRight="32dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/c_tv_3"
+                            android:background="@drawable/c_tv_1"
                             android:hint="Lưu lại ghi chú"
                             android:inputType="textAutoComplete"/>
                     </LinearLayout>

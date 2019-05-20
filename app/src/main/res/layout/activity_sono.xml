@@ -53,7 +53,8 @@
             android:id="@+id/btn_chovay"
             android:text="Cho vay"
             android:textColor="@color/white"
-            android:background="@android:color/transparent"
+            android:background="@drawable/c_tv_2"
+            android:backgroundTint="@color/yellowDark"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent" />

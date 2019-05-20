@@ -75,7 +75,7 @@ public class AddActivity extends AppCompatActivity {
 
         // mWhatnew =1 nghĩa là thêm mới khoản thu , còn không là thêm mới khoản chi
         if (mWhatnew == 1)
-            tvWhatNew.setText("Thêm mới khoản thu");
+            tvWhatNew.setText("Sửa đổi khoản thu");
         else {
             tvWhatNew.setText("Thêm mới khoản chi");
         }
@@ -138,21 +138,18 @@ public class AddActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (edtAddMoney.length() > dodai) {
-                    dodai = edtAddMoney.length();
-                    edtAddMoney.removeTextChangedListener(this);
-                    if (dodai>3) {
-                        int iM = MySupport.StringToMoney(edtAddMoney.getText().toString());
-                        edtAddMoney.setText(MySupport.converToMoney(iM));
-                    }
-                    edtAddMoney.addTextChangedListener(this);
-                }
                 dodai = edtAddMoney.length();
+                edtAddMoney.removeTextChangedListener(this);
+                if (dodai > 3) {
+                    int iM = MySupport.StringToMoney(edtAddMoney.getText().toString());
+                    edtAddMoney.setText(MySupport.converToMoney(iM));
+                }
+                edtAddMoney.addTextChangedListener(this);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                edtAddMoney.setSelection(dodai);
+                edtAddMoney.setSelection(edtAddMoney.length());
             }
         });
     }

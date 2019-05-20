@@ -14,6 +14,6 @@ public class DayPayment extends TimePayment {
 
     @Override
     public String toString() {
-        return this.mTime.toString();
+        return this.mTime.showDay();
     }
 }

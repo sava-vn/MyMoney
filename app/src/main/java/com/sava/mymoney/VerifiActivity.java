@@ -165,7 +165,6 @@ public class VerifiActivity extends AppCompatActivity {
             public void onVerificationFailed(FirebaseException e) {
                 tvTime60.setText("Không thể gửi mã xác nhận");
                 btnReverifi.setEnabled(true);
-                Log.d("SANG", "onVerificationCompleted:" + e.getMessage());
             }
 
             @Override

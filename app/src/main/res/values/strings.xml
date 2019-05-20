@@ -47,7 +47,7 @@
         <item>Phí</item>
         <item>Trả nợ</item>
         <item>Cho vay</item>
-        <item>Khoản thu khác</item>
+        <item>Khoản chi khác</item>
     </string-array>
     <string-array name="type_income">
         <item>Thay đổi số dư</item>

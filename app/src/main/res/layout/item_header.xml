@@ -5,12 +5,9 @@
     android:orientation="vertical">
     <TextView
         android:gravity="center"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:fontFamily="@font/varela"
-        android:background="@drawable/c_tv_2"
+        android:fontFamily="@font/unicaoneregular"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="8dp"
         android:id="@+id/tv_header"
         android:text="Tháng 11 - năm 2109"
         android:textStyle="bold"
