@@ -21,8 +21,8 @@ import com.sava.mymoney.MainActivity;
 import com.sava.mymoney.R;
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
-import com.sava.mymoney.model.DayPayment;
-import com.sava.mymoney.model.MonthPayment;
+import com.sava.mymoney.model.SDay;
+import com.sava.mymoney.model.SMonth;
 import com.sava.mymoney.model.Payment;
 
 import java.util.ArrayList;
@@ -101,8 +101,8 @@ public class IncomeFragment extends Fragment {
     }
     public void initValue1(){
         int[] Money = new int[20];
-        DayPayment dayPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay];
-        ArrayList<Payment> listPayment = dayPayment.getmListPayment();
+        SDay SDay = MainActivity.mWallet.getsYears()[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay];
+        ArrayList<Payment> listPayment = SDay.getmListPayment();
         for (Payment payment : listPayment) {
             if (payment.getmMoney() > 0) {
                 int type = payment.getmType();
@@ -118,11 +118,11 @@ public class IncomeFragment extends Fragment {
     }
     public void initValue2(){
         int[] Money = new int[20];
-        MonthPayment monthPayment = MainActivity.mWallet.getmArrYearPayment()[nam].getmArrMonthPayment()[thang];
+        SMonth monthPayment = MainActivity.mWallet.getsYears()[nam].getmArrMonthPayment()[thang];
         for(int i =31;i>0;i--){
-            DayPayment dayPayment = monthPayment.getmArrDayPayment()[i];
-            if(dayPayment!=null){
-                for (Payment payment : dayPayment.getmListPayment()) {
+            SDay SDay = monthPayment.getmArrSDay()[i];
+            if(SDay !=null){
+                for (Payment payment : SDay.getmListPayment()) {
                     if (payment.getmMoney() > 0) {
                         int type = payment.getmType();
                         Money[type]+=payment.getmMoney();

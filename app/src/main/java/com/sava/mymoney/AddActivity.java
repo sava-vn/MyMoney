@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
 import com.sava.mymoney.model.Payment;
-import com.sava.mymoney.model.Time;
+import com.sava.mymoney.model.SDate;
 
 import java.util.Calendar;
 
@@ -112,14 +112,11 @@ public class AddActivity extends AppCompatActivity {
                 else {
                     try {
                         mMoney = MySupport.StringToMoney(edtAddMoney.getText().toString());
-                        mPayment = new Payment(new Time(mDay, mMonth + 1, mYear), mMoney * mWhatnew, mTypePayment, edtAddNote.getText().toString());
-
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
 
                         String idPayment = data.push().getKey();
-                        mPayment.setmIdPayment(idPayment);
-
+                        mPayment = new Payment(idPayment,new SDate(mDay, mMonth + 1, mYear), mMoney * mWhatnew, mTypePayment, edtAddNote.getText().toString());
                         data.child(idPayment).setValue(mPayment);
                         MainActivity.mWallet.addPayment(mPayment);
                         onBackPressed();

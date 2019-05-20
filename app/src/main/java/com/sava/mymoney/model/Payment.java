@@ -2,11 +2,23 @@ package com.sava.mymoney.model;
 
 public class Payment {
     private String mIdPayment;
-    private Time mTime;
+    private SDate mSDate;
     private int mMoney;
     private int mType;
     private String mNote;
-    private Time mTime2;
+
+    public Payment() {
+        this.mSDate = new SDate();
+        this.mNote = "";
+    }
+
+    public Payment(String mIdPayment, SDate mSDate, int mMoney, int mType, String mNote) {
+        this.mIdPayment = mIdPayment;
+        this.mSDate = new SDate(mSDate.getmDay(),mSDate.getmMonth(),mSDate.getmYear(),mSDate.getmDoW());
+        this.mMoney = mMoney;
+        this.mType = mType;
+        this.mNote = mNote;
+    }
 
     public String getmIdPayment() {
         return mIdPayment;
@@ -16,31 +28,12 @@ public class Payment {
         this.mIdPayment = mIdPayment;
     }
 
-    public Payment() {
-        this.mTime2 = new Time(0,0,0);
-    }
-    public Payment(Time mTime, int mMoney, int mType, String mNote) {
-        this.mTime = mTime;
-        this.mMoney = mMoney;
-        this.mType = mType;
-        this.mNote = mNote;
-        this.mTime2 = new Time(0,0,0);
+    public SDate getmSDate() {
+        return mSDate;
     }
 
-    public Time getmTime2() {
-        return mTime2;
-    }
-
-    public void setmTime2(Time mTime2) {
-        this.mTime2 = mTime2;
-    }
-
-    public Time getmTime() {
-        return mTime;
-    }
-
-    public void setmTime(Time mTime) {
-        this.mTime = mTime;
+    public void setmSDate(SDate mSDate) {
+        this.mSDate = new SDate(mSDate.getmDay(),mSDate.getmMonth(),mSDate.getmYear(),mSDate.getmDoW());
     }
 
     public int getmMoney() {

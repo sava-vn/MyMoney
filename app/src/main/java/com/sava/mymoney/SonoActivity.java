@@ -9,12 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.sava.mymoney.ITF.ItemClickListener;
 import com.sava.mymoney.adapter.BorrowAdapter;
-import com.sava.mymoney.adapter.TimePaymentAdpter;
-import com.sava.mymoney.model.TimePayment;
+import com.sava.mymoney.model.SDMY;
 
 import java.util.ArrayList;
 
@@ -25,7 +22,7 @@ public class SonoActivity extends AppCompatActivity {
     private Button btnChoVay;
     private TextView tvMoney;
     private RecyclerView mRecyclerView;
-    private ArrayList<TimePayment> mList;
+    private ArrayList<SDMY> mList;
 
     private BorrowAdapter mAdpter;
     @Override
@@ -79,7 +76,7 @@ public class SonoActivity extends AppCompatActivity {
         });
     }
     private void initData(){
-        mList = MainActivity.mWallet.getAllNgay();
+        mList = MainActivity.mWallet.getAllDay();
         mAdpter = new BorrowAdapter(this, MainActivity.mWallet.getmList1());
         mRecyclerView.setAdapter(mAdpter);
     }

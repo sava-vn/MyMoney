@@ -29,9 +29,6 @@ public class TypePayActivity extends AppCompatActivity {
         initView();
     }
     public void initView(){
-        mToolbar = findViewById(R.id.tb_type);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_HOME);
         mWhatNew = getIntent().getIntExtra(MyValues.WHATNEW,0);
         if(mWhatNew==1)
             mListType = new int[9];

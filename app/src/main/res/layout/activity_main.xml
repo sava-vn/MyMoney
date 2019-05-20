@@ -85,7 +85,7 @@
                 android:id="@+id/fab3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_vay"
+                android:src="@drawable/ics_transaction"
                 app:fab_colorNormal="@color/red"
                 app:fab_label="Đi vay"
                 app:fab_size="mini" />
@@ -94,7 +94,7 @@
                 android:id="@+id/fab4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_chovay"
+                android:src="@drawable/ics_transaction"
                 app:fab_colorNormal="@color/red"
                 app:fab_label="Cho vay"
                 app:fab_size="mini" />

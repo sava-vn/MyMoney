@@ -21,9 +21,6 @@
         <activity
             android:name=".FingerActivity"
             android:theme="@style/Appthem2" />
-        <activity
-            android:name=".BorrowActivity"
-            android:theme="@style/Appthem2" />
         <activity android:name=".TypePayActivity" />
         <activity
             android:name=".AddActivity"

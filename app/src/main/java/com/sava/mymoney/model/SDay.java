@@ -1,10 +1,10 @@
 package com.sava.mymoney.model;
 import java.util.ArrayList;
 
-public class DayPayment extends TimePayment {
+public class SDay extends SDMY {
     private ArrayList<Payment> mListPayment;
 
-    public DayPayment() {
+    public SDay() {
         this.mListPayment = new ArrayList<>();
     }
 
@@ -14,6 +14,6 @@ public class DayPayment extends TimePayment {
 
     @Override
     public String toString() {
-        return this.mTime.showDay();
+        return this.mSDate.showDay();
     }
 }

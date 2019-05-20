@@ -38,13 +38,13 @@ public class BorrowAdapter extends RecyclerView.Adapter<BorrowAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Payment payment = mList.get(position);
         calendar = Calendar.getInstance();
-        calendar.set(payment.getmTime().getmYear(),payment.getmTime().getmMonth()+1,payment.getmTime().getmDay());
+        calendar.set(payment.getmSDate().getmYear(),payment.getmSDate().getmMonth()+1,payment.getmSDate().getmDay());
         int day = calendar.get(Calendar.DAY_OF_WEEK) -1;
         holder.imgTime1.setImageResource(dayOfweek[day]);
         holder.title.setText(payment.getmNote());
         holder.btn.setText("- Trả nợ");
-        holder.ngayVay.setText(payment.getmTime().showDay());
-        holder.ngayTra.setText(payment.getmTime2().showDay());
+        holder.ngayVay.setText(payment.getmSDate().showDay());
+        holder.ngayTra.setText("abcd");
         holder.soTien.setText(MySupport.converToMoney(-payment.getmMoney()));
     }
 

@@ -5,15 +5,15 @@ import com.sava.mymoney.common.MyValues;
 import java.util.ArrayList;
 
 public class Wallet {
-    private int mCountPay;
     private int mMoney;
-    private YearPayment[] mArrYearPayment;
+    private SYear[] sYears;
     private ArrayList<Payment> mList1;
     private ArrayList<Payment> mList2;
+
     public Wallet() {
-        this.mArrYearPayment = new YearPayment[31];
-        for(int i =1;i<=30;i++)
-            this.mArrYearPayment[i] = new YearPayment();
+        this.sYears = new SYear[31];
+        for (int i = 1; i <= 30; i++)
+            this.sYears[i] = new SYear();
         mList1 = new ArrayList<>();
         mList2 = new ArrayList<>();
     }
@@ -21,128 +21,145 @@ public class Wallet {
     public int getmMoney() {
         return mMoney;
     }
-    public YearPayment[] getmArrYearPayment() {
-        return mArrYearPayment;
+
+    public SYear[] getsYears() {
+        return sYears;
     }
-    public void addPayment(Payment payment){
-        int ngay = payment.getmTime().getmDay();
-        int thang = payment.getmTime().getmMonth();
-        int nam = payment.getmTime().getmYear()-2015;
+
+    public void addPayment(Payment payment) {
+        int ngay = payment.getmSDate().getmDay();
+        int thang = payment.getmSDate().getmMonth();
+        int nam = payment.getmSDate().getmYear() - 2015;
         int money = payment.getmMoney();
-        Time time = payment.getmTime();
+        SDate SDate = payment.getmSDate();
 
-        this.mMoney +=money;
-        this.mCountPay++;
-        if(money>0){
-            mArrYearPayment[nam].setmMoneyIn(money);
-            mArrYearPayment[nam].getmArrMonthPayment()[thang].setmMoneyIn(money);
-            mArrYearPayment[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay].setmMoneyIn(money);
+        this.mMoney += money;
+        if (money > 0) {
+            sYears[nam].setmMoneyIn(money);
+            sYears[nam].getmArrMonthPayment()[thang].setmMoneyIn(money);
+            sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].setmMoneyIn(money);
+        } else {
+            sYears[nam].setmMoneyOut(money);
+            sYears[nam].getmArrMonthPayment()[thang].setmMoneyOut(money);
+            sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].setmMoneyOut(money);
         }
-        mArrYearPayment[nam].setmMoney(money);
-        mArrYearPayment[nam].setmCountPay(1);
-        mArrYearPayment[nam].setmTime(time);
+        sYears[nam].setmCountPay(1);
+        sYears[nam].setmSDate(SDate);
 
-        mArrYearPayment[nam].getmArrMonthPayment()[thang].setmMoney(money);
-        mArrYearPayment[nam].getmArrMonthPayment()[thang].setmCountPay(1);
-        mArrYearPayment[nam].getmArrMonthPayment()[thang].setmTime(time);
+        sYears[nam].getmArrMonthPayment()[thang].setmCountPay(1);
+        sYears[nam].getmArrMonthPayment()[thang].setmSDate(SDate);
 
-        mArrYearPayment[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay].setmMoney(money);
-        mArrYearPayment[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay].setmCountPay(1);
-        mArrYearPayment[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay].setmTime(time);
-        mArrYearPayment[nam].getmArrMonthPayment()[thang].getmArrDayPayment()[ngay].getmListPayment().add(payment);
-        if(money<0 && payment.getmType()==39)
+        sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].setmCountPay(1);
+        sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].setmSDate(SDate);
+        sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].getmListPayment().add(payment);
+        if (money < 0 && payment.getmType() == 39)
             mList1.add(payment);
-        if(money>0 && payment.getmType()==6)
+        if (money > 0 && payment.getmType() == 6)
             mList2.add(payment);
     }
 
-    public ArrayList<TimePayment> getAllThang(){
-        ArrayList<TimePayment> listThang = new ArrayList<>();
-        int MN = this.mMoney;
-        for(int i =30;i>0;i--){
-            YearPayment yearPayment = mArrYearPayment[i];
-            if(yearPayment.getmCountPay()>0){
-                MonthPayment monthPayment1 = new MonthPayment();
-                monthPayment1.setmNote(yearPayment.getmTime().getmYear()+"");
-                listThang.add(monthPayment1);
-                for(int ii=12;ii>0;ii--){
-                    MonthPayment monthPayment = yearPayment.getmArrMonthPayment()[ii];
-                    if(monthPayment.getmCountPay()>0){
-                        monthPayment.setmBalance(MN);
-                        MN -= monthPayment.getmMoney();
-                        monthPayment.setmViewType(MyValues.ITEM);
-                        listThang.add(monthPayment);
-                    }
-                }
-            }
-        }
-        return  listThang;
-    }
-    public ArrayList<TimePayment> getAllNam(){
-        ArrayList<TimePayment> listNam = new ArrayList<>();
-        int MN = this.mMoney;
-        for (int i = 30; i > 0; i--) {
-            YearPayment yearPayment = mArrYearPayment[i];
-            if (yearPayment.getmCountPay()>0) {
-                listNam.add(yearPayment);
-                yearPayment.setmBalance(MN);
-                yearPayment.setmViewType(MyValues.ITEM);
-                MN -= yearPayment.getmMoney();
-            }
-        }
-        return listNam;
-    }
-
-    public ArrayList<TimePayment> getAllNgay(){
-        ArrayList<TimePayment> listNgay = new ArrayList<>();
+    public ArrayList<SDMY> getAllDay() {
+        ArrayList<SDMY> listDay = new ArrayList<>();
         int MN = getmMoney();
-        for(int i = 30;i>0;i--){
-            YearPayment yearPayment = mArrYearPayment[i];
-            if(yearPayment.getmCountPay()>0){
-                for(int ii =12;ii>0;ii--){
-                    MonthPayment monthPayment = yearPayment.getmArrMonthPayment()[ii];
-                    if(monthPayment.getmCountPay()>0){
-                        DayPayment ngayx = new DayPayment();
-                        ngayx.setmNote(monthPayment.getmTime().showMonth());
-                        listNgay.add(ngayx);
-                        for(int iii=31;iii>0;iii--){
-                            DayPayment dayPayment = monthPayment.getmArrDayPayment()[iii];
-                            if(dayPayment.getmCountPay()>0){
-                                dayPayment.setmViewType(MyValues.ITEM);
-                                dayPayment.setmBalance(MN);
-                                MN -= dayPayment.getmMoney();
-                                listNgay.add(dayPayment);
+        for (int i = 30; i > 0; i--) {
+            SYear yearsYear = sYears[i];
+            if (yearsYear.getmCountPay() > 0) {
+                for (int ii = 12; ii > 0; ii--) {
+                    SMonth sMonth = yearsYear.getmArrMonthPayment()[ii];
+                    if (sMonth.getmCountPay() > 0) {
+                        SDay sDayx = new SDay();
+                        sDayx.setmSDate(sMonth.getmSDate());
+                        listDay.add(sDayx);
+                        for (int iii = 31; iii > 0; iii--) {
+                            SDay sDay = sMonth.getmArrSDay()[iii];
+                            if (sDay.getmCountPay() > 0) {
+                                sDay.setmViewType(MyValues.ITEM);
+                                sDay.setmBalance(MN);
+                                MN -= (sDay.getmMoneyIn() + sDay.getmMoneyOut());
+                                listDay.add(sDay);
                             }
                         }
                     }
                 }
             }
         }
-        return listNgay;
+        return listDay;
     }
-    public DayPayment removePayment(Payment payment){
-        int ngay = payment.getmTime().getmDay();
-        int thang = payment.getmTime().getmMonth();
-        int nam = payment.getmTime().getmYear()-2015;
-        YearPayment yearPayment = getmArrYearPayment()[nam];
-        MonthPayment monthPayment = yearPayment.getmArrMonthPayment()[thang];
-        DayPayment dayPayment = monthPayment.getmArrDayPayment()[ngay];
-        this.mMoney -=payment.getmMoney();
-        yearPayment.setmMoney(-payment.getmMoney());
-        yearPayment.setmCountPay(-1);
-        monthPayment.setmMoney(-payment.getmMoney());
-        monthPayment.setmCountPay(-1);
-        dayPayment.setmMoney(-payment.getmMoney());
-        dayPayment.setmCountPay(-1);
-        dayPayment.setmBalance(dayPayment.getmBalance() - payment.getmMoney());
-        yearPayment.setmBalance(yearPayment.getmBalance() - payment.getmMoney());
-        monthPayment.setmBalance(monthPayment.getmBalance() - payment.getmMoney());
-        dayPayment.getmListPayment().remove(payment);
-        if(payment.getmMoney()<0 && payment.getmType()==39)
+
+    public ArrayList<SDMY> getAllMonth() {
+        ArrayList<SDMY> listMonth = new ArrayList<>();
+        int MN = this.mMoney;
+        for (int i = 30; i > 0; i--) {
+            SYear sYear = sYears[i];
+            if (sYear.getmCountPay() > 0) {
+                SMonth sMonth = new SMonth();
+                sMonth.setmSDate(sYear.getmSDate());
+                listMonth.add(sMonth);
+                for (int ii = 12; ii > 0; ii--) {
+                    SMonth monthPayment = sYear.getmArrMonthPayment()[ii];
+                    if (monthPayment.getmCountPay() > 0) {
+                        monthPayment.setmBalance(MN);
+                        MN -= (monthPayment.getmMoneyIn() + monthPayment.getmMoneyOut());
+                        monthPayment.setmViewType(1);
+                        listMonth.add(monthPayment);
+                    }
+                }
+            }
+        }
+        return listMonth;
+    }
+
+    public ArrayList<SDMY> getAllYear() {
+        ArrayList<SDMY> listYear = new ArrayList<>();
+        int MN = this.mMoney;
+        for (int i = 30; i > 0; i--) {
+            SYear sYear = sYears[i];
+            if (sYear.getmCountPay() > 0) {
+                listYear.add(sYear);
+                sYear.setmBalance(MN);
+                sYear.setmViewType(MyValues.ITEM);
+                MN -= (sYear.getmMoneyIn() + sYear.getmMoneyOut());
+            }
+        }
+        return listYear;
+    }
+
+    public SDay removePayment(Payment payment) {
+        int ngay = payment.getmSDate().getmDay();
+        int thang = payment.getmSDate().getmMonth();
+        int nam = payment.getmSDate().getmYear() - 2015;
+        int money = payment.getmMoney();
+
+        SYear sYear = getsYears()[nam];
+        SMonth sMonth = sYear.getmArrMonthPayment()[thang];
+        SDay sDay = sMonth.getmArrSDay()[ngay];
+
+        this.mMoney -= payment.getmMoney();
+        if (money > 0) {
+            sYear.setmMoneyIn(-money);
+            sMonth.setmMoneyIn(-money);
+            sDay.setmMoneyIn(-money);
+        } else {
+            sYear.setmMoneyOut(-money);
+            sMonth.setmMoneyOut(-money);
+            sDay.setmMoneyOut(-money);
+        }
+        sYear.setmCountPay(-1);
+        sMonth.setmCountPay(-1);
+        sDay.setmCountPay(-1);
+
+        sDay.setmBalance(sDay.getmBalance() - money);
+        sYear.setmBalance(sYear.getmBalance() - money);
+        sMonth.setmBalance(sMonth.getmBalance() - money);
+
+        sDay.getmListPayment().remove(payment);
+
+        if (payment.getmMoney() < 0 && payment.getmType() == 39)
             mList1.remove(payment);
-        if(payment.getmMoney()>0 && payment.getmType()==6)
+        if (payment.getmMoney() > 0 && payment.getmType() == 6)
             mList2.remove(payment);
-        return dayPayment;
+
+        return sDay;
     }
 
     public ArrayList<Payment> getmList1() {

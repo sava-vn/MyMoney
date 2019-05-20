@@ -2,7 +2,10 @@ package com.sava.mymoney;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,12 +40,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sava.mymoney.ITF.ItemClickListener;
-import com.sava.mymoney.adapter.TimePaymentAdpter;
+import com.sava.mymoney.adapter.SDMYAdpter;
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
-import com.sava.mymoney.model.Time;
+import com.sava.mymoney.model.SDate;
 import com.sava.mymoney.model.Payment;
-import com.sava.mymoney.model.TimePayment;
+import com.sava.mymoney.model.SDMY;
 import com.sava.mymoney.model.Wallet;
 
 import java.util.ArrayList;
@@ -59,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
     public static Wallet mWallet;
 
     private RecyclerView mRecyclerView;
-    private TimePaymentAdpter mAdpter;
-    private ArrayList<TimePayment> mListTimePayment;
+    private SDMYAdpter mAdpter;
+    private ArrayList<SDMY> mListSDMY;
 
     private Toolbar mToolbar;
     private TextView tvToolbar;
@@ -101,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             } catch (Exception e) {
-
             }
             mData = FirebaseDatabase.getInstance().getReference().child(mUser.getPhoneNumber());
             mData.keepSynced(true);
@@ -143,17 +145,17 @@ public class MainActivity extends AppCompatActivity {
 
         mToolbar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.GONE);
-        mAdpter = new TimePaymentAdpter(this, mListTimePayment, new ItemClickListener() {
+        mAdpter = new SDMYAdpter(this, mListSDMY, new ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 fMenu.close(true);
                 if (TYPE_SHOW != MyValues.SHOW_YEARPAY) {
-                    TimePayment timePayment = mListTimePayment.get(position);
+                    SDMY SDMY = mListSDMY.get(position);
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt(MyValues.DAY, timePayment.getmTime().getmDay());
-                    bundle.putInt(MyValues.MONTH, timePayment.getmTime().getmMonth());
-                    bundle.putInt(MyValues.YEAR, timePayment.getmTime().getmYear());
+                    bundle.putInt(MyValues.DAY, SDMY.getmSDate().getmDay());
+                    bundle.putInt(MyValues.MONTH, SDMY.getmSDate().getmMonth());
+                    bundle.putInt(MyValues.YEAR, SDMY.getmSDate().getmYear());
                     bundle.putInt(MyValues.TYPE_SHOW, TYPE_SHOW);
                     intent.putExtra(MyValues.BUNDLEDAY, bundle);
                     startActivity(intent);
@@ -176,24 +178,27 @@ public class MainActivity extends AppCompatActivity {
         TYPE_PARENT_INT = getResources().getIntArray(R.array.TYPE_PARENT_INT);
         TYPE_SHOW = MyValues.SHOW_DAYPAY;
         mWallet = new Wallet();
-        mListTimePayment = new ArrayList<>();
+        mListSDMY = new ArrayList<>();
     }
 
     public void initAction() {
         fSodu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ColorDrawable colorDrawable = new ColorDrawable(Color.TRANSPARENT);
+                InsetDrawable insetDrawable = new InsetDrawable(colorDrawable,30,50,30,50);
+
                 Calendar today = Calendar.getInstance();
                 int ngay = today.get(Calendar.DAY_OF_MONTH);
                 int thang = today.get(Calendar.MONTH);
                 int nam = today.get(Calendar.YEAR);
-                final Time toDay = new Time(ngay, thang + 1, nam);
+                final SDate toDay = new SDate(ngay, thang + 1, nam);
 
                 final Dialog dialog = new Dialog(MainActivity.this);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setContentView(R.layout.dialog_sodu);
-
                 fMenu.close(true);
+
                 ImageView imgClose = dialog.findViewById(R.id.img_d_close);
                 final TextView tvSodu = dialog.findViewById(R.id.tv_d_sodu);
                 edtSodu = dialog.findViewById(R.id.edt_d_sodu);
@@ -220,14 +225,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 Button btnAdd = dialog.findViewById(R.id.btn_d_add);
-                for (TimePayment item : mListTimePayment) {
-                    if (item.getmTime() != null && item.getmTime().comperTiem(toDay) <= 0) {
+                for (SDMY item : mListSDMY) {
+                    if (item.getmViewType() >0 && item.getmSDate().comperTiem(toDay) <= 0) {
                         oldMoney = item.getmBalance();
                         break;
                     }
                 }
-                tvSodu.setText("Số dư hiện tại của bạn là " + MySupport.converToMoney(oldMoney));
-
+                tvSodu.setText("Số dư hiện tại của bạn là\n" + MySupport.converToMoney(oldMoney));
+                dialog.getWindow().setBackgroundDrawable(insetDrawable);
                 dialog.show();
 
                 imgClose.setOnClickListener(new View.OnClickListener() {
@@ -236,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -247,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                             payment.setmIdPayment(idPayment);
                             payment.setmNote("Thay Đổi số dư");
                             payment.setmType(0);
-                            payment.setmTime(toDay);
+                            payment.setmSDate(toDay);
                             payment.setmMoney(newMoney - oldMoney);
                             mData.child(idPayment).setValue(payment);
                             mWallet.addPayment(payment);
@@ -281,19 +287,13 @@ public class MainActivity extends AppCompatActivity {
         fDiVay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BorrowActivity.class);
-                intent.putExtra(MyValues.WHATNEW, 1);
-                startActivity(intent);
-                fMenu.close(true);
+
             }
         });
         fChoVay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BorrowActivity.class);
-                intent.putExtra(MyValues.WHATNEW, -1);
-                startActivity(intent);
-                fMenu.close(true);
+
             }
         });
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -323,8 +323,8 @@ public class MainActivity extends AppCompatActivity {
                     Payment payment = dataSnapshot.getValue(Payment.class);
                     mWallet.addPayment(payment);
                 }
-                mListTimePayment.clear();
-                mListTimePayment.addAll(mWallet.getAllNgay());
+                mListSDMY.clear();
+                mListSDMY.addAll(mWallet.getAllDay());
                 mAdpter.notifyDataSetChanged();
                 prMain.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
@@ -354,18 +354,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void show() {
         if (TYPE_SHOW == MyValues.SHOW_DAYPAY) {
-            mListTimePayment.clear();
-            mListTimePayment.addAll(0, mWallet.getAllNgay());
+            mListSDMY.clear();
+            mListSDMY.addAll(0, mWallet.getAllDay());
             this.tvToolbar.setText("All day");
         }
         if (TYPE_SHOW == MyValues.SHOW_MONTHPAY) {
-            mListTimePayment.clear();
-            mListTimePayment.addAll(0, mWallet.getAllThang());
+            mListSDMY.clear();
+            mListSDMY.addAll(0, mWallet.getAllMonth());
             this.tvToolbar.setText("All month");
         }
         if (TYPE_SHOW == MyValues.SHOW_YEARPAY) {
-            mListTimePayment.clear();
-            mListTimePayment.addAll(0, mWallet.getAllNam());
+            mListSDMY.clear();
+            mListSDMY.addAll(0, mWallet.getAllYear());
             this.tvToolbar.setText("All year");
         }
         mAdpter.notifyDataSetChanged();
@@ -386,8 +386,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_ngay:
                 if (TYPE_SHOW != MyValues.SHOW_DAYPAY) {
-                    mListTimePayment.clear();
-                    mListTimePayment.addAll(0, mWallet.getAllNgay());
+                    mListSDMY.clear();
+                    mListSDMY.addAll(0, mWallet.getAllDay());
                     this.tvToolbar.setText("All day");
                     TYPE_SHOW = MyValues.SHOW_DAYPAY;
                     item1.setIcon(R.drawable.ic_1);
@@ -397,8 +397,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_thang:
                 if (TYPE_SHOW != MyValues.SHOW_MONTHPAY) {
-                    mListTimePayment.clear();
-                    mListTimePayment.addAll(0, mWallet.getAllThang());
+                    mListSDMY.clear();
+                    mListSDMY.addAll(0, mWallet.getAllMonth());
                     this.tvToolbar.setText("All month");
                     TYPE_SHOW = MyValues.SHOW_MONTHPAY;
                     item1.setIcon(R.drawable.alpha_d_box);
@@ -409,8 +409,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_nam:
                 if (TYPE_SHOW != MyValues.SHOW_YEARPAY) {
-                    mListTimePayment.clear();
-                    mListTimePayment.addAll(0, mWallet.getAllNam());
+                    mListSDMY.clear();
+                    mListSDMY.addAll(0, mWallet.getAllYear());
                     this.tvToolbar.setText("All year");
                     TYPE_SHOW = MyValues.SHOW_YEARPAY;
                     item1.setIcon(R.drawable.alpha_d_box);

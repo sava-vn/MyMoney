@@ -62,7 +62,7 @@
                 android:gravity="center">
                 <ImageView
                     android:id="@+id/img_time_1"
-                    android:src="@drawable/ic_monday"
+                    android:src="@drawable/ic_mon"
                     android:layout_width="24dp"
                     android:layout_height="24dp" />
                 <TextView

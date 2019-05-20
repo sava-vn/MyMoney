@@ -15,21 +15,21 @@ import com.sava.mymoney.ITF.ItemClickListener;
 import com.sava.mymoney.R;
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
-import com.sava.mymoney.model.DayPayment;
-import com.sava.mymoney.model.Time;
-import com.sava.mymoney.model.TimePayment;
+import com.sava.mymoney.model.SDay;
+import com.sava.mymoney.model.SDate;
+import com.sava.mymoney.model.SDMY;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class TimePaymentAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SDMYAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private ArrayList<TimePayment> mList;
+    private ArrayList<SDMY> mList;
     private ItemClickListener mItemClickListener;
     private Calendar calendar;
     private int[] dayOfweek ={R.drawable.ic_sun,R.drawable.ic_mon,R.drawable.ic_tue,R.drawable.ic_wed,R.drawable.ic_thur,R.drawable.ic_fri,R.drawable.ic_sat};
 
-    public TimePaymentAdpter(Context mContext, ArrayList<TimePayment> mList, ItemClickListener mItemClickListener) {
+    public SDMYAdpter(Context mContext, ArrayList<SDMY> mList, ItemClickListener mItemClickListener) {
         this.mContext = mContext;
         this.mList = mList;
         this.mItemClickListener = mItemClickListener;
@@ -51,27 +51,30 @@ public class TimePaymentAdpter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        SDMY sDMY = mList.get(position);
         if (holder instanceof HeadeViewHolder) {
             HeadeViewHolder headeViewHolder = (HeadeViewHolder) holder;
-            headeViewHolder.tvHeader.setText(mList.get(position).getmNote());
+            if(sDMY instanceof SDay)
+                headeViewHolder.tvHeader.setText(mList.get(position).getmSDate().showMonth());
+            else
+                headeViewHolder.tvHeader.setText(mList.get(position).getmSDate().getmYear()+"");
         } else {
-            TimePayment timePayment = mList.get(position);
             ThoiGianViewHolder itemV = (ThoiGianViewHolder) holder;
-            Time time = timePayment.getmTime();
+            SDate SDate = sDMY.getmSDate();
             calendar = Calendar.getInstance();
-            calendar.set(time.getmYear(),time.getmMonth()-1,time.getmDay());
+            calendar.set(SDate.getmYear(), SDate.getmMonth()-1, SDate.getmDay());
             int day = calendar.get(Calendar.DAY_OF_WEEK)-1;
-            if(timePayment instanceof DayPayment)
+            if(sDMY instanceof SDay)
                 itemV.imgDate.setImageResource(dayOfweek[day]);
             else
                 itemV.imgDate.setImageResource(R.drawable.ics_time);
             itemV.imgDate.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.fade_transition));
-            itemV.tvDate.setText(timePayment.toString());
+            itemV.tvDate.setText(sDMY.toString());
             itemV.tvDate.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.fade_transition));
-            itemV.tvCoutPay.setText(timePayment.getmCountPay()+"");
-            itemV.tvMoneyIn.setText(MySupport.converToMoney(timePayment.getmMoneyIn()));
-            itemV.tvMoneyOut.setText(MySupport.converToMoney(timePayment.getmMoneyIn()-timePayment.getmMoney()));
-            itemV.tvBlance.setText(MySupport.converToMoney(timePayment.getmBalance()));
+            itemV.tvCoutPay.setText(sDMY.getmCountPay()+"");
+            itemV.tvMoneyIn.setText(MySupport.converToMoney(sDMY.getmMoneyIn()));
+            itemV.tvMoneyOut.setText(MySupport.converToMoney(sDMY.getmMoneyOut()));
+            itemV.tvBlance.setText(MySupport.converToMoney(sDMY.getmBalance()));
         }
     }
 

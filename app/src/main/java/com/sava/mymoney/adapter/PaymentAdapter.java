@@ -19,7 +19,6 @@ import com.sava.mymoney.model.Payment;
 
 import java.util.ArrayList;
 
-import no.danielzeller.blurbehindlib.BlurBehindLayout;
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHolder> {
     private Context mContext;
