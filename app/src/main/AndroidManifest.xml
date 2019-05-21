@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AddLoanActivity"
+            android:theme="@style/Appthem2"></activity>
+        <activity
+            android:name=".AddBorrowActivity"
+            android:theme="@style/Appthem2" />
         <activity
             android:name=".SonoActivity"
             android:theme="@style/Appthem2" />

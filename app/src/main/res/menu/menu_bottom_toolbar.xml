@@ -6,10 +6,10 @@
         android:title="TỔNG QUAN"></item>
     <item
         android:id="@+id/action_up"
-        android:icon="@drawable/ic_income"
+        android:icon="@drawable/ics_income"
         android:title="THU NHẬP"></item>
     <item
         android:id="@+id/action_down"
-        android:icon="@drawable/ic_expenditure"
+        android:icon="@drawable/ics_ex"
         android:title="CHI TIÊU"></item>
 </menu>

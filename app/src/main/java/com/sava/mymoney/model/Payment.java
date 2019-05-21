@@ -1,11 +1,11 @@
 package com.sava.mymoney.model;
 
 public class Payment {
-    private String mIdPayment;
-    private SDate mSDate;
-    private int mMoney;
-    private int mType;
-    private String mNote;
+    protected String mIdPayment;
+    protected SDate mSDate;
+    protected int mMoney;
+    protected int mType;
+    protected String mNote;
 
     public Payment() {
         this.mSDate = new SDate();

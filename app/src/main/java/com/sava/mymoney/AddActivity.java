@@ -49,7 +49,6 @@ public class AddActivity extends AppCompatActivity {
     private int mWhatnew;
     private int mMoney;
     private int dodai;
-    private String current;
     private Payment mPayment;
 
     @Override

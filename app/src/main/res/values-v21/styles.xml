@@ -22,6 +22,6 @@
     <style name="Appthem2" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/yellowDark</item>
         <item name="colorPrimaryDark">@color/sava1</item>
-        <item name="colorAccent">@color/yellowDark</item>
+        <item name="colorAccent">@color/red</item>
     </style>
 </resources>

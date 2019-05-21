@@ -287,13 +287,17 @@ public class MainActivity extends AppCompatActivity {
         fDiVay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this,AddBorrowActivity.class);
+                startActivity(intent);
+                fMenu.close(true);
             }
         });
         fChoVay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this,AddLoanActivity.class);
+                startActivity(intent);
+                fMenu.close(true);
             }
         });
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
