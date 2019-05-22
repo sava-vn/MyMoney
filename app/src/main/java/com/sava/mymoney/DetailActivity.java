@@ -18,6 +18,7 @@ import com.sava.mymoney.common.MyValues;
 import com.sava.mymoney.fragment.ExpenditureFragment;
 import com.sava.mymoney.fragment.HomeFragment;
 import com.sava.mymoney.fragment.IncomeFragment;
+import com.sava.mymoney.model.SDate;
 
 public class DetailActivity extends AppCompatActivity {
     private Toolbar mToolbar;
@@ -43,18 +44,17 @@ public class DetailActivity extends AppCompatActivity {
         tvToolbar = new TextView(getApplicationContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
         tvToolbar.setLayoutParams(lp);
+        SDate sDate = new SDate(bundle.getInt(MyValues.DAY),bundle.getInt(MyValues.MONTH),bundle.getInt(MyValues.YEAR));
         String toolbarTitle;
         if(bundle.getInt(MyValues.TYPE_SHOW)==MyValues.SHOW_DAYPAY)
-            toolbarTitle = bundle.getInt(MyValues.DAY)+ " tháng "+ bundle.getInt(MyValues.MONTH)+ " năm "+ bundle.getInt(MyValues.YEAR);
+            toolbarTitle = sDate.showDay();
         else if (bundle.getInt(MyValues.TYPE_SHOW)==MyValues.SHOW_MONTHPAY)
-            toolbarTitle = bundle.getInt(MyValues.MONTH)+ " năm "+ bundle.getInt(MyValues.YEAR);
+            toolbarTitle = sDate.showMonth();
         else
             toolbarTitle = bundle.getInt(MyValues.YEAR) + "";
         tvToolbar.setText(toolbarTitle);
         tvToolbar.setTextSize(20);
         tvToolbar.setTextColor(getColor(R.color.white));
-        MySupport.setFontBold(this, tvToolbar, MyValues.FONT_V);
-
         homeFragment = new HomeFragment();
         upFragment = new IncomeFragment();
         downFragment = new ExpenditureFragment();

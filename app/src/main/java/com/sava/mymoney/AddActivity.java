@@ -42,14 +42,14 @@ public class AddActivity extends AppCompatActivity {
     private ImageButton btnClose;
     private TextView tvWhatNew;
     private Button btnAdd;
-    private int mDay;
-    private int mMonth;
-    private int mYear;
+
     private int mTypePayment;
     private int mWhatnew;
     private int mMoney;
     private int dodai;
     private Payment mPayment;
+
+    private Calendar toDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,6 @@ public class AddActivity extends AppCompatActivity {
     }
 
     public void initView() {
-        // Ánh xạ
         edtAddMoney = findViewById(R.id.edt_add_money);
         layoutAddType = findViewById(R.id.layout_add_type);
         imgAddType = findViewById(R.id.img_add_type);
@@ -72,9 +71,8 @@ public class AddActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btn_add);
         tvWhatNew = findViewById(R.id.tv_what_new);
 
-        // mWhatnew =1 nghĩa là thêm mới khoản thu , còn không là thêm mới khoản chi
         if (mWhatnew == 1)
-            tvWhatNew.setText("Sửa đổi khoản thu");
+            tvWhatNew.setText("Thêm mới khoản thu");
         else {
             tvWhatNew.setText("Thêm mới khoản chi");
         }
@@ -109,20 +107,29 @@ public class AddActivity extends AppCompatActivity {
                 if (mTypePayment == -1)
                     Toast.makeText(AddActivity.this, "Xin hãy chọn loại chi tiêu !", Toast.LENGTH_SHORT).show();
                 else {
-                    try {
-                        mMoney = MySupport.StringToMoney(edtAddMoney.getText().toString());
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
+                    if (mPayment.getmSDate().getmDay() == 0)
+                        Toast.makeText(AddActivity.this, "Xin hãy kiểm tra lại ngày", Toast.LENGTH_SHORT).show();
+                    else
+                        try {
+                            mMoney = MySupport.StringToMoney(edtAddMoney.getText().toString()) * mWhatnew;
+                            mPayment.setmMoney(mMoney);
+                            mPayment.setmNote(edtAddNote.getText().toString());
+                            mPayment.setmType(mTypePayment);
 
-                        String idPayment = data.push().getKey();
-                        mPayment = new Payment(idPayment,new SDate(mDay, mMonth + 1, mYear), mMoney * mWhatnew, mTypePayment, edtAddNote.getText().toString());
-                        data.child(idPayment).setValue(mPayment);
-                        MainActivity.mWallet.addPayment(mPayment);
-                        onBackPressed();
-                        finish();
-                    } catch (Exception e) {
-                        Toast.makeText(AddActivity.this, "Xin kiểm tra lại số tiền !", Toast.LENGTH_SHORT).show();
-                    }
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
+
+                            String idPayment = data.push().getKey();
+                            mPayment.setmIdPayment(idPayment);
+
+                            data.child(idPayment).setValue(mPayment);
+                            MainActivity.mWallet.addPayment(mPayment);
+
+                            onBackPressed();
+                            finish();
+                        } catch (Exception e) {
+                            Toast.makeText(AddActivity.this, "Xin kiểm tra lại số tiền !", Toast.LENGTH_SHORT).show();
+                        }
                 }
             }
         });
@@ -151,33 +158,20 @@ public class AddActivity extends AppCompatActivity {
     }
 
     public void initData() {
-        //Lấy ngày, tháng, năm hiện tại
-        Calendar today = Calendar.getInstance();
-        mDay = today.get(Calendar.DAY_OF_MONTH);
-        mMonth = today.get(Calendar.MONTH);
-        mYear = today.get(Calendar.YEAR);
-
-        // Khởi tạo cho kiểu chi tiêu là  -1
+        toDay = Calendar.getInstance();
+        mPayment = new Payment();
         mTypePayment = -1;
-
-        // Kiểu thêm mới là thu hay chi, giá trị này lấy từ mainActivity
         mWhatnew = getIntent().getIntExtra(MyValues.WHATNEW, 0);
 
-        // Khởi tạo datepicker
         dp = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                if (mDay == dayOfMonth && mMonth == month && mYear == year) {
-                    tvAddTime.setText("Hôm nay");
-                } else {
-                    mDay = dayOfMonth;
-                    mMonth = month;
-                    mYear = year;
-                    tvAddTime.setText(mDay + " - " + (mMonth + 1) + " - " + mYear);
-                }
+                toDay.set(year, month, dayOfMonth);
+                mPayment.setmSDate(new SDate(dayOfMonth, month + 1, year, toDay.get(Calendar.DAY_OF_WEEK)));
+                tvAddTime.setText(mPayment.getmSDate().showDay());
                 tvAddTime.setTextColor(Color.BLACK);
             }
-        }, mYear, mMonth, mDay);
+        }, toDay.get(Calendar.YEAR), toDay.get(Calendar.MONTH), toDay.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override

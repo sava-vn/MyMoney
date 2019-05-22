@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/sava1"
     android:orientation="vertical"
-    tools:context=".SonoActivity">
+    tools:context=".BLActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

@@ -102,6 +102,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageView
+                    android:id="@+id/img_time_2"
                     android:src="@drawable/alpha_y_box"
                     android:layout_width="24dp"
                     android:layout_height="24dp" />

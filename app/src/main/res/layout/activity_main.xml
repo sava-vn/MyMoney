@@ -67,7 +67,7 @@
                 android:id="@+id/fab1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_income"
+                android:src="@drawable/ics_moneyin"
                 app:fab_colorNormal="@color/red"
                 app:fab_label="Khoản thu"
                 app:fab_size="mini" />
@@ -76,7 +76,7 @@
                 android:id="@+id/fab2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_expenditure"
+                android:src="@drawable/ics_moneyout"
                 app:fab_colorNormal="@color/red"
                 app:fab_label="Khoản chi"
                 app:fab_size="mini" />
@@ -85,7 +85,7 @@
                 android:id="@+id/fab3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ics_transaction"
+                android:src="@drawable/ics_borrow"
                 app:fab_colorNormal="@color/red"
                 app:fab_label="Đi vay"
                 app:fab_size="mini" />
@@ -94,7 +94,7 @@
                 android:id="@+id/fab4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ics_transaction"
+                android:src="@drawable/ics_loan"
                 app:fab_colorNormal="@color/red"
                 app:fab_label="Cho vay"
                 app:fab_size="mini" />

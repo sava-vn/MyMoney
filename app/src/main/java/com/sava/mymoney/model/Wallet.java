@@ -7,15 +7,25 @@ import java.util.ArrayList;
 public class Wallet {
     private int mMoney;
     private SYear[] sYears;
-    private ArrayList<Payment> mList1;
-    private ArrayList<Payment> mList2;
+    private ArrayList<SBL> mListBorrow;
+    private int mMoneyBorrow;
+    private ArrayList<SBL> mListLoan;
+    private int mMoneyLoan;
 
     public Wallet() {
         this.sYears = new SYear[31];
         for (int i = 1; i <= 30; i++)
             this.sYears[i] = new SYear();
-        mList1 = new ArrayList<>();
-        mList2 = new ArrayList<>();
+        mListBorrow = new ArrayList<>();
+        mListLoan = new ArrayList<>();
+    }
+
+    public ArrayList<SBL> getmListBorrow() {
+        return mListBorrow;
+    }
+
+    public ArrayList<SBL> getmListLoan() {
+        return mListLoan;
     }
 
     public int getmMoney() {
@@ -52,10 +62,15 @@ public class Wallet {
         sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].setmCountPay(1);
         sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].setmSDate(SDate);
         sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].getmListPayment().add(payment);
-        if (money < 0 && payment.getmType() == 39)
-            mList1.add(payment);
-        if (money > 0 && payment.getmType() == 6)
-            mList2.add(payment);
+        if (payment.getmType() == 39) {
+            mListLoan.add((SBL) payment);
+            mMoneyLoan += money;
+        }
+        if (payment.getmType() == 6) {
+            mListBorrow.add((SBL) payment);
+            mMoneyBorrow += money;
+        }
+
     }
 
     public ArrayList<SDMY> getAllDay() {
@@ -154,27 +169,30 @@ public class Wallet {
 
         sDay.getmListPayment().remove(payment);
 
-        if (payment.getmMoney() < 0 && payment.getmType() == 39)
-            mList1.remove(payment);
-        if (payment.getmMoney() > 0 && payment.getmType() == 6)
-            mList2.remove(payment);
-
+        if (payment.getmType() == 39) {
+            mMoneyLoan -=money;
+            mListLoan.remove(payment);
+        }
+        if (payment.getmType() == 6){
+            mListBorrow.remove(payment);
+            mMoneyBorrow-=money;
+        };
         return sDay;
     }
 
-    public ArrayList<Payment> getmList1() {
-        return mList1;
+    public int getmMoneyBorrow() {
+        return mMoneyBorrow;
     }
 
-    public void setmList1(ArrayList<Payment> mList1) {
-        this.mList1 = mList1;
+    public void setmMoneyBorrow(int mMoneyBorrow) {
+        this.mMoneyBorrow = mMoneyBorrow;
     }
 
-    public ArrayList<Payment> getmList2() {
-        return mList2;
+    public int getmMoneyLoan() {
+        return mMoneyLoan;
     }
 
-    public void setmList2(ArrayList<Payment> mList2) {
-        this.mList2 = mList2;
+    public void setmMoneyLoan(int mMoneyLoan) {
+        this.mMoneyLoan = mMoneyLoan;
     }
 }

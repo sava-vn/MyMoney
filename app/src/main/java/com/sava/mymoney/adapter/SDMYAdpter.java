@@ -60,12 +60,9 @@ public class SDMYAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 headeViewHolder.tvHeader.setText(mList.get(position).getmSDate().getmYear()+"");
         } else {
             ThoiGianViewHolder itemV = (ThoiGianViewHolder) holder;
-            SDate SDate = sDMY.getmSDate();
-            calendar = Calendar.getInstance();
-            calendar.set(SDate.getmYear(), SDate.getmMonth()-1, SDate.getmDay());
-            int day = calendar.get(Calendar.DAY_OF_WEEK)-1;
+            SDate sDate = sDMY.getmSDate();
             if(sDMY instanceof SDay)
-                itemV.imgDate.setImageResource(dayOfweek[day]);
+                itemV.imgDate.setImageResource(dayOfweek[sDate.getmDoW()-1]);
             else
                 itemV.imgDate.setImageResource(R.drawable.ics_time);
             itemV.imgDate.setAnimation(AnimationUtils.loadAnimation(mContext,R.anim.fade_transition));

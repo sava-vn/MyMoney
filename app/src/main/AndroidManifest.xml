@@ -15,7 +15,7 @@
             android:name=".AddBorrowActivity"
             android:theme="@style/Appthem2" />
         <activity
-            android:name=".SonoActivity"
+            android:name=".BLActivity"
             android:theme="@style/Appthem2" />
         <activity
             android:name=".VerifiActivity"

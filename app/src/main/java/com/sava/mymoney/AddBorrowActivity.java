@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sava.mymoney.common.MySupport;
-import com.sava.mymoney.model.Borrow;
+import com.sava.mymoney.model.SBL;
 import com.sava.mymoney.model.SDate;
 
 import java.util.Calendar;
@@ -38,7 +38,9 @@ public class AddBorrowActivity extends AppCompatActivity {
     private int mTypeDate;
 
     private DatePickerDialog mDatePicker;
-    private Borrow mBorrow;
+    private SBL mSBL;
+
+    private Calendar toDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class AddBorrowActivity extends AppCompatActivity {
         btnClose = findViewById(R.id.addborrow_btn_close);
         layoutDate = findViewById(R.id.addborrow_layout_date);
         layoutDate2 = findViewById(R.id.addborrow_layout_date2);
+        edtPerson.setHint("Người cho vay");
     }
     private void initTransaction(){
         imgMoney.setAnimation(AnimationUtils.loadAnimation(this,R.anim.fade_transition));
@@ -120,7 +123,7 @@ public class AddBorrowActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mBorrow.getmSDate().getmDay()==0 || mBorrow.getmSDate2().getmDay()==0 || mBorrow.getmSDate2().comperTiem(mBorrow.getmSDate())<0)
+                if(mSBL.getmSDate().getmDay()==0 || mSBL.getmSDate2().getmDay()==0 || mSBL.getmSDate2().comperTiem(mSBL.getmSDate())<0)
                     Toast.makeText(AddBorrowActivity.this, "Xin hãy kiểm tra lại ngày", Toast.LENGTH_SHORT).show();
                 else{
                     if(edtPerson.getText().toString().length()==0)
@@ -128,19 +131,19 @@ public class AddBorrowActivity extends AppCompatActivity {
                     else{
                         try{
                             int money = MySupport.StringToMoney(edtMoney.getText().toString());
-                            mBorrow.setmMoney(money);
-                            mBorrow.setmType(6);
-                            mBorrow.setmPerson(edtPerson.getText().toString());
-                            mBorrow.setmNote(edtNote.getText().toString());
+                            mSBL.setmMoney(money);
+                            mSBL.setmType(6);
+                            mSBL.setmPerson(edtPerson.getText().toString());
+                            mSBL.setmNote(edtNote.getText().toString());
 
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
 
                             String idBorrow = data.push().getKey();
-                            mBorrow.setmIdPayment(idBorrow);
+                            mSBL.setmIdPayment(idBorrow);
 
-                            data.child(idBorrow).setValue(mBorrow);
-                            MainActivity.mWallet.addPayment(mBorrow);
+                            data.child(idBorrow).setValue(mSBL);
+                            MainActivity.mWallet.addPayment(mSBL);
                             onBackPressed();
                             finish();
                         }catch (Exception e){
@@ -152,20 +155,20 @@ public class AddBorrowActivity extends AppCompatActivity {
         });
     }
     private void initData(){
-        mBorrow = new Borrow();
+        toDay = Calendar.getInstance();
+        mSBL = new SBL();
         mDatePicker = new DatePickerDialog(AddBorrowActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar thisDay = Calendar.getInstance();
-                thisDay.set(year,month,dayOfMonth);
+                toDay.set(year,month,dayOfMonth);
                 if(mTypeDate==1){
-                    mBorrow.setmSDate(new SDate(dayOfMonth,month+1,year,thisDay.get(Calendar.DAY_OF_WEEK)));
-                    tvDate.setText(mBorrow.getmSDate().showDay());
+                    mSBL.setmSDate(new SDate(dayOfMonth,month+1,year,toDay.get(Calendar.DAY_OF_WEEK)));
+                    tvDate.setText(mSBL.getmSDate().showDay());
                 }else{
-                    mBorrow.setmSDate2(new SDate(dayOfMonth,month+1,year,thisDay.get(Calendar.DAY_OF_WEEK)));
-                    tvDate2.setText(mBorrow.getmSDate2().showDay());
+                    mSBL.setmSDate2(new SDate(dayOfMonth,month+1,year,toDay.get(Calendar.DAY_OF_WEEK)));
+                    tvDate2.setText(mSBL.getmSDate2().showDay());
                 }
             }
-        },2019,6,1);
+        },toDay.get(Calendar.YEAR),toDay.get(Calendar.MONTH),toDay.get(Calendar.DAY_OF_MONTH));
     }
 }

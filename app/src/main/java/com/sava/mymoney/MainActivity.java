@@ -43,6 +43,7 @@ import com.sava.mymoney.ITF.ItemClickListener;
 import com.sava.mymoney.adapter.SDMYAdpter;
 import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.common.MyValues;
+import com.sava.mymoney.model.SBL;
 import com.sava.mymoney.model.SDate;
 import com.sava.mymoney.model.Payment;
 import com.sava.mymoney.model.SDMY;
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private DatabaseReference mData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,13 +188,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ColorDrawable colorDrawable = new ColorDrawable(Color.TRANSPARENT);
-                InsetDrawable insetDrawable = new InsetDrawable(colorDrawable,30,50,30,50);
+                InsetDrawable insetDrawable = new InsetDrawable(colorDrawable, 30, 50, 30, 50);
 
                 Calendar today = Calendar.getInstance();
                 int ngay = today.get(Calendar.DAY_OF_MONTH);
                 int thang = today.get(Calendar.MONTH);
                 int nam = today.get(Calendar.YEAR);
-                final SDate toDay = new SDate(ngay, thang + 1, nam);
+                final SDate toDay = new SDate(ngay, thang + 1, nam,today.get(Calendar.DAY_OF_WEEK));
 
                 final Dialog dialog = new Dialog(MainActivity.this);
                 dialog.setCanceledOnTouchOutside(false);
@@ -210,13 +212,13 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            dodai = edtSodu.length();
-                            edtSodu.removeTextChangedListener(this);
-                            if (dodai > 3) {
-                                int iM = MySupport.StringToMoney(edtSodu.getText().toString());
-                                edtSodu.setText(MySupport.converToMoney(iM));
-                            }
-                            edtSodu.addTextChangedListener(this);
+                        dodai = edtSodu.length();
+                        edtSodu.removeTextChangedListener(this);
+                        if (dodai > 3) {
+                            int iM = MySupport.StringToMoney(edtSodu.getText().toString());
+                            edtSodu.setText(MySupport.converToMoney(iM));
+                        }
+                        edtSodu.addTextChangedListener(this);
                     }
 
                     @Override
@@ -226,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 });
                 Button btnAdd = dialog.findViewById(R.id.btn_d_add);
                 for (SDMY item : mListSDMY) {
-                    if (item.getmViewType() >0 && item.getmSDate().comperTiem(toDay) <= 0) {
+                    if (item.getmViewType() > 0 && item.getmSDate().comperTiem(toDay) <= 0) {
                         oldMoney = item.getmBalance();
                         break;
                     }
@@ -287,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
         fDiVay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,AddBorrowActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddBorrowActivity.class);
                 startActivity(intent);
                 fMenu.close(true);
             }
@@ -295,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
         fChoVay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,AddLoanActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddLoanActivity.class);
                 startActivity(intent);
                 fMenu.close(true);
             }
@@ -311,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.nav_sono:
-                        Intent sonoIntent = new Intent(MainActivity.this, SonoActivity.class);
+                        Intent sonoIntent = new Intent(MainActivity.this, BLActivity.class);
                         startActivity(sonoIntent);
                         drawerLayout.closeDrawer(GravityCompat.START);
 
@@ -325,7 +327,12 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot data) {
                 for (DataSnapshot dataSnapshot : data.getChildren()) {
                     Payment payment = dataSnapshot.getValue(Payment.class);
-                    mWallet.addPayment(payment);
+                    if (payment.getmType() == 39 || payment.getmType() == 6 ||payment.getmType()==38 ||payment.getmType()==7) {
+                        SBL sbl = dataSnapshot.getValue(SBL.class);
+                        mWallet.addPayment(sbl);
+                    } else {
+                        mWallet.addPayment(payment);
+                    }
                 }
                 mListSDMY.clear();
                 mListSDMY.addAll(mWallet.getAllDay());
@@ -350,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -49,6 +49,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center">
                         <EditText
+                            android:maxLength="10"
                             android:gravity="center"
                             android:textColorHint="@color/sivel2"
                             android:fontFamily="@font/varela"
@@ -132,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/c_tv_1"
                             android:paddingLeft="16dp"
-                            android:text="Hôm nay"
+                            android:text="Chọn ngày"
                             android:textColor="@color/sivel2"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -210,7 +211,7 @@
                 android:background="@drawable/button_background"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:text="Cập nhật"
+                android:text="+ THÊM MỚI"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="20sp"
