@@ -26,6 +26,7 @@
             android:src="@drawable/ic_goal7" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/login_layout1"
         android:layout_weight="3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -65,13 +66,20 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:gravity="center">
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/login_prg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
+            android:id="@+id/login_tv"
             android:fontFamily="@font/varela"
             android:text="Hoặc"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
+            android:id="@+id/btn_login_fb"
             android:backgroundTint="@color/fb"
             android:background="@drawable/c_tb_main"
             android:text="Tiếp tục với facebook"

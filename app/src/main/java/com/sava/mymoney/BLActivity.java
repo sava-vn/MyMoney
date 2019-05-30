@@ -36,21 +36,11 @@ public class BLActivity extends AppCompatActivity {
     private int mTypeView;
     private Calendar calendar;
     private BLAdapter mAdpter;
-    private View dectorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sono);
-        dectorView = getWindow().getDecorView();
-        dectorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                if (visibility == 0) {
-                    dectorView.setSystemUiVisibility(hideSystemNavigation());
-                }
-            }
-        });
         calendar = Calendar.getInstance();
         initView();
         initAction();
@@ -137,13 +127,13 @@ public class BLActivity extends AppCompatActivity {
                     payment.setmSDate2(sbl.getmSDate());
 
                     //Đi vay
-                    if(sbl.getmType()==6){
+                    if (sbl.getmType() == 6) {
                         payment.setmType(38);//Trả nợ
-                        payment.setmNote("Trả nợ cho "+ sbl.getmPerson());
+                        payment.setmNote("Trả nợ cho " + sbl.getmPerson());
                         Toast.makeText(BLActivity.this, "Trả nợ thành công ", Toast.LENGTH_SHORT).show();
-                    }else{//Cho vay
+                    } else {//Cho vay
                         payment.setmType(7);//Thu nợ
-                        payment.setmNote("Thu nợ từ "+ sbl.getmPerson());
+                        payment.setmNote("Thu nợ từ " + sbl.getmPerson());
                         Toast.makeText(BLActivity.this, "Thu nợ thành công", Toast.LENGTH_SHORT).show();
                     }
 
@@ -164,7 +154,7 @@ public class BLActivity extends AppCompatActivity {
 
                     //Cập nhật thay đổi
                     mAdpter.notifyDataSetChanged();
-                }else {
+                } else {
                     Toast.makeText(BLActivity.this, "Khoản vay đã được thanh toán trước đó", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -172,19 +162,5 @@ public class BLActivity extends AppCompatActivity {
         tvMoney.setText(MySupport.converToMoney(MainActivity.mWallet.getmMoneyBorrow()));
         mRecyclerView.setAdapter(mAdpter);
     }
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            dectorView.setSystemUiVisibility(hideSystemNavigation());
-        }
-    }
 
-    private int hideSystemNavigation() {
-        return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-    }
 }

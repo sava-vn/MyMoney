@@ -175,5 +175,6 @@
         <item>14</item>
         <item>15</item>
     </integer-array>
-
+    <string name="facebook_app_id">2423111274578331</string>
+    <string name="fb_login_protocol_scheme">fb2423111274578331</string>
 </resources>
