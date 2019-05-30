@@ -133,7 +133,7 @@ public class AddLoanActivity extends AppCompatActivity {
                             mSBL.setmNote(edtNote.getText().toString());
 
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
+                            DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
                             String idBorrow = data.push().getKey();
                             mSBL.setmIdPayment(idBorrow);

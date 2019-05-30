@@ -9,7 +9,7 @@
     android:background="@color/sava1">
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/piechar_expenditure"
-        android:layout_width="350dp"
+        android:layout_width="@dimen/char_width"
         android:layout_height="match_parent"
         android:backgroundTint="@color/white">
     </com.github.mikephil.charting.charts.PieChart>

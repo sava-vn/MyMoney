@@ -8,14 +8,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.sava.mymoney.MainActivity;
 import com.sava.mymoney.R;
@@ -83,7 +87,7 @@ public class ExpenditureFragment extends Fragment {
         description.setTextColor(Color.WHITE);
         if (listValue.size() > 0) {
             pieChart_expenditure.setCenterText(MySupport.converToMoney(money));
-            description.setText("Thống kê chi tiêu");
+            description.setText("Thống kê chi tiêu (%)");
         }
         else{
             description.setText("");
@@ -100,6 +104,18 @@ public class ExpenditureFragment extends Fragment {
 
         pieChart_expenditure.setData(data);
         pieChart_expenditure.setDescription(description);
+        pieChart_expenditure.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+               PieEntry pieEntry = (PieEntry) e;
+                Toast.makeText(getContext(), pieEntry.getLabel()+ " - " + MySupport.converToMoney((int)pieEntry.getValue()) , Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
     }
     public void initValue1(){
         int[] Money = new int[60];

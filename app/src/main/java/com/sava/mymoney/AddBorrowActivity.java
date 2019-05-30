@@ -36,7 +36,7 @@ public class AddBorrowActivity extends AppCompatActivity {
     private CardView layoutDate2;
     private int mTextSize;
     private int mTypeDate;
-
+    private View dectorView;
     private DatePickerDialog mDatePicker;
     private SBL mSBL;
 
@@ -46,6 +46,15 @@ public class AddBorrowActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_borrow);
+        dectorView = getWindow().getDecorView();
+        dectorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0) {
+                    dectorView.setSystemUiVisibility(hideSystemNavigation());
+                }
+            }
+        });
         initView();
         initTransaction();
         initAction();
@@ -137,7 +146,7 @@ public class AddBorrowActivity extends AppCompatActivity {
                             mSBL.setmNote(edtNote.getText().toString());
 
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
+                            DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
                             String idBorrow = data.push().getKey();
                             mSBL.setmIdPayment(idBorrow);
@@ -170,5 +179,20 @@ public class AddBorrowActivity extends AppCompatActivity {
                 }
             }
         },toDay.get(Calendar.YEAR),toDay.get(Calendar.MONTH),toDay.get(Calendar.DAY_OF_MONTH));
+    }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            dectorView.setSystemUiVisibility(hideSystemNavigation());
+        }
+    }
+
+    private int hideSystemNavigation() {
+        return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
     }
 }

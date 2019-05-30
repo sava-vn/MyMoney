@@ -26,14 +26,14 @@
             android:background="@color/sava1">
 
             <android.support.v7.widget.Toolbar
-                android:elevation="4dp"
+                android:elevation="@dimen/ele"
                 android:id="@+id/tb_main"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_height="@dimen/actionbar_size"
+                android:layout_marginLeft="@dimen/margin3"
+                android:layout_marginTop="@dimen/margin2"
+                android:layout_marginRight="@dimen/margin3"
+                android:layout_marginBottom="@dimen/margin2"
                 android:background="@drawable/c_tb_main"
                 android:theme="@style/ToolbarTheme"
                 app:layout_scrollFlags="scroll|enterAlways">
@@ -57,8 +57,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginRight="@dimen/margin4"
+            android:layout_marginBottom="@dimen/margin4"
             app:menu_colorNormal="@color/sava1"
             android:src="@drawable/ic_add"
             app:fabSize="normal">

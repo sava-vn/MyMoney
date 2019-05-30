@@ -50,11 +50,20 @@ public class AddActivity extends AppCompatActivity {
     private Payment mPayment;
 
     private Calendar toDay;
-
+    private View dectorView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        dectorView = getWindow().getDecorView();
+        dectorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0) {
+                    dectorView.setSystemUiVisibility(hideSystemNavigation());
+                }
+            }
+        });
         initData();
         initView();
     }
@@ -117,7 +126,7 @@ public class AddActivity extends AppCompatActivity {
                             mPayment.setmType(mTypePayment);
 
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
+                            DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
                             String idPayment = data.push().getKey();
                             mPayment.setmIdPayment(idPayment);
@@ -190,5 +199,20 @@ public class AddActivity extends AppCompatActivity {
             }
             tvAddType.setTextColor(Color.BLACK);
         }
+    }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            dectorView.setSystemUiVisibility(hideSystemNavigation());
+        }
+    }
+
+    private int hideSystemNavigation() {
+        return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
     }
 }

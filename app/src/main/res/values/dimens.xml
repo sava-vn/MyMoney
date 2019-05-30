@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="actionbar_size">56dp</dimen>
+    <dimen name="pading1">4dp</dimen>
+    <dimen name="pading2">8dp</dimen>
+    <dimen name="pading3">12dp</dimen>
+    <dimen name="pading4">16dp</dimen>
+    <dimen name="pading5">20dp</dimen>
+    <dimen name="margin1">4dp</dimen>
+    <dimen name="margin2">8dp</dimen>
+    <dimen name="margin3">12dp</dimen>
+    <dimen name="margin4">16dp</dimen>
+    <dimen name="margin5">20dp</dimen>
+    <dimen name="margin6">24dp</dimen>
+    <dimen name="margin7">28dp</dimen>
+    <dimen name="text_normal">16sp</dimen>
+    <dimen name="text_header">18sp</dimen>
+    <dimen name="text_header2">20sp</dimen>
+    <dimen name="ele">4dp</dimen>
+    <dimen name="radius1">2dp</dimen>
+    <dimen name="radius2">4dp</dimen>
+    <dimen name="radius3">6dp</dimen>
+    <dimen name="radius4">8dp</dimen>
+    <dimen name="radius5">10dp</dimen>
+    <dimen name="radius6">12dp</dimen>
+    <dimen name="radius7">14dp</dimen>
+    <dimen name="item1">150dp</dimen>
+    <dimen name="item2">65dp</dimen>
+    <dimen name="item3">100dp</dimen>
+    <dimen name="char_width">350dp</dimen>
+</resources>

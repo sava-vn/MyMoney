@@ -11,11 +11,21 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private EditText edtLg;
+    private View dectorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        dectorView = getWindow().getDecorView();
+        dectorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0) {
+                    dectorView.setSystemUiVisibility(hideSystemNavigation());
+                }
+            }
+        });
         btnLogin = findViewById(R.id.btn_login);
         edtLg = findViewById(R.id.edt_lg);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -32,5 +42,20 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            dectorView.setSystemUiVisibility(hideSystemNavigation());
+        }
+    }
+
+    private int hideSystemNavigation() {
+        return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
     }
 }

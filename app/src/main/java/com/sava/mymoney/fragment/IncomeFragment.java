@@ -82,7 +82,7 @@ public class IncomeFragment extends Fragment {
         description.setTextColor(Color.WHITE);
         if (listValue.size() > 0) {
             pieChart_income.setCenterText(MySupport.converToMoney(money));
-            description.setText("Thống kê thu nhập");
+            description.setText("Thống kê thu nhập (%)");
         }
         else{
             description.setText("");

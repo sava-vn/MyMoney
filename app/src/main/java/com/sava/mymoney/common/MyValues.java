@@ -11,6 +11,7 @@ public class MyValues {
     public static final String FONT_SIRUCA = "fonts/FS Siruca.ttf";
     public static final String FONT_HAPNA_SLABSERIF = "fonts/HapnaSlabSerif-Light.ttf";
     public static final String FONT_V = "fonts/varela_round_regular.ttf";
+    public static final String FONT_U = "fonts/unicaoneregular.ttf";
 
     public static final String FONT_AGENCY = "fonts/SVN-AGENCY.ttf";
     public static final String HOME = "HOME";

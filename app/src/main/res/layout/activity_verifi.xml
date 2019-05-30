@@ -35,10 +35,10 @@
         android:orientation="vertical">
         <TextView
             android:fontFamily="@font/varela"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="12dp"
-            android:textSize="20sp"
+            android:layout_marginLeft="@dimen/margin5"
+            android:layout_marginRight="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin5"
+            android:textSize="@dimen/text_header"
             android:textColor="@color/white"
             android:text="XÁC NHẬN"
             android:textStyle="bold"
@@ -46,10 +46,10 @@
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/tv_v_phone"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_normal"
             android:fontFamily="@font/varela"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="@dimen/margin7"
+            android:layout_marginRight="@dimen/margin7"
             android:textColor="@color/white"
             android:text="Một mã xác nhận đã được gửi tới số điện thoại của bạn . Xin vui lòng kiểm tra và nhập mã xác nhận"
             android:layout_width="match_parent"
@@ -72,8 +72,8 @@
                 android:inputType="numberSigned"
                 android:background="@drawable/c_tb_main"
                 android:backgroundTint="@color/yellow"
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_width="@dimen/actionbar_size"
+                android:layout_height="@dimen/actionbar_size"
                 android:maxLength="1"
                 android:imeOptions="actionNext"/>
             <EditText
@@ -84,9 +84,9 @@
                 android:inputType="numberSigned"
                 android:background="@drawable/c_tb_main"
                 android:backgroundTint="@color/yellow"
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginLeft="8dp"/>
+                android:layout_width="@dimen/actionbar_size"
+                android:layout_height="@dimen/actionbar_size"
+                android:layout_marginLeft="@dimen/margin2"/>
             <EditText
                 android:id="@+id/edt_v3"
                 android:maxLength="1"
@@ -95,9 +95,9 @@
                 android:inputType="numberSigned"
                 android:background="@drawable/c_tb_main"
                 android:backgroundTint="@color/yellow"
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginLeft="8dp"/>
+                android:layout_width="@dimen/actionbar_size"
+                android:layout_height="@dimen/actionbar_size"
+                android:layout_marginLeft="@dimen/margin2"/>
             <EditText
                 android:id="@+id/edt_v4"
                 android:maxLength="1"
@@ -106,9 +106,9 @@
                 android:inputType="numberSigned"
                 android:background="@drawable/c_tb_main"
                 android:backgroundTint="@color/yellow"
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginLeft="8dp"/>
+                android:layout_width="@dimen/actionbar_size"
+                android:layout_height="@dimen/actionbar_size"
+                android:layout_marginLeft="@dimen/margin2"/>
             <EditText
                 android:id="@+id/edt_v5"
                 android:maxLength="1"
@@ -117,9 +117,9 @@
                 android:inputType="numberSigned"
                 android:background="@drawable/c_tb_main"
                 android:backgroundTint="@color/yellow"
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginLeft="8dp"/>
+                android:layout_width="@dimen/actionbar_size"
+                android:layout_height="@dimen/actionbar_size"
+                android:layout_marginLeft="@dimen/margin2"/>
             <EditText
                 android:id="@+id/edt_v6"
                 android:maxLength="1"
@@ -128,9 +128,9 @@
                 android:inputType="numberSigned"
                 android:background="@drawable/c_tb_main"
                 android:backgroundTint="@color/yellow"
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginLeft="8dp"/>
+                android:layout_width="@dimen/actionbar_size"
+                android:layout_height="@dimen/actionbar_size"
+                android:layout_marginLeft="@dimen/margin2"/>
         </LinearLayout>
         <Button
             android:id="@+id/btn_verifi"
@@ -139,11 +139,11 @@
             android:background="@drawable/c_tb_main"
             android:text="Đăng nhập"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="@dimen/actionbar_size"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_header2"
             android:textColor="@color/white"/>
     </LinearLayout>
     <LinearLayout
@@ -165,13 +165,12 @@
             android:background="@drawable/c_tb_main"
             android:text="Lấy lại mã xác nhận"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="30dp"
-            android:textSize="16sp"
+            android:layout_height="@dimen/actionbar_size"
+            android:layout_marginTop="@dimen/margin3"
+            android:layout_marginLeft="@dimen/margin3"
+            android:layout_marginRight="@dimen/margin3"
+            android:paddingLeft="@dimen/pading4"
+            android:textSize="@dimen/text_header"
             android:textColor="@color/black"
             android:fontFamily="@font/varela"
             android:drawableLeft="@drawable/ic_phone_classic" />

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,11 +31,21 @@ public class DetailActivity extends AppCompatActivity {
 
     private Bundle bundle;
     private TextView tvToolbar;
+    private View dectorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        dectorView = getWindow().getDecorView();
+        dectorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0) {
+                    dectorView.setSystemUiVisibility(hideSystemNavigation());
+                }
+            }
+        });
         Intent intent = getIntent();
         bundle = intent.getBundleExtra(MyValues.BUNDLEDAY);
         initView();
@@ -44,21 +55,22 @@ public class DetailActivity extends AppCompatActivity {
         tvToolbar = new TextView(getApplicationContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
         tvToolbar.setLayoutParams(lp);
-        SDate sDate = new SDate(bundle.getInt(MyValues.DAY),bundle.getInt(MyValues.MONTH),bundle.getInt(MyValues.YEAR));
+        SDate sDate = new SDate(bundle.getInt(MyValues.DAY), bundle.getInt(MyValues.MONTH), bundle.getInt(MyValues.YEAR));
         String toolbarTitle;
-        if(bundle.getInt(MyValues.TYPE_SHOW)==MyValues.SHOW_DAYPAY)
+        if (bundle.getInt(MyValues.TYPE_SHOW) == MyValues.SHOW_DAYPAY)
             toolbarTitle = sDate.showDay();
-        else if (bundle.getInt(MyValues.TYPE_SHOW)==MyValues.SHOW_MONTHPAY)
+        else if (bundle.getInt(MyValues.TYPE_SHOW) == MyValues.SHOW_MONTHPAY)
             toolbarTitle = sDate.showMonth();
         else
             toolbarTitle = bundle.getInt(MyValues.YEAR) + "";
         tvToolbar.setText(toolbarTitle);
+        MySupport.setFontBold(this, tvToolbar, MyValues.FONT_U);
         tvToolbar.setTextSize(20);
         tvToolbar.setTextColor(getColor(R.color.white));
         homeFragment = new HomeFragment();
         upFragment = new IncomeFragment();
         downFragment = new ExpenditureFragment();
-        initFragment(homeFragment,MyValues.HOME);
+        initFragment(homeFragment, MyValues.HOME);
 
         mToolbar = findViewById(R.id.tb_detail);
         setSupportActionBar(mToolbar);
@@ -84,23 +96,40 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
+
     public void initFragment(Fragment fragment, String tag) {
         Fragment frag = getSupportFragmentManager().findFragmentByTag(tag);
         if (frag == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragment.setArguments(bundle);
-            fragmentTransaction.replace(R.id.framLayout_detail, fragment,tag);
+            fragmentTransaction.replace(R.id.framLayout_detail, fragment, tag);
             fragmentTransaction.commit();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                return  true;
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            dectorView.setSystemUiVisibility(hideSystemNavigation());
+        }
+    }
+
+    private int hideSystemNavigation() {
+        return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
     }
 }

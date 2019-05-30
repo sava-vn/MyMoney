@@ -22,6 +22,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser mUser;
     private DatabaseReference mData;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             } catch (Exception e) {
             }
-            mData = FirebaseDatabase.getInstance().getReference().child(mUser.getPhoneNumber());
+            mData = FirebaseDatabase.getInstance().getReference().child(mUser.getUid());
             mData.keepSynced(true);
             initData();
             initView();
@@ -194,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 int ngay = today.get(Calendar.DAY_OF_MONTH);
                 int thang = today.get(Calendar.MONTH);
                 int nam = today.get(Calendar.YEAR);
-                final SDate toDay = new SDate(ngay, thang + 1, nam,today.get(Calendar.DAY_OF_WEEK));
+                final SDate toDay = new SDate(ngay, thang + 1, nam, today.get(Calendar.DAY_OF_WEEK));
 
                 final Dialog dialog = new Dialog(MainActivity.this);
                 dialog.setCanceledOnTouchOutside(false);
@@ -327,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot data) {
                 for (DataSnapshot dataSnapshot : data.getChildren()) {
                     Payment payment = dataSnapshot.getValue(Payment.class);
-                    if (payment.getmType() == 39 || payment.getmType() == 6 ||payment.getmType()==38 ||payment.getmType()==7) {
+                    if (payment.getmType() == 39 || payment.getmType() == 6 || payment.getmType() == 38 || payment.getmType() == 7) {
                         SBL sbl = dataSnapshot.getValue(SBL.class);
                         mWallet.addPayment(sbl);
                     } else {
@@ -395,6 +398,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        tvToolbar.setAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_transition));
         switch (item.getItemId()) {
             case R.id.action_ngay:
                 if (TYPE_SHOW != MyValues.SHOW_DAYPAY) {
@@ -404,7 +408,7 @@ public class MainActivity extends AppCompatActivity {
                     TYPE_SHOW = MyValues.SHOW_DAYPAY;
                     item1.setIcon(R.drawable.ic_1);
                     item2.setIcon(R.drawable.alpha_m_box);
-                    item3.setIcon(R.drawable.alpha_y_box);
+                    item3.setIcon(R.drawable.ics_year);
                 }
                 break;
             case R.id.action_thang:
@@ -415,8 +419,7 @@ public class MainActivity extends AppCompatActivity {
                     TYPE_SHOW = MyValues.SHOW_MONTHPAY;
                     item1.setIcon(R.drawable.alpha_d_box);
                     item2.setIcon(R.drawable.ic_2);
-                    item3.setIcon(R.drawable.alpha_y_box);
-
+                    item3.setIcon(R.drawable.ics_year);
                 }
                 break;
             case R.id.action_nam:

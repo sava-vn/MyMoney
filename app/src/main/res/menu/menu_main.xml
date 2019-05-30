@@ -3,5 +3,5 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_ngay" android:title="Ngay" android:icon="@drawable/alpha_d_box" app:showAsAction="always"></item>
     <item android:id="@+id/action_thang" android:title="Ngay" android:icon="@drawable/alpha_m_box" app:showAsAction="always"></item>
-    <item android:id="@+id/action_nam" android:title="Ngay" android:icon="@drawable/alpha_y_box" app:showAsAction="always"></item>
+    <item android:id="@+id/action_nam" android:title="Ngay" android:icon="@drawable/ics_year" app:showAsAction="always"></item>
 </menu>

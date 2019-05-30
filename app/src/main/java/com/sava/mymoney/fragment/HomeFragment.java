@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         mListPayments = null;
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        mData = FirebaseDatabase.getInstance().getReference().child(mUser.getPhoneNumber());
+        mData = FirebaseDatabase.getInstance().getReference().child(mUser.getUid());
     }
 
     public void initData1() {

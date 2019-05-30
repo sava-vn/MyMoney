@@ -13,15 +13,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="top">
-        <TextView
-            android:fontFamily="@font/varela"
-            android:paddingLeft="30dp"
-            android:textStyle="bold|italic"
-            android:text="MYMONEY"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
         android:layout_weight="4"
@@ -32,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:src="@drawable/img_coin2" />
+            android:src="@drawable/ic_goal7" />
     </LinearLayout>
     <LinearLayout
         android:layout_weight="3"
@@ -42,7 +33,7 @@
         android:gravity="center">
         <EditText
             android:id="@+id/edt_lg"
-            android:drawablePadding="16dp"
+            android:drawablePadding="@dimen/pading5"
             android:drawableLeft="@drawable/ic_phone_classic"
             android:inputType="number"
             android:hint="Nhập số điện thoại"
@@ -52,7 +43,7 @@
             android:layout_marginRight="30dp"
             android:backgroundTint="@color/yellow"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="@dimen/actionbar_size"
             android:fontFamily="@font/varela"/>
         <Button
             android:id="@+id/btn_login"
@@ -61,7 +52,7 @@
             android:background="@drawable/c_tb_main"
             android:text="Đăng nhập"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="@dimen/actionbar_size"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
@@ -85,7 +76,7 @@
             android:background="@drawable/c_tb_main"
             android:text="Tiếp tục với facebook"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="@dimen/actionbar_size"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"

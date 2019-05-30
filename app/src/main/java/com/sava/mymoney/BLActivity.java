@@ -36,11 +36,21 @@ public class BLActivity extends AppCompatActivity {
     private int mTypeView;
     private Calendar calendar;
     private BLAdapter mAdpter;
+    private View dectorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sono);
+        dectorView = getWindow().getDecorView();
+        dectorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0) {
+                    dectorView.setSystemUiVisibility(hideSystemNavigation());
+                }
+            }
+        });
         calendar = Calendar.getInstance();
         initView();
         initAction();
@@ -139,7 +149,7 @@ public class BLActivity extends AppCompatActivity {
 
                     //Xác định con trỏ data
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getPhoneNumber());
+                    DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
                     //Cập nhập thông tin về ngày trả , xác nhận đã trả cho sbl
                     data.child(sbl.getmIdPayment()).setValue(sbl);
@@ -162,5 +172,19 @@ public class BLActivity extends AppCompatActivity {
         tvMoney.setText(MySupport.converToMoney(MainActivity.mWallet.getmMoneyBorrow()));
         mRecyclerView.setAdapter(mAdpter);
     }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            dectorView.setSystemUiVisibility(hideSystemNavigation());
+        }
+    }
 
+    private int hideSystemNavigation() {
+        return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+    }
 }
