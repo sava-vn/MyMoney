@@ -3,68 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@android:color/transparent">
+    android:layout_margin="16dp"
+    android:background="@android:color/transparent"
+    android:gravity="center">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
-        >
-
+        app:cardCornerRadius="12dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/yellow"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingTop="25dp"
-            android:paddingBottom="25dp">
+            android:paddingBottom="24dp">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
                 <TextView
+                    android:id="@+id/tv_d_sodu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/varela"
                     android:gravity="center"
-                    android:text="Thay đổi số dư"
+                    android:text="Số dư hiện tai của bạn là 15,000,000"
                     android:textColor="@color/black"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/img_d_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp"
-                    android:src="@drawable/ic_cancel" />
+                    android:textSize="18sp" />
             </RelativeLayout>
-
-
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/ic_square2" />
-
-            <TextView
-                android:id="@+id/tv_d_sodu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/varela"
-                android:gravity="center"
-                android:text="Số dư hiện tai của bạn là 15,000,000"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_d_sodu"
-                android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_margin="16dp"
@@ -72,21 +45,42 @@
                 android:fontFamily="@font/varela"
                 android:gravity="center"
                 android:hint="Nhập số dư mới"
+                android:inputType="numberDecimal"
                 android:textColor="@color/white"
                 android:textColorHint="@color/sivel2"
-                android:inputType="numberDecimal"/>
+                android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/btn_d_add"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_background"
-                android:fontFamily="@font/varela"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="THAY ĐỔI"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="2">
+                <Button
+                    android:id="@+id/btn_d_add"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/c_tv_3"
+                    android:fontFamily="@font/varela"
+                    android:text="THAY ĐỔI"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+                <Button
+                    android:layout_marginLeft="16dp"
+                    android:id="@+id/btn_d_close"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/c_tv_3"
+                    android:fontFamily="@font/varela"
+                    android:text="HỦY BỎ"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

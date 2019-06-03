@@ -1,11 +1,13 @@
 package com.sava.mymoney;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.InsetDrawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +24,8 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
@@ -106,10 +111,21 @@ public class MainActivity extends AppCompatActivity {
             startActivity(loginInten);
             finish();
         } else {
+            if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+                setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true);
+            }
+            if (Build.VERSION.SDK_INT >= 19) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            }
+            if (Build.VERSION.SDK_INT >= 21) {
+                setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+            }
             try {
                 FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             } catch (Exception e) {
             }
+
             mData = FirebaseDatabase.getInstance().getReference().child(mUser.getUid());
             mData.keepSynced(true);
             initData();
@@ -192,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ColorDrawable colorDrawable = new ColorDrawable(Color.TRANSPARENT);
                 InsetDrawable insetDrawable = new InsetDrawable(colorDrawable, 30, 50, 30, 50);
-
                 Calendar today = Calendar.getInstance();
                 int ngay = today.get(Calendar.DAY_OF_MONTH);
                 int thang = today.get(Calendar.MONTH);
@@ -203,8 +218,6 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setContentView(R.layout.dialog_sodu);
                 fMenu.close(true);
-
-                ImageView imgClose = dialog.findViewById(R.id.img_d_close);
                 final TextView tvSodu = dialog.findViewById(R.id.tv_d_sodu);
                 edtSodu = dialog.findViewById(R.id.edt_d_sodu);
                 edtSodu.addTextChangedListener(new TextWatcher() {
@@ -230,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 Button btnAdd = dialog.findViewById(R.id.btn_d_add);
+                Button btnClose = dialog.findViewById(R.id.btn_d_close);
                 for (SDMY item : mListSDMY) {
                     if (item.getmViewType() > 0 && item.getmSDate().comperTiem(toDay) <= 0) {
                         oldMoney = item.getmBalance();
@@ -238,9 +252,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 tvSodu.setText("Số dư hiện tại của bạn là\n" + MySupport.converToMoney(oldMoney));
                 dialog.getWindow().setBackgroundDrawable(insetDrawable);
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
                 dialog.show();
+                dialog.getWindow().setAttributes(lp);
 
-                imgClose.setOnClickListener(new View.OnClickListener() {
+                btnClose.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
@@ -311,6 +330,11 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.nav_dangxuat:
                         mAuth.signOut();
+                        try {
+                            LoginManager.getInstance().logOut();
+                        }catch (Exception e){
+
+                        }
                         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
                         finish();
@@ -438,4 +462,15 @@ public class MainActivity extends AppCompatActivity {
         this.mAdpter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
+    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
+        Window win = activity.getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+    }
+
 }

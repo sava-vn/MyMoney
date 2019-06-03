@@ -3,6 +3,7 @@
     package="com.sava.mymoney">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,9 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DetailTypeActivity"
+            android:theme="@style/Appthem2"></activity>
         <activity
             android:name=".AddLoanActivity"
-            android:theme="@style/Appthem2"></activity>
+            android:theme="@style/Appthem2" />
         <activity
             android:name=".AddBorrowActivity"
             android:theme="@style/Appthem2" />
@@ -28,7 +31,9 @@
         <activity
             android:name=".FingerActivity"
             android:theme="@style/Appthem2" />
-        <activity android:name=".TypePayActivity" />
+        <activity
+            android:name=".TypePayActivity"
+            android:theme="@style/Appthem2" />
         <activity
             android:name=".AddActivity"
             android:theme="@style/Appthem2" />
@@ -56,7 +61,8 @@
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
-            <intent-filter><action android:name="android.intent.action.VIEW" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -64,7 +70,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

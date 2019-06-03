@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -55,6 +56,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
     private CoordinatorLayout mCodl;
     private SBL pSbl;
     private int A, B;
+    private NestedScrollView nestHome;
 
     public HomeFragment() {
     }
@@ -81,6 +83,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         mCodl = getActivity().findViewById(R.id.codl);
+        nestHome = view.findViewById(R.id.nest_home);
     }
 
     public void initData() {
@@ -131,7 +134,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             }
         });
         mRecyclerView.setAdapter(mSDMYAdpter);
-
+        nestHome.getParent().requestChildFocus(nestHome, nestHome);
     }
 
     @Override

@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/sava1"
     tools:context=".MainActivity"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"

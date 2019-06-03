@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.internal.LockOnGetVariable;
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(FacebookException error) {
-                        Toast.makeText(LoginActivity.this, "Kiểm tra kết nối mạng !", Toast.LENGTH_SHORT).show();
+                        Log.e("SAVAERRORFB",error.getMessage());
                     }
                 });
             }
