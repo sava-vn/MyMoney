@@ -31,6 +31,7 @@ import java.util.Calendar;
 
 
 public class AddActivity extends AppCompatActivity {
+    private int x;
     private DatePickerDialog dp;
     private EditText edtAddMoney;
     private LinearLayout layoutAddType;
