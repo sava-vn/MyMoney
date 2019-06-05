@@ -63,22 +63,22 @@ public class Wallet {
         sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].setmSDate(SDate);
         sYears[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].getmListPayment().add(payment);
         if (payment.getmType() == 39) {
-            for(int i =0;i<mListLoan.size();i++){
-                if(mListLoan.get(i).getmSDate().comperTiem(payment.getmSDate())<=0){
-                    mListLoan.add(i,(SBL) payment);
-                    mMoneyLoan +=money;
+            for (int i = 0; i < mListLoan.size(); i++) {
+                if (mListLoan.get(i).getmSDate().comperTiem(payment.getmSDate()) <= 0) {
+                    mListLoan.add(i, (SBL) payment);
+                    mMoneyLoan += money;
                     return;
                 }
             }
             mListLoan.add((SBL) payment);
             mMoneyLoan += money;
         }
-        if (payment.getmType() == 6) {
-            for(int i =0;i<mListBorrow.size();i++){
+        if (payment.getmType() == 6 && money > 0) {
+            for (int i = 0; i < mListBorrow.size(); i++) {
                 int d1 = mListBorrow.get(i).getmSDate().comperTiem(payment.getmSDate());
-                if(d1<=0){
-                    mListBorrow.add(i,(SBL) payment);
-                    mMoneyBorrow +=money;
+                if (d1 <= 0) {
+                    mListBorrow.add(i, (SBL) payment);
+                    mMoneyBorrow += money;
                     return;
                 }
             }

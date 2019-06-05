@@ -15,6 +15,7 @@ import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.model.Payment;
 import com.sava.mymoney.model.SDate;
 import com.sava.mymoney.model.SDay;
+import com.sava.mymoney.model.SMonth;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class DetailIncomeActivity extends AppCompatActivity {
     private NestedScrollView nest;
     private static final int DAY = 1;
     private static final int MONTH = 2;
+    private static final int YEAR = 3;
     private ImageView imgBack;
     private TextView tvDate, tvMoney, tvType, tvCountPay;
     private RecyclerView mRecyclerView;
@@ -65,9 +67,14 @@ public class DetailIncomeActivity extends AppCompatActivity {
         if (dayOrMonth == DAY) {
             tvDate.setText(sDate.showDay());
             setListDay();
-        } else {
+        }
+        if (dayOrMonth == MONTH) {
             tvDate.setText(sDate.showMonth());
             setListMonth();
+        }
+        if (dayOrMonth == YEAR) {
+            tvDate.setText(sDate.getmYear() + "");
+            setListYear();
         }
         tvType.setText(MainActivity.TYPE_INCOMES[type]);
         mAdapter = new DetailTypeAdapter(this, listPayments);
@@ -121,11 +128,11 @@ public class DetailIncomeActivity extends AppCompatActivity {
         for (int i = 31; i >= 1; i--) {
             SDay sDay = listDay[i];
             if (sDay.getmMoneyIn() > 0) {
-                int x =0;
+                int x = 0;
                 for (Payment payment : sDay.getmListPayment()) {
                     if (payment.getmType() == type && payment.getmMoney() > 0) {
-                        if(x==0){
-                            if(listPayments.size()>0){
+                        if (x == 0) {
+                            if (listPayments.size() > 0) {
                                 Payment pay2 = new Payment();
                                 pay2.setmMoney(-1);
                                 listPayments.add(pay2);
@@ -138,6 +145,48 @@ public class DetailIncomeActivity extends AppCompatActivity {
                         listPayments.add(payment);
                         money += payment.getmMoney();
                         count++;
+                    }
+                }
+            }
+        }
+        Payment pay2 = new Payment();
+        pay2.setmMoney(-1);
+        listPayments.add(pay2);
+    }
+
+    private void setListYear() {
+        listPayments.clear();
+        money = 0;
+        count = 0;
+        SMonth[] listMonth = MainActivity.mWallet.getsYears()[nam].getmArrMonthPayment();
+        for (int i = 12; i > 0; i--) {
+            SMonth sMonth = listMonth[i];
+            if (sMonth.getmMoneyIn() > 0) {
+                SDay[] listDay = sMonth.getmArrSDay();
+                for (int ii = 31; ii >= 1; ii--) {
+                    SDay sDay = listDay[ii];
+                    if (sDay.getmMoneyIn() > 0) {
+                        int x = 0;
+                        for (Payment payment : sDay.getmListPayment()) {
+                            int t = payment.getmType();
+                            if (t == type && payment.getmMoney() > 0) {
+                                if (x == 0) {
+                                    if (listPayments.size() > 0) {
+                                        Payment pay2 = new Payment();
+                                        pay2.setmMoney(-1);
+                                        listPayments.add(pay2);
+                                    }
+                                    Payment pay = new Payment();
+                                    pay.setmMoney(0);
+                                    pay.setmNote(payment.getmSDate().showDay());
+                                    listPayments.add(pay);
+                                    x++;
+                                }
+                                listPayments.add(payment);
+                                money += payment.getmMoney();
+                                count++;
+                            }
+                        }
                     }
                 }
             }

@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mData;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,17 +169,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 fMenu.close(true);
-                if (TYPE_SHOW != MyValues.SHOW_YEARPAY) {
-                    SDMY SDMY = mListSDMY.get(position);
-                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(MyValues.DAY, SDMY.getmSDate().getmDay());
-                    bundle.putInt(MyValues.MONTH, SDMY.getmSDate().getmMonth());
-                    bundle.putInt(MyValues.YEAR, SDMY.getmSDate().getmYear());
-                    bundle.putInt(MyValues.TYPE_SHOW, TYPE_SHOW);
-                    intent.putExtra(MyValues.BUNDLEDAY, bundle);
-                    startActivity(intent);
-                }
+                SDMY SDMY = mListSDMY.get(position);
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(MyValues.DAY, SDMY.getmSDate().getmDay());
+                bundle.putInt(MyValues.MONTH, SDMY.getmSDate().getmMonth());
+                bundle.putInt(MyValues.YEAR, SDMY.getmSDate().getmYear());
+                bundle.putInt(MyValues.TYPE_SHOW, TYPE_SHOW);
+                intent.putExtra(MyValues.BUNDLEDAY, bundle);
+                startActivity(intent);
             }
         });
 
@@ -332,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
                         mAuth.signOut();
                         try {
                             LoginManager.getInstance().logOut();
-                        }catch (Exception e){
+                        } catch (Exception e) {
 
                         }
                         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -462,6 +459,7 @@ public class MainActivity extends AppCompatActivity {
         this.mAdpter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
+
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
         Window win = activity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();

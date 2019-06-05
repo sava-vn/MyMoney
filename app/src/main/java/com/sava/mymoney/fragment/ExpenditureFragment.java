@@ -37,6 +37,7 @@ import com.sava.mymoney.model.SDate;
 import com.sava.mymoney.model.SDay;
 import com.sava.mymoney.model.SMonth;
 import com.sava.mymoney.model.Payment;
+import com.sava.mymoney.model.SYear;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,7 @@ import java.util.Date;
 public class ExpenditureFragment extends Fragment {
     private static final int DAY = 1;
     private static final int MONTH = 2;
+    private static final int YEAR = 3;
     private PieChart pieChart_expenditure;
     private ArrayList<PieEntry> listValue;
     private ArrayList<Integer> listType;
@@ -54,6 +56,7 @@ public class ExpenditureFragment extends Fragment {
     private int nam;
     private int money;
     private int dayOrMonth;
+
     public ExpenditureFragment() {
 
     }
@@ -86,7 +89,7 @@ public class ExpenditureFragment extends Fragment {
         ngay = bundle.getInt(MyValues.DAY);
         thang = bundle.getInt(MyValues.MONTH);
         nam = bundle.getInt(MyValues.YEAR) - 2015;
-        final SDate sDate = new SDate(ngay,thang,nam+2015,0);
+        final SDate sDate = new SDate(ngay, thang, nam + 2015, 0);
         money = 0;
         dayOrMonth = bundle.getInt(MyValues.TYPE_SHOW);
 
@@ -94,6 +97,8 @@ public class ExpenditureFragment extends Fragment {
             initValue1();
         if (dayOrMonth == MONTH)
             initValue2();
+        if (dayOrMonth == YEAR)
+            initValue3();
 
         Description description = new Description();
         Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MyValues.FONT_V);
@@ -139,11 +144,12 @@ public class ExpenditureFragment extends Fragment {
                 Button btnOK = dialog.findViewById(R.id.d_detial_btn_ok);
                 Button btnDetail = dialog.findViewById(R.id.d_detial_btn_detial);
                 tvTitle.setText("Số tiền dành cho " + pieEntry.getLabel());
-                if(dayOrMonth==DAY)
+                if (dayOrMonth == DAY)
                     tvDate.setText(sDate.showDay());
-                else
+                if (dayOrMonth == MONTH)
                     tvDate.setText(sDate.showMonth());
-
+                if (dayOrMonth == YEAR)
+                    tvDate.setText(sDate.getmYear() + "");
                 tvMoney.setText(MySupport.converToMoney((int) pieEntry.getValue()));
                 btnOK.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -155,11 +161,11 @@ public class ExpenditureFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getContext(), DetailTypeActivity.class);
-                        intent.putExtra("NGAY",ngay);
-                        intent.putExtra("THANG",thang);
-                        intent.putExtra("NAM",nam);
-                        intent.putExtra("DAYORMONTH",dayOrMonth);
-                        intent.putExtra("TYPE",listType.get((int)h.getX()));
+                        intent.putExtra("NGAY", ngay);
+                        intent.putExtra("THANG", thang);
+                        intent.putExtra("NAM", nam);
+                        intent.putExtra("DAYORMONTH", dayOrMonth);
+                        intent.putExtra("TYPE", listType.get((int) h.getX()));
                         startActivity(intent);
                         dialog.dismiss();
                     }
@@ -228,4 +234,33 @@ public class ExpenditureFragment extends Fragment {
         }
     }
 
+    public void initValue3() {
+        int[] Money = new int[60];
+        listType.clear();
+        SYear sYear = MainActivity.mWallet.getsYears()[nam];
+        for (int i = 12; i > 0; i--) {
+            SMonth sMonth = sYear.getmArrMonthPayment()[i];
+            if (sMonth.getmMoneyOut() < 0) {
+                for (int ii = 31; ii > 0; ii--) {
+                    SDay sDay = sMonth.getmArrSDay()[ii];
+                    if (sDay.getmMoneyOut() < 0) {
+                        for (Payment payment : sDay.getmListPayment()) {
+                            if (payment.getmMoney() < 0) {
+                                    int type = payment.getmType();
+                                    int typeParent = MainActivity.TYPE_PARENT_INT[type];
+                                    Money[typeParent] -= payment.getmMoney();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < 60; i++) {
+            if (Money[i] > 0) {
+                listValue.add(new PieEntry(Money[i], MainActivity.TYPE_PARENT_STRING[i]));
+                money += Money[i];
+                listType.add(i);
+            }
+        }
+    }
 }

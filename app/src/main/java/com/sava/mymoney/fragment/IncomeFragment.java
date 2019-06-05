@@ -37,6 +37,7 @@ import com.sava.mymoney.model.SDate;
 import com.sava.mymoney.model.SDay;
 import com.sava.mymoney.model.SMonth;
 import com.sava.mymoney.model.Payment;
+import com.sava.mymoney.model.SYear;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 public class IncomeFragment extends Fragment {
     private static final int DAY = 1;
     private static final int MONTH = 2;
+    private static final int YEAR = 3;
     private PieChart pieChart_income;
     private ArrayList<PieEntry> listValue;
     private Bundle bundle;
@@ -53,6 +55,7 @@ public class IncomeFragment extends Fragment {
     private int money;
     private int dayOrMonth;
     private ArrayList<Integer> listType;
+
     public IncomeFragment() {
 
     }
@@ -91,7 +94,8 @@ public class IncomeFragment extends Fragment {
             initValue1();
         if (dayOrMonth == MONTH)
             initValue2();
-
+        if (dayOrMonth == YEAR)
+            initValue3();
         PieDataSet dataSet = new PieDataSet(listValue, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
@@ -151,11 +155,11 @@ public class IncomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getContext(), DetailIncomeActivity.class);
-                        intent.putExtra("NGAY",ngay);
-                        intent.putExtra("THANG",thang);
-                        intent.putExtra("NAM",nam);
-                        intent.putExtra("DAYORMONTH",dayOrMonth);
-                        intent.putExtra("TYPE",listType.get((int)h.getX()));
+                        intent.putExtra("NGAY", ngay);
+                        intent.putExtra("THANG", thang);
+                        intent.putExtra("NAM", nam);
+                        intent.putExtra("DAYORMONTH", dayOrMonth);
+                        intent.putExtra("TYPE", listType.get((int) h.getX()));
                         startActivity(intent);
                         dialog.dismiss();
                     }
@@ -189,6 +193,36 @@ public class IncomeFragment extends Fragment {
                 int type = payment.getmType();
                 Money[type] += payment.getmMoney();
             }
+        }
+        for (int i = 0; i < 20; i++) {
+            if (Money[i] > 0) {
+                listValue.add(new PieEntry(Money[i], MainActivity.TYPE_INCOMES[i]));
+                money += Money[i];
+                listType.add(i);
+            }
+        }
+    }
+
+    private void initValue3() {
+        int[] Money = new int[20];
+        listType.clear();
+        SYear sYear = MainActivity.mWallet.getsYears()[nam];
+        for (int i = 12; i > 0; i--) {
+            SMonth sMonth = sYear.getmArrMonthPayment()[i];
+            if (sMonth.getmMoneyIn() > 0) {
+                for (int ii = 31; ii > 0; ii--) {
+                    SDay sDay = sMonth.getmArrSDay()[ii];
+                    if (sDay.getmMoneyIn() > 0) {
+                        for (Payment payment : sDay.getmListPayment()) {
+                            if (payment.getmMoney() > 0) {
+                                int type = payment.getmType();
+                                Money[type] += payment.getmMoney();
+                            }
+                        }
+                    }
+                }
+            }
+
         }
         for (int i = 0; i < 20; i++) {
             if (Money[i] > 0) {

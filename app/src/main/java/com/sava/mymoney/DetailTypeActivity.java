@@ -15,13 +15,16 @@ import com.sava.mymoney.common.MySupport;
 import com.sava.mymoney.model.Payment;
 import com.sava.mymoney.model.SDate;
 import com.sava.mymoney.model.SDay;
+import com.sava.mymoney.model.SMonth;
 
+import java.time.Year;
 import java.util.ArrayList;
 
 public class DetailTypeActivity extends AppCompatActivity {
     private NestedScrollView nest;
     private static final int DAY = 1;
     private static final int MONTH = 2;
+    private static final int YEAR = 3;
     private ImageView imgBack;
     private TextView tvDate, tvMoney, tvType, tvCountPay;
     private RecyclerView mRecyclerView;
@@ -65,9 +68,15 @@ public class DetailTypeActivity extends AppCompatActivity {
             tvDate.setText(sDate.showDay());
             tvType.setText(MainActivity.TYPE_EXPENDITURES[type]);
             setListDay();
-        } else {
+        }
+        if (dayOrMonth == MONTH) {
             tvDate.setText(sDate.showMonth());
             setListMonth();
+            tvType.setText(MainActivity.TYPE_PARENT_STRING[type]);
+        }
+        if (dayOrMonth == YEAR) {
+            tvDate.setText(sDate.getmYear()+"");
+            setListYear();
             tvType.setText(MainActivity.TYPE_PARENT_STRING[type]);
         }
         mAdapter = new DetailTypeAdapter(this, listPayments);
@@ -121,12 +130,12 @@ public class DetailTypeActivity extends AppCompatActivity {
         for (int i = 31; i >= 1; i--) {
             SDay sDay = listDay[i];
             if (sDay.getmMoneyOut() < 0) {
-                int x =0;
+                int x = 0;
                 for (Payment payment : sDay.getmListPayment()) {
                     int t = payment.getmType();
                     if (MainActivity.TYPE_PARENT_INT[t] == type && payment.getmMoney() < 0) {
-                        if(x==0){
-                            if(listPayments.size()>0){
+                        if (x == 0) {
+                            if (listPayments.size() > 0) {
                                 Payment pay2 = new Payment();
                                 pay2.setmMoney(-1);
                                 listPayments.add(pay2);
@@ -140,6 +149,48 @@ public class DetailTypeActivity extends AppCompatActivity {
                         listPayments.add(payment);
                         money += payment.getmMoney();
                         count++;
+                    }
+                }
+            }
+        }
+        Payment pay2 = new Payment();
+        pay2.setmMoney(-1);
+        listPayments.add(pay2);
+    }
+
+    private void setListYear() {
+        listPayments.clear();
+        money = 0;
+        count = 0;
+        SMonth[] listMonth = MainActivity.mWallet.getsYears()[nam].getmArrMonthPayment();
+        for (int i = 12; i > 0; i--) {
+            SMonth sMonth = listMonth[i];
+            if (sMonth.getmMoneyOut() < 0) {
+                SDay[] listDay = sMonth.getmArrSDay();
+                for (int ii = 31; ii >= 1; ii--) {
+                    SDay sDay = listDay[ii];
+                    if (sDay.getmMoneyOut() < 0) {
+                        int x = 0;
+                        for (Payment payment : sDay.getmListPayment()) {
+                            int t = payment.getmType();
+                            if (MainActivity.TYPE_PARENT_INT[t] == type && payment.getmMoney() < 0) {
+                                if (x == 0) {
+                                    if (listPayments.size() > 0) {
+                                        Payment pay2 = new Payment();
+                                        pay2.setmMoney(-1);
+                                        listPayments.add(pay2);
+                                    }
+                                    Payment pay = new Payment();
+                                    pay.setmMoney(0);
+                                    pay.setmNote(payment.getmSDate().showDay());
+                                    listPayments.add(pay);
+                                    x++;
+                                }
+                                listPayments.add(payment);
+                                money += payment.getmMoney();
+                                count++;
+                            }
+                        }
                     }
                 }
             }

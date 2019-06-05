@@ -9,6 +9,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import com.sava.mymoney.model.SDay;
 import com.sava.mymoney.model.SMonth;
 import com.sava.mymoney.model.Payment;
 import com.sava.mymoney.model.SDMY;
+import com.sava.mymoney.model.SYear;
 import com.sava.mymoney.swipe.RecyclerItemTouchHelper;
 
 import java.util.ArrayList;
@@ -72,6 +74,8 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             initData1();
         if (bundle.getInt(MyValues.TYPE_SHOW) == MyValues.SHOW_MONTHPAY)
             initData2();
+        if (bundle.getInt(MyValues.TYPE_SHOW) == MyValues.SHOW_YEARPAY)
+            initData3();
         return view;
     }
 
@@ -110,6 +114,41 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     }
 
+    public void initData3() {
+        SYear sYear = MainActivity.mWallet.getsYears()[nam];
+        mListDayPayments = new ArrayList<>();
+        int BLANCE = MainActivity.mWallet.getmMoney();
+        sYear.setmBalance(BLANCE);
+        for (int i = 12; i > 0; i--) {
+            SMonth sMonth = sYear.getmArrMonthPayment()[i];
+            if (sMonth.getmCountPay() > 0) {
+                sMonth.setmViewType(1);
+                sMonth.setmBalance(BLANCE);
+                mListDayPayments.add(sMonth);
+                BLANCE -= (sMonth.getmMoneyIn() + sMonth.getmMoneyOut());
+            }
+        }
+        tvBalance.setText(MySupport.converToMoney(sYear.getmBalance()));
+        tvMoney.setText(MySupport.converToMoney(sYear.getmMoneyIn() + sYear.getmMoneyOut()));
+        mSDMYAdpter = new SDMYAdpter(getContext(), mListDayPayments, new ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                SDMY SDMY = mListDayPayments.get(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(MyValues.DAY, SDMY.getmSDate().getmDay());
+                bundle.putInt(MyValues.MONTH, SDMY.getmSDate().getmMonth());
+                bundle.putInt(MyValues.YEAR, SDMY.getmSDate().getmYear());
+                bundle.putInt(MyValues.TYPE_SHOW, 2);
+                intent.putExtra(MyValues.BUNDLEDAY, bundle);
+                startActivity(intent);
+            }
+        });
+        mRecyclerView.setAdapter(mSDMYAdpter);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        nestHome.getParent().requestChildFocus(nestHome, nestHome);
+    }
+
     public void initData2() {
         SMonth sMonth = MainActivity.mWallet.getsYears()[nam].getmArrMonthPayment()[thang];
         mListDayPayments = new ArrayList<>();
@@ -140,43 +179,34 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, final int position) {
-        pSbl = null;//khoản vay gốc
+        pSbl = null;
 
-        // Khoản chi tiêu muốn xóa
         final Payment payment = mListPayments.get(position);
 
         SDate date = payment.getmSDate();
         SDay day = MainActivity.mWallet.getsYears()[date.getmYear() - 2015].getmArrMonthPayment()[date.getmMonth()].getmArrSDay()[date.getmDay()];
         A = day.getmMoneyIn() + day.getmMoneyOut() - payment.getmMoney();
         B = day.getmBalance() - payment.getmMoney();
-
-        //Nếu khoản chi tiêu muốn xóa là một khoản thu nợ(7) hoặc một khoản trả nợ (38)
-        //Ta cần tìm tới khoản vay gốc của nó và xác nhận là chưa hoặc thi khoản vay đó
         if (payment.getmType() == 7 || payment.getmType() == 38) {
-            SBL sbl = (SBL) payment; // Ép kiểu từ chi tiêu thông thường về vay nợ
-            SDate sDate = sbl.getmSDate2();// Lấy ra ngày của khoản nợ gốc
+            SBL sbl = (SBL) payment;
+            SDate sDate = sbl.getmSDate2();
 
-            //Lấy ra danh sách các khoản chi tiêu trong ngày
             ArrayList<Payment> payments = MainActivity.mWallet.getsYears()[sDate.getmYear() - 2015].getmArrMonthPayment()[sDate.getmMonth()].getmArrSDay()[sDate.getmDay()].getmListPayment();
 
-            //Tìm khoản nợ gốc
             for (Payment pay : payments) {
                 if (pay.getmIdPayment().equals(sbl.getmPerson())) {
-                    pSbl = (SBL) pay;//Ép kiểu từ khoản chi tiêu thông thường sang khoản cho vay hoặc vay
-                    pSbl.setIsPayment(0);//Xác nhận là đã trả
-                    mData.child(pSbl.getmIdPayment()).setValue(pSbl);//Cập nhật lại trên realtime database
-                    break;//Kết thúc
+                    pSbl = (SBL) pay;
+                    pSbl.setIsPayment(0);
+                    mData.child(pSbl.getmIdPayment()).setValue(pSbl);
+                    break;
                 }
             }
         }
 
-        //Xóa khoản chi tiêu trên realtime database
         mData.child(payment.getmIdPayment()).removeValue();
 
-        //Xóa khoản chi tiêu trên Ram
         SDay sDay = MainActivity.mWallet.removePayment(payment);
 
-        //Xóa khoản hci tiêu trên list
         mListPayments.remove(payment);
         mPaymentAdapter.notifyDataSetChanged();
 
@@ -202,8 +232,6 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
                 B += payment.getmMoney();
                 tvMoney.setText(MySupport.converToMoney(A));
                 tvBalance.setText(MySupport.converToMoney(B));
-
-
             }
         });
         snackbar.show();
