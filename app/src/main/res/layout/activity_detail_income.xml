@@ -3,101 +3,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".DetailTypeActivity"
     android:background="@color/sava1"
     android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:gravity="center_vertical">
+
         <ImageView
-            android:id="@+id/a_detail_type_btnBack"
-            android:layout_marginLeft="@dimen/margin2"
+            android:id="@+id/a_detail_income_btnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_back_white"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin2"
+            android:src="@drawable/ic_back_white" />
+
         <TextView
-            android:id="@+id/a_detail_type_tvDate"
-            android:paddingTop="2dp"
-            android:gravity="center"
+            android:id="@+id/a_detail_income_tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/unicaoneregular"
+            android:gravity="center"
+            android:paddingTop="2dp"
             android:text="25 JUN,2019"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:textSize="@dimen/text_header2"
-            android:fontFamily="@font/unicaoneregular"/>
+            android:textStyle="bold" />
     </RelativeLayout>
+
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/income_nest"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/nest">
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:background="@drawable/c_tb_main"
-                android:backgroundTint="#5D1039"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="16dp"
-                android:descendantFocusability="blocksDescendants">
+                android:background="@drawable/c_tb_main"
+                android:backgroundTint="#5D1039"
+                android:descendantFocusability="blocksDescendants"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
                 <TextView
-                    android:id="@+id/a_detail_type_tvMoney"
+                    android:id="@+id/a_detail_income_tvMoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="- 1,050,000"
-                    android:textSize="44sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/unicaoneregular"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/unicaoneregular"
+                    android:text="- 1,050,000"
+                    android:textColor="@color/white"
+                    android:textSize="44sp"
+                    android:textStyle="bold" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#484444"></View>
+
                 <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp">
+
                     <TextView
-                        android:id="@+id/a_detail_type_tvType"
+                        android:id="@+id/a_detail_income_tvType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:drawableLeft="@drawable/ict_1"
+                        android:drawablePadding="4dp"
+                        android:fontFamily="@font/varela"
                         android:text="Giáo dục"
                         android:textColor="@color/white"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/varela"
-                        android:textSize="@dimen/text_header2"
-                        android:drawableLeft="@drawable/ict_1"
-                        android:drawablePadding="4dp"/>
+                        android:textSize="@dimen/text_header2" />
+
                     <TextView
-                        android:id="@+id/a_detail_type_tvCountPay"
-                        android:gravity="center"
+                        android:id="@+id/a_detail_income_tvCountPay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="5"
                         android:drawableLeft="@drawable/ics_transaction"
                         android:drawablePadding="4dp"
-                        android:textColor="@color/white"
                         android:fontFamily="@font/unicaoneregular"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/text_header"/>
+                        android:gravity="center"
+                        android:text="5"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_header"
+                        android:textStyle="bold" />
                 </android.support.design.widget.CoordinatorLayout>
             </LinearLayout>
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/a_detail_type_rcvPayment"
+                android:id="@+id/a_detail_income_rcvPayment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"></android.support.v7.widget.RecyclerView>

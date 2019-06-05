@@ -18,7 +18,8 @@ import com.sava.mymoney.model.SDay;
 
 import java.util.ArrayList;
 
-public class DetailTypeActivity extends AppCompatActivity {
+public class DetailIncomeActivity extends AppCompatActivity {
+
     private NestedScrollView nest;
     private static final int DAY = 1;
     private static final int MONTH = 2;
@@ -32,7 +33,7 @@ public class DetailTypeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_type);
+        setContentView(R.layout.activity_detail_income);
         initView();
         initData();
         setDataToView();
@@ -40,13 +41,13 @@ public class DetailTypeActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        imgBack = findViewById(R.id.a_detail_type_btnBack);
-        tvDate = findViewById(R.id.a_detail_type_tvDate);
-        tvMoney = findViewById(R.id.a_detail_type_tvMoney);
-        tvType = findViewById(R.id.a_detail_type_tvType);
-        tvCountPay = findViewById(R.id.a_detail_type_tvCountPay);
-        mRecyclerView = findViewById(R.id.a_detail_type_rcvPayment);
-        nest = findViewById(R.id.nest);
+        imgBack = findViewById(R.id.a_detail_income_btnBack);
+        tvDate = findViewById(R.id.a_detail_income_tvDate);
+        tvMoney = findViewById(R.id.a_detail_income_tvMoney);
+        tvType = findViewById(R.id.a_detail_income_tvType);
+        tvCountPay = findViewById(R.id.a_detail_income_tvCountPay);
+        mRecyclerView = findViewById(R.id.a_detail_income_rcvPayment);
+        nest = findViewById(R.id.income_nest);
     }
 
     private void initData() {
@@ -63,13 +64,12 @@ public class DetailTypeActivity extends AppCompatActivity {
         SDate sDate = new SDate(ngay, thang, nam + 2015, 0);
         if (dayOrMonth == DAY) {
             tvDate.setText(sDate.showDay());
-            tvType.setText(MainActivity.TYPE_EXPENDITURES[type]);
             setListDay();
         } else {
             tvDate.setText(sDate.showMonth());
             setListMonth();
-            tvType.setText(MainActivity.TYPE_PARENT_STRING[type]);
         }
+        tvType.setText(MainActivity.TYPE_INCOMES[type]);
         mAdapter = new DetailTypeAdapter(this, listPayments);
 
         tvMoney.setText(MySupport.converToMoney(money));
@@ -102,7 +102,7 @@ public class DetailTypeActivity extends AppCompatActivity {
         pay2.setmNote("TODAY");
         listPayments.add(pay2);
         for (Payment payment : MainActivity.mWallet.getsYears()[nam].getmArrMonthPayment()[thang].getmArrSDay()[ngay].getmListPayment()) {
-            if (payment.getmType() == type && payment.getmMoney() < 0) {
+            if (payment.getmType() == type && payment.getmMoney() > 0) {
                 listPayments.add(payment);
                 money += payment.getmMoney();
                 count++;
@@ -120,11 +120,10 @@ public class DetailTypeActivity extends AppCompatActivity {
         SDay[] listDay = MainActivity.mWallet.getsYears()[nam].getmArrMonthPayment()[thang].getmArrSDay();
         for (int i = 31; i >= 1; i--) {
             SDay sDay = listDay[i];
-            if (sDay.getmMoneyOut() < 0) {
+            if (sDay.getmMoneyIn() > 0) {
                 int x =0;
                 for (Payment payment : sDay.getmListPayment()) {
-                    int t = payment.getmType();
-                    if (MainActivity.TYPE_PARENT_INT[t] == type && payment.getmMoney() < 0) {
+                    if (payment.getmType() == type && payment.getmMoney() > 0) {
                         if(x==0){
                             if(listPayments.size()>0){
                                 Payment pay2 = new Payment();
@@ -132,7 +131,6 @@ public class DetailTypeActivity extends AppCompatActivity {
                                 listPayments.add(pay2);
                             }
                             Payment pay = new Payment();
-                            pay.setmMoney(0);
                             pay.setmNote(payment.getmSDate().showDay());
                             listPayments.add(pay);
                             x++;

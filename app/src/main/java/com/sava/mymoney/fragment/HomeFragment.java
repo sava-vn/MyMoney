@@ -134,6 +134,7 @@ public class HomeFragment extends Fragment implements RecyclerItemTouchHelper.Re
             }
         });
         mRecyclerView.setAdapter(mSDMYAdpter);
+        mRecyclerView.setNestedScrollingEnabled(false);
         nestHome.getParent().requestChildFocus(nestHome, nestHome);
     }
 
